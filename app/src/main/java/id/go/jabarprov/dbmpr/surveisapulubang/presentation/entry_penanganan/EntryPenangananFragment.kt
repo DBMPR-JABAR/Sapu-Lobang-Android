@@ -133,7 +133,14 @@ class EntryPenangananFragment : Fragment() {
 
                     if (it.isSuccess) {
                         loadingDialog.dismiss()
-                        unhandleLubangAdapter.submitList(it.listUnhandledLubang)
+                        if (it.listUnhandledLubang.isNotEmpty()) {
+                            binding.recyclerViewListLubang.visibility = View.VISIBLE
+                            binding.textViewEmpty.visibility = View.GONE
+                            unhandleLubangAdapter.submitList(it.listUnhandledLubang)
+                        } else {
+                            binding.recyclerViewListLubang.visibility = View.GONE
+                            binding.textViewEmpty.visibility = View.VISIBLE
+                        }
                     }
 
                     binding.apply {
