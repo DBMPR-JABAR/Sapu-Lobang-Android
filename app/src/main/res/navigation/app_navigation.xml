@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/app_navigation"
+    app:startDestination="@id/loginFragment">
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="id.go.jabarprov.dbmpr.surveisapulubang.presentation.login.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login">
+
+        <action
+            android:id="@+id/action_loginFragment_to_dashboardFragment"
+            app:destination="@id/dashboardFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/dashboardFragment"
+        android:name="id.go.jabarprov.dbmpr.surveisapulubang.presentation.dashboard.DashboardFragment"
+        android:label="fragment_dashboard"
+        tools:layout="@layout/fragment_dashboard">
+        <action
+            android:id="@+id/action_dashboardFragment_to_entryLubangFragment"
+            app:destination="@id/entryLubangFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_entryPenangananFragment"
+            app:destination="@id/entryPenangananFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_entryRencanaFragment"
+            app:destination="@id/entryRencanaFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/dashboardFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/entryLubangFragment"
+        android:name="id.go.jabarprov.dbmpr.surveisapulubang.presentation.entry_lubang.EntryLubangFragment"
+        android:label="fragment_entry_lubang"
+        tools:layout="@layout/fragment_entry_lubang" />
+    <fragment
+        android:id="@+id/entryPenangananFragment"
+        android:name="id.go.jabarprov.dbmpr.surveisapulubang.presentation.entry_penanganan.EntryPenangananFragment"
+        android:label="fragment_entry_penanganan"
+        tools:layout="@layout/fragment_entry_penanganan" />
+    <fragment
+        android:id="@+id/entryRencanaFragment"
+        android:name="id.go.jabarprov.dbmpr.surveisapulubang.presentation.entry_rencana.EntryRencanaFragment"
+        android:label="fragment_entry_rencana"
+        tools:layout="@layout/fragment_entry_rencana" />
+
+</navigation>

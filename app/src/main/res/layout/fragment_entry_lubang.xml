@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".presentation.entry_lubang.EntryLubangFragment">
+
+    <TextView
+        android:id="@+id/text_view_label_tanggal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:text="Tanggal :"
+        android:textAppearance="?textAppearanceSubtitle1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/text_view_content_tanggal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="1 Januari 2022"
+        android:textAppearance="?textAppearanceSubtitle1"
+        app:layout_constraintBaseline_toBaselineOf="@+id/text_view_label_tanggal"
+        app:layout_constraintEnd_toStartOf="@+id/button_pilih_tanggal"
+        app:layout_constraintStart_toEndOf="@+id/text_view_label_tanggal"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/text_view_label_ruas_jalan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Ruas Jalan :"
+        android:textAppearance="?textAppearanceSubtitle1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_view_label_tanggal"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/text_view_content_ruas_jalan"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="Jl. Soekarno - Hatta"
+        android:textAppearance="?textAppearanceSubtitle1"
+        app:layout_constraintBaseline_toBaselineOf="@+id/text_view_label_ruas_jalan"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/text_view_label_ruas_jalan"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/text_view_label_km"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Lokasi :"
+        android:textAppearance="?textAppearanceSubtitle1"
+        app:layout_constraintStart_toStartOf="@+id/text_view_label_ruas_jalan"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_content_ruas_jalan" />
+
+    <Button
+        android:id="@+id/button_pilih_tanggal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:text="Pilih Tanggal"
+        app:layout_constraintBottom_toBottomOf="@+id/text_view_content_tanggal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/text_view_content_tanggal"
+        tools:visibility="gone" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/text_field_ruas_jalan"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/button_pilih_tanggal"
+        tools:visibility="gone">
+
+        <AutoCompleteTextView
+            android:id="@+id/edit_text_ruas_jalan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Pilih Ruas Jalan" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/button_start"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginBottom="16dp"
+        android:text="Mulai Survei"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/button_kurang"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="gone" />
+
+    <TextView
+        android:id="@+id/text_view_jumlah_lubang"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="10"
+        android:textAppearance="?textAppearanceHeadline2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="gone" />
+
+    <Button
+        android:id="@+id/button_tambah"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="Tambah (+)"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/button_kurang"
+        tools:visibility="gone" />
+
+    <Button
+        android:id="@+id/button_kurang"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:text="Kurang (-)"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/button_tambah"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:visibility="gone" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/text_field_kode_lokasi"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        app:hintEnabled="false"
+        app:layout_constraintBottom_toBottomOf="@+id/text_view_label_km"
+        app:layout_constraintStart_toEndOf="@+id/text_view_label_km"
+        app:layout_constraintTop_toTopOf="@+id/text_view_label_km">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_text_kode_lokasi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="BDG"
+            android:maxLength="3"
+            android:padding="8dp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/text_field_lokasi_km"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        app:hintEnabled="false"
+        app:layout_constraintBottom_toBottomOf="@+id/text_view_label_km"
+        app:layout_constraintStart_toEndOf="@+id/text_field_kode_lokasi"
+        app:layout_constraintTop_toTopOf="@+id/text_view_label_km">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_text_lokasi_km"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="1"
+            android:inputType="number"
+            android:padding="8dp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/text_view_symbol_tambah"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+"
+        app:layout_constraintBottom_toBottomOf="@+id/text_field_lokasi_km"
+        app:layout_constraintStart_toEndOf="@+id/text_field_lokasi_km"
+        app:layout_constraintTop_toTopOf="@+id/text_field_lokasi_km" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/text_field_lokasi_m"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        app:hintEnabled="false"
+        app:layout_constraintBottom_toBottomOf="@+id/text_view_label_km"
+        app:layout_constraintStart_toEndOf="@+id/text_view_symbol_tambah"
+        app:layout_constraintTop_toTopOf="@+id/text_view_label_km">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_text_lokasi_m"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="001"
+            android:inputType="number"
+            android:maxLength="3"
+            android:padding="8dp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
