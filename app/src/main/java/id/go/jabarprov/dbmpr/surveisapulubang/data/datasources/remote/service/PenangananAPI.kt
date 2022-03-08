@@ -7,7 +7,9 @@ import id.go.jabarprov.dbmpr.surveisapulubang.data.models.request.PenangananRequ
 import id.go.jabarprov.dbmpr.surveisapulubang.data.models.response.UnhandledLubangResponse
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface PenangananAPI {
     @POST("penanganan-lubang/store")
@@ -15,4 +17,10 @@ interface PenangananAPI {
 
     @POST("penanganan-lubang/list")
     suspend fun getListUnhandledLubang(@Body body: ListUnhandledLubangRequest): Response<BaseResponse<List<UnhandledLubangResponse>>>
+
+    @GET("penanganan-lubang/execute/{id}/{tanggal}")
+    suspend fun resolveUnhandledLubang(
+        @Path("id") idUnhandledLubang: Int,
+        @Path("tanggal") tanggal: String
+    ): Response<BaseResponse<List<UnhandledLubangResponse>>>
 }

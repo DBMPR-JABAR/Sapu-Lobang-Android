@@ -9,4 +9,9 @@ interface PenangananRemoteDataSource {
         idRuasJalan: String,
         tanggal: Calendar
     ): List<UnhandledLubangResponse>
+
+    suspend fun resolveUnhandledLubang(
+        idUnhandledLubang: Int,
+        tanggal: Calendar
+    ): List<UnhandledLubangResponse>
 }

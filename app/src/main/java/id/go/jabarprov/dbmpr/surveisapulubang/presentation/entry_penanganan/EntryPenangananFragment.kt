@@ -79,6 +79,15 @@ class EntryPenangananFragment : Fragment() {
                 timePicker.show(childFragmentManager, "Time Picker Dialog")
             }
 
+            unhandleLubangAdapter.setOnClickListener {
+                penangananViewModel.processAction(
+                    PenangananAction.ResolveUnhandledLubang(
+                        it.id,
+                        it.tanggal
+                    )
+                )
+            }
+
             recyclerViewListLubang.apply {
                 adapter = unhandleLubangAdapter
                 layoutManager = LinearLayoutManager(requireContext())

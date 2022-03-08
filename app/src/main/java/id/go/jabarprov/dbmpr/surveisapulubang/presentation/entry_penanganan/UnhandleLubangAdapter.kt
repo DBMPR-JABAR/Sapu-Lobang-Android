@@ -13,6 +13,8 @@ class UnhandleLubangAdapter :
         DIFF_UTIL
     ) {
 
+    private var onClickListener: ((UnhandledLubang) -> Unit)? = null
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -24,18 +26,25 @@ class UnhandleLubangAdapter :
 
     override fun onBindViewHolder(holder: UnhandleLubangItemViewHolder, position: Int) {
         getItem(position)?.let {
-            holder.bind(it)
+            holder.bind(it, onClickListener)
         }
+    }
+
+    fun setOnClickListener(action: (UnhandledLubang) -> Unit) {
+        onClickListener = action
     }
 
     class UnhandleLubangItemViewHolder(private val binding: LayoutItemLubangBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(unhandledLubang: UnhandledLubang) {
+        fun bind(unhandledLubang: UnhandledLubang, action: ((UnhandledLubang) -> Unit)?) {
             binding.apply {
                 textViewContentLokasi.text =
                     "${unhandledLubang.lokasiKm}+${unhandledLubang.lokasiM}"
                 textViewContentLatitude.text = unhandledLubang.latitude.toString()
                 textViewContentLongitude.text = unhandledLubang.longitude.toString()
+                buttonSelesai.setOnClickListener {
+                    action?.invoke(unhandledLubang)
+                }
             }
         }
     }

@@ -55,4 +55,23 @@ class PenangananRemoteDataSourceImpl @Inject constructor(private val penangananA
             throw RemoteDataSourceException("Tidak Dapat Menghubungi Server")
         }
     }
+
+    override suspend fun resolveUnhandledLubang(
+        idUnhandledLubang: Int,
+        tanggal: Calendar
+    ): List<UnhandledLubangResponse> {
+        try {
+            val response = penangananAPI.resolveUnhandledLubang(
+                idUnhandledLubang,
+                CalendarUtils.formatCalendarToString(tanggal)
+            )
+            if (!response.isSuccessful) {
+                throw RemoteDataSourceException("Gagal Menandai Lubang Yang Sudah Ditangani")
+            }
+            return response.body()?.data!!
+        } catch (e: UnknownHostException) {
+            Log.d(TAG, "login: ERROR LOGIN $e")
+            throw RemoteDataSourceException("Tidak Dapat Menghubungi Server")
+        }
+    }
 }

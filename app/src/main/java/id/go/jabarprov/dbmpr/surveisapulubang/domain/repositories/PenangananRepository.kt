@@ -17,4 +17,9 @@ interface PenangananRepository {
         tanggal: Calendar,
         idRuasJalan: String,
     ): Either<Failure, List<UnhandledLubang>>
+
+    suspend fun resolveUnhandledLubang(
+        idUnhandledLubang: Int,
+        tanggal: Calendar
+    ): Either<Failure, List<UnhandledLubang>>
 }
