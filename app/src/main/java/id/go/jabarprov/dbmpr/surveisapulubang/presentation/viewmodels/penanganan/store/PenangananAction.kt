@@ -7,6 +7,9 @@ sealed class PenangananAction : Action {
     data class UpdateRuasJalan(val ruasJalan: String) : PenangananAction()
     data class UpdateTanggal(val timeMilles: Long) : PenangananAction()
     object GetListUnhandledLubang : PenangananAction()
-    data class ResolveUnhandledLubang(val idUnhandledLubang: Int, val tanggal: Calendar) :
-        PenangananAction()
+    data class ResolveUnhandledLubang(
+        val idUnhandledLubang: Int,
+        val tanggal: Calendar,
+        val keterangan: String
+    ) : PenangananAction()
 }

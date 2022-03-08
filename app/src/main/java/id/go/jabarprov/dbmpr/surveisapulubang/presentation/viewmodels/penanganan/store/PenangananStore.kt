@@ -68,7 +68,11 @@ class PenangananStore @Inject constructor(
                         isLoading = true
                     )
                     val param =
-                        ResolveUnhandledLubang.Params(action.idUnhandledLubang, action.tanggal)
+                        ResolveUnhandledLubang.Params(
+                            action.idUnhandledLubang,
+                            action.tanggal,
+                            action.keterangan
+                        )
                     val result = resolveUnhandledLubang.run(param)
                     result.either(
                         fnL = { failure ->

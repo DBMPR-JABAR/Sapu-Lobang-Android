@@ -10,9 +10,13 @@ import javax.inject.Inject
 
 class ResolveUnhandledLubang @Inject constructor(private val penangananRepository: PenangananRepository) :
     UseCase<List<UnhandledLubang>, ResolveUnhandledLubang.Params>() {
-    data class Params(val id: Int, val tanggal: Calendar)
+    data class Params(val id: Int, val tanggal: Calendar, val keterangan: String)
 
     override suspend fun run(params: Params): Either<Failure, List<UnhandledLubang>> {
-        return penangananRepository.resolveUnhandledLubang(params.id, params.tanggal)
+        return penangananRepository.resolveUnhandledLubang(
+            params.id,
+            params.tanggal,
+            params.keterangan
+        )
     }
 }

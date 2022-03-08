@@ -44,11 +44,16 @@ class PenangananRepositoryImpl @Inject constructor(private val penangananRemoteD
 
     override suspend fun resolveUnhandledLubang(
         idUnhandledLubang: Int,
-        tanggal: Calendar
+        tanggal: Calendar,
+        keterangan: String
     ): Either<Failure, List<UnhandledLubang>> {
         return try {
             val response =
-                penangananRemoteDataSource.resolveUnhandledLubang(idUnhandledLubang, tanggal)
+                penangananRemoteDataSource.resolveUnhandledLubang(
+                    idUnhandledLubang,
+                    tanggal,
+                    keterangan
+                )
             UnhandledLubangMapper.convertListOfUnhandledLubangResponseToListOfEntity(response)
                 .toSuccess()
         } catch (e: RemoteDataSourceException) {

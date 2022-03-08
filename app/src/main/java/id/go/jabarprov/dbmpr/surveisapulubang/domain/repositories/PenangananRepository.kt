@@ -20,6 +20,7 @@ interface PenangananRepository {
 
     suspend fun resolveUnhandledLubang(
         idUnhandledLubang: Int,
-        tanggal: Calendar
+        tanggal: Calendar,
+        keterangan: String,
     ): Either<Failure, List<UnhandledLubang>>
 }

@@ -16,7 +16,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.datepicker.MaterialDatePicker
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import id.go.jabarprov.dbmpr.surveisapulubang.common.presentation.widget.SpaceItemDecoration
 import id.go.jabarprov.dbmpr.surveisapulubang.databinding.FragmentEntryPenangananBinding
@@ -42,20 +41,21 @@ class EntryPenangananFragment : Fragment() {
     private val loadingDialog by lazy { LoadingDialog.create() }
 
     private val confirmationDialog by lazy {
-        MaterialAlertDialogBuilder(requireContext())
-            .setMessage("Apakah anda yakin untuk menandai lubang ini sudah selesai?")
-            .setNegativeButton("Batal") { dialog, _ ->
-                dialog.dismiss()
-            }
-            .setPositiveButton("Iya") { dialog, _ ->
+        ConfirmationPenangananDialog.create(
+            onPositiveButtonClickListener = { dialog, keteranganPenanganan ->
                 penangananViewModel.processAction(
                     PenangananAction.ResolveUnhandledLubang(
                         selectedUnhandledLubang.id,
-                        selectedUnhandledLubang.tanggal
+                        selectedUnhandledLubang.tanggal,
+                        keteranganPenanganan
                     )
                 )
                 dialog.dismiss()
+            },
+            onNegativeButtonClickListener = { dialog ->
+                dialog.dismiss()
             }
+        )
     }
 
     private val spaceItemDecoration by lazy { SpaceItemDecoration(32) }
@@ -102,7 +102,7 @@ class EntryPenangananFragment : Fragment() {
 
             unhandleLubangAdapter.setOnClickListener {
                 selectedUnhandledLubang = it
-                confirmationDialog.show()
+                confirmationDialog.show(childFragmentManager, "Confirmation Dialog")
             }
 
             recyclerViewListLubang.apply {

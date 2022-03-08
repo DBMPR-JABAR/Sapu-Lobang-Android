@@ -4,6 +4,7 @@ import android.util.Log
 import id.go.jabarprov.dbmpr.surveisapulubang.core.exceptions.RemoteDataSourceException
 import id.go.jabarprov.dbmpr.surveisapulubang.data.datasources.remote.service.PenangananAPI
 import id.go.jabarprov.dbmpr.surveisapulubang.data.models.request.ListUnhandledLubangRequest
+import id.go.jabarprov.dbmpr.surveisapulubang.data.models.request.PenangananLubangRequest
 import id.go.jabarprov.dbmpr.surveisapulubang.data.models.request.PenangananRequest
 import id.go.jabarprov.dbmpr.surveisapulubang.data.models.response.UnhandledLubangResponse
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.CalendarUtils
@@ -58,12 +59,15 @@ class PenangananRemoteDataSourceImpl @Inject constructor(private val penangananA
 
     override suspend fun resolveUnhandledLubang(
         idUnhandledLubang: Int,
-        tanggal: Calendar
+        tanggal: Calendar,
+        keterangan: String
     ): List<UnhandledLubangResponse> {
         try {
+            val requestBody = PenangananLubangRequest(keterangan)
             val response = penangananAPI.resolveUnhandledLubang(
                 idUnhandledLubang,
-                CalendarUtils.formatCalendarToString(tanggal)
+                CalendarUtils.formatCalendarToString(tanggal),
+                requestBody
             )
             if (!response.isSuccessful) {
                 throw RemoteDataSourceException("Gagal Menandai Lubang Yang Sudah Ditangani")

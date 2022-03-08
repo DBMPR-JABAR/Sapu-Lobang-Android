@@ -12,6 +12,7 @@ interface PenangananRemoteDataSource {
 
     suspend fun resolveUnhandledLubang(
         idUnhandledLubang: Int,
-        tanggal: Calendar
+        tanggal: Calendar,
+        keterangan: String,
     ): List<UnhandledLubangResponse>
 }
