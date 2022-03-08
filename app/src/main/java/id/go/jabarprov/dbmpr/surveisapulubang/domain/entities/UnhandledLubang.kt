@@ -7,8 +7,8 @@ data class UnhandledLubang(
     val tanggal: Calendar,
     val latitude: Double,
     val longitude: Double,
-    val idRuasJalan: Int,
-    val lokasiKm: String,
-    val lokasiM: String,
+    val idRuasJalan: String,
+    val lokasiKm: Int,
+    val lokasiM: Int,
     val idSurvei: Int
 )

@@ -8,6 +8,8 @@ import id.go.jabarprov.dbmpr.surveisapulubang.core.extensions.toSuccess
 import id.go.jabarprov.dbmpr.surveisapulubang.core.failures.Failure
 import id.go.jabarprov.dbmpr.surveisapulubang.core.failures.RemoteDataSourceFailure
 import id.go.jabarprov.dbmpr.surveisapulubang.data.datasources.remote.penanganan.PenangananRemoteDataSource
+import id.go.jabarprov.dbmpr.surveisapulubang.data.mapper.UnhandledLubangMapper
+import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.UnhandledLubang
 import id.go.jabarprov.dbmpr.surveisapulubang.domain.repositories.PenangananRepository
 import java.util.*
 import javax.inject.Inject
@@ -22,6 +24,19 @@ class PenangananRepositoryImpl @Inject constructor(private val penangananRemoteD
         return try {
             penangananRemoteDataSource.storePenanganan(tanggal, idRuasJalan, jumlah)
             None.toSuccess()
+        } catch (e: RemoteDataSourceException) {
+            RemoteDataSourceFailure(e.message!!).toError()
+        }
+    }
+
+    override suspend fun getListUnhandledLubang(
+        tanggal: Calendar,
+        idRuasJalan: String
+    ): Either<Failure, List<UnhandledLubang>> {
+        return try {
+            val response = penangananRemoteDataSource.getListUnhandledLubang(idRuasJalan, tanggal)
+            UnhandledLubangMapper.convertListOfUnhandledLubangResponseToListOfEntity(response)
+                .toSuccess()
         } catch (e: RemoteDataSourceException) {
             RemoteDataSourceFailure(e.message!!).toError()
         }

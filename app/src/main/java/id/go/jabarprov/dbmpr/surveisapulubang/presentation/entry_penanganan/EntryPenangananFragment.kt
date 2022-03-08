@@ -14,9 +14,10 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.datepicker.MaterialDatePicker
 import dagger.hilt.android.AndroidEntryPoint
+import id.go.jabarprov.dbmpr.surveisapulubang.common.presentation.widget.SpaceItemDecoration
 import id.go.jabarprov.dbmpr.surveisapulubang.databinding.FragmentEntryPenangananBinding
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.penanganan.PenangananViewModel
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.penanganan.store.PenangananAction
@@ -37,6 +38,10 @@ class EntryPenangananFragment : Fragment() {
     private lateinit var binding: FragmentEntryPenangananBinding
 
     private val loadingDialog by lazy { LoadingDialog.create() }
+
+    private val spaceItemDecoration by lazy { SpaceItemDecoration(32) }
+
+    private val unhandleLubangAdapter by lazy { UnhandleLubangAdapter() }
 
     private val timePicker by lazy {
         MaterialDatePicker.Builder.datePicker()
@@ -74,8 +79,15 @@ class EntryPenangananFragment : Fragment() {
                 timePicker.show(childFragmentManager, "Time Picker Dialog")
             }
 
-            buttonSubmit.setOnClickListener {
+            recyclerViewListLubang.apply {
+                adapter = unhandleLubangAdapter
+                layoutManager = LinearLayoutManager(requireContext())
+                addItemDecoration(spaceItemDecoration)
+                setHasFixedSize(true)
+            }
 
+            buttonSubmit.setOnClickListener {
+                penangananViewModel.processAction(PenangananAction.GetListUnhandledLubang)
             }
         }
     }
@@ -112,7 +124,7 @@ class EntryPenangananFragment : Fragment() {
 
                     if (it.isSuccess) {
                         loadingDialog.dismiss()
-                        findNavController().popBackStack()
+                        unhandleLubangAdapter.submitList(it.listUnhandledLubang)
                     }
 
                     binding.apply {
