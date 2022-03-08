@@ -117,7 +117,7 @@ class SurveiLubangStore @Inject constructor(
                                 errorMessage = "",
                                 isSuccess = true,
                                 isLoading = false,
-                                jumlahLubang = surveiLubang.jumlah - 1
+                                jumlahLubang = surveiLubang.jumlah
                             )
                         }
                     )
