@@ -16,9 +16,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import id.go.jabarprov.dbmpr.surveisapulubang.common.presentation.widget.SpaceItemDecoration
 import id.go.jabarprov.dbmpr.surveisapulubang.databinding.FragmentEntryPenangananBinding
+import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.UnhandledLubang
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.penanganan.PenangananViewModel
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.penanganan.store.PenangananAction
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.user.AuthViewModel
@@ -39,6 +41,23 @@ class EntryPenangananFragment : Fragment() {
 
     private val loadingDialog by lazy { LoadingDialog.create() }
 
+    private val confirmationDialog by lazy {
+        MaterialAlertDialogBuilder(requireContext())
+            .setMessage("Apakah anda yakin untuk menandai lubang ini sudah selesai?")
+            .setNegativeButton("Batal") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .setPositiveButton("Iya") { dialog, _ ->
+                penangananViewModel.processAction(
+                    PenangananAction.ResolveUnhandledLubang(
+                        selectedUnhandledLubang.id,
+                        selectedUnhandledLubang.tanggal
+                    )
+                )
+                dialog.dismiss()
+            }
+    }
+
     private val spaceItemDecoration by lazy { SpaceItemDecoration(32) }
 
     private val unhandleLubangAdapter by lazy { UnhandleLubangAdapter() }
@@ -56,6 +75,8 @@ class EntryPenangananFragment : Fragment() {
                 }
             }
     }
+
+    lateinit var selectedUnhandledLubang: UnhandledLubang
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -80,12 +101,8 @@ class EntryPenangananFragment : Fragment() {
             }
 
             unhandleLubangAdapter.setOnClickListener {
-                penangananViewModel.processAction(
-                    PenangananAction.ResolveUnhandledLubang(
-                        it.id,
-                        it.tanggal
-                    )
-                )
+                selectedUnhandledLubang = it
+                confirmationDialog.show()
             }
 
             recyclerViewListLubang.apply {
