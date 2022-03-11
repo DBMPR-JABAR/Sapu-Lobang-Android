@@ -6,6 +6,16 @@
     app:startDestination="@id/loginFragment">
 
     <fragment
+        android:id="@+id/splashScreenFragment"
+        android:name="id.go.jabarprov.dbmpr.surveisapulubang.presentation.splash_screen.SplashScreenFragment"
+        android:label="SplashScreenFragment"
+        tools:layout="@layout/fragment_splash_screen">
+        <action
+            android:id="@+id/action_splashScreenFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+
+    <fragment
         android:id="@+id/loginFragment"
         android:name="id.go.jabarprov.dbmpr.surveisapulubang.presentation.login.LoginFragment"
         android:label="fragment_login"
@@ -39,16 +49,19 @@
             app:popUpTo="@id/dashboardFragment"
             app:popUpToInclusive="true" />
     </fragment>
+
     <fragment
         android:id="@+id/entryLubangFragment"
         android:name="id.go.jabarprov.dbmpr.surveisapulubang.presentation.entry_lubang.EntryLubangFragment"
         android:label="fragment_entry_lubang"
         tools:layout="@layout/fragment_entry_lubang" />
+
     <fragment
         android:id="@+id/entryPenangananFragment"
         android:name="id.go.jabarprov.dbmpr.surveisapulubang.presentation.entry_penanganan.EntryPenangananFragment"
         android:label="fragment_entry_penanganan"
         tools:layout="@layout/fragment_entry_penanganan" />
+
     <fragment
         android:id="@+id/entryRencanaFragment"
         android:name="id.go.jabarprov.dbmpr.surveisapulubang.presentation.entry_rencana.EntryRencanaFragment"
