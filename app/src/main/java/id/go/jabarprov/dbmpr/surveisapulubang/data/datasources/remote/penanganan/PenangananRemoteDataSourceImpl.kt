@@ -54,6 +54,9 @@ class PenangananRemoteDataSourceImpl @Inject constructor(private val penangananA
         } catch (e: UnknownHostException) {
             Log.d(TAG, "login: ERROR LOGIN $e")
             throw RemoteDataSourceException("Tidak Dapat Menghubungi Server")
+        }  catch (e: Exception) {
+            Log.d(TAG, "login: ERROR LOGIN $e")
+            throw RemoteDataSourceException("Terjadi Kesalahan Pada Sistem")
         }
     }
 
@@ -76,6 +79,9 @@ class PenangananRemoteDataSourceImpl @Inject constructor(private val penangananA
         } catch (e: UnknownHostException) {
             Log.d(TAG, "login: ERROR LOGIN $e")
             throw RemoteDataSourceException("Tidak Dapat Menghubungi Server")
+        }  catch (e: Exception) {
+            Log.d(TAG, "login: ERROR LOGIN $e")
+            throw RemoteDataSourceException("Terjadi Kesalahan Pada Sistem")
         }
     }
 }

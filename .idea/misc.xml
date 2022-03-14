@@ -6,7 +6,7 @@
         <entry key="..\:/Project/BPMR/Survei Sapu Lubang/app/src/main/res/font/alata.xml" value="0.3927083333333333" />
         <entry key="..\:/Project/BPMR/Survei Sapu Lubang/app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="..\:/Project/BPMR/Survei Sapu Lubang/app/src/main/res/layout/activity_splash_screen.xml" value="0.25" />
-        <entry key="..\:/Project/BPMR/Survei Sapu Lubang/app/src/main/res/layout/fragment_dashboard.xml" value="0.3625" />
+        <entry key="..\:/Project/BPMR/Survei Sapu Lubang/app/src/main/res/layout/fragment_dashboard.xml" value="0.25" />
         <entry key="..\:/Project/BPMR/Survei Sapu Lubang/app/src/main/res/layout/fragment_entry_lubang.xml" value="0.3625" />
         <entry key="..\:/Project/BPMR/Survei Sapu Lubang/app/src/main/res/layout/fragment_entry_penanganan.xml" value="0.3625" />
         <entry key="..\:/Project/BPMR/Survei Sapu Lubang/app/src/main/res/layout/fragment_entry_rencana.xml" value="0.3625" />
@@ -16,6 +16,8 @@
         <entry key="..\:/Project/BPMR/Survei Sapu Lubang/app/src/main/res/layout/layout_dialog_loading.xml" value="0.322463768115942" />
         <entry key="..\:/Project/BPMR/Survei Sapu Lubang/app/src/main/res/layout/layout_item_lubang.xml" value="0.3625" />
         <entry key="..\:/Project/BPMR/Survei Sapu Lubang/app/src/main/res/layout/layout_loading_dialog.xml" value="0.3625" />
+        <entry key="..\:/Project/BPMR/Survei Sapu Lubang/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.3635" />
+        <entry key="..\:/Project/BPMR/Survei Sapu Lubang/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.3635" />
       </map>
     </option>
   </component>

@@ -25,6 +25,9 @@ class AuthRemoteDataSourceImpl @Inject constructor(private val authAPI: AuthAPI)
         } catch (e: UnknownHostException) {
             Log.d(TAG, "login: ERROR LOGIN $e")
             throw RemoteDataSourceException("Tidak Dapat Menghubungi Server")
+        } catch (e: Exception) {
+            Log.d(TAG, "login: ERROR LOGIN $e")
+            throw RemoteDataSourceException("Mohon Gunakan Akun Mandor")
         }
     }
 }

@@ -29,6 +29,9 @@ class SurveiLubangRemoteDataSourceImpl @Inject constructor(private val surveiLub
         } catch (e: UnknownHostException) {
             Log.d(TAG, "login: ERROR LOGIN $e")
             throw RemoteDataSourceException("Tidak Dapat Menghubungi Server")
+        } catch (e: Exception) {
+            Log.d(TAG, "login: ERROR LOGIN $e")
+            throw RemoteDataSourceException("Terjadi Kesalahan Pada Sistem")
         }
     }
 
@@ -62,6 +65,9 @@ class SurveiLubangRemoteDataSourceImpl @Inject constructor(private val surveiLub
         } catch (e: UnknownHostException) {
             Log.d(TAG, "login: ERROR LOGIN $e")
             throw RemoteDataSourceException("Tidak Dapat Menghubungi Server")
+        } catch (e: Exception) {
+            Log.d(TAG, "login: ERROR LOGIN $e")
+            throw RemoteDataSourceException("Terjadi Kesalahan Pada Sistem")
         }
     }
 
@@ -95,6 +101,9 @@ class SurveiLubangRemoteDataSourceImpl @Inject constructor(private val surveiLub
         } catch (e: Exception) {
             Log.d(TAG, "login: ERROR LOGIN $e")
             throw RemoteDataSourceException("Tidak Dapat Menghubungi Server")
+        } catch (e: Exception) {
+            Log.d(TAG, "login: ERROR LOGIN $e")
+            throw RemoteDataSourceException("Terjadi Kesalahan Pada Sistem")
         }
     }
 
