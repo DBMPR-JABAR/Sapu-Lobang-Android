@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:elevation="8dp"
+    app:cardBackgroundColor="@color/gray"
     app:contentPadding="16dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -15,6 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Lokasi :"
+            android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -24,6 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:text="KM. BDG. 1+000"
+            android:textColor="@color/black"
             app:layout_constraintBaseline_toBaselineOf="@+id/text_view_label_lokasi"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/text_view_label_lokasi" />
@@ -34,6 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="Latitude :"
+            android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/text_view_content_lokasi" />
 
@@ -43,6 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:text="1.0000"
+            android:textColor="@color/black"
             app:layout_constraintBaseline_toBaselineOf="@id/text_view_label_latitude"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/text_view_label_latitude" />
@@ -53,6 +58,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="Longitude :"
+            android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/text_view_content_latitude" />
 
@@ -62,17 +68,33 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:text="1.0000"
+            android:textColor="@color/black"
             app:layout_constraintBaseline_toBaselineOf="@id/text_view_label_longitude"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/text_view_label_longitude" />
 
         <Button
-            android:id="@+id/button_selesai"
-            android:layout_width="wrap_content"
+            android:id="@+id/button_detail"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="4dp"
+            android:text="Detail"
+            app:layout_constraintEnd_toStartOf="@+id/button_proses"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_view_content_longitude" />
+
+        <Button
+            android:id="@+id/button_proses"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="16dp"
             android:text="Proses"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/button_detail"
             app:layout_constraintTop_toBottomOf="@id/text_view_content_longitude" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
