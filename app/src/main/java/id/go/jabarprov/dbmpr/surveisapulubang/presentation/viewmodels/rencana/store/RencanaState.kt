@@ -1,6 +1,7 @@
 package id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.rencana.store
 
 import id.go.jabarprov.dbmpr.surveisapulubang.core.store.State
+import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.Lubang
 import java.util.*
 
 data class RencanaState(
@@ -10,6 +11,6 @@ data class RencanaState(
     val errorMessage: String = "",
     val isSuccess: Boolean = false,
     val isLoading: Boolean = false,
-    val jumlahPenanganan: Int = 0,
-    val ruasJalan: String = ""
+    val ruasJalan: String = "",
+    val listLubang: List<Lubang> = listOf()
 ) : State

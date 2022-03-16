@@ -42,7 +42,7 @@ class UnhandleLubangAdapter :
                     "${unhandledLubang.lokasiKm}+${unhandledLubang.lokasiM}"
                 textViewContentLatitude.text = unhandledLubang.latitude.toString()
                 textViewContentLongitude.text = unhandledLubang.longitude.toString()
-                buttonSelesai.setOnClickListener {
+                buttonProses.setOnClickListener {
                     action?.invoke(unhandledLubang)
                 }
             }

@@ -13,17 +13,16 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.datepicker.MaterialDatePicker
 import dagger.hilt.android.AndroidEntryPoint
+import id.go.jabarprov.dbmpr.surveisapulubang.common.presentation.widget.SpaceItemDecoration
 import id.go.jabarprov.dbmpr.surveisapulubang.databinding.FragmentEntryRencanaBinding
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.rencana.RencanaViewModel
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.rencana.store.RencanaAction
-import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.survei_lubang.store.SurveiLubangAction
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.user.AuthViewModel
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.widgets.LoadingDialog
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.CalendarUtils
-import id.go.jabarprov.dbmpr.surveisapulubang.utils.extensions.addTextWatcherWithReplacement
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -36,6 +35,10 @@ class EntryRencanaFragment : Fragment() {
     private lateinit var binding: FragmentEntryRencanaBinding
 
     private val loadingDialog by lazy { LoadingDialog.create() }
+
+    private val lubangAdapter by lazy { LubangAdapter(LubangAdapter.TYPE.RENCANA) }
+
+    private val spaceItemDecoration by lazy { SpaceItemDecoration(32) }
 
     private val timePicker by lazy {
         MaterialDatePicker.Builder.datePicker()
@@ -65,38 +68,24 @@ class EntryRencanaFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.apply {
-            editTextJumlahRencana.setText(rencanaViewModel.uiState.value.jumlahPenanganan.toString())
 
             editTextRuasJalan.doOnTextChanged { text, _, _, _ ->
                 rencanaViewModel.processAction(RencanaAction.UpdateRuasJalan(text.toString()))
-            }
-
-            editTextJumlahRencana.addTextWatcherWithReplacement {
-                var text = it.toString()
-
-                if (it.isNullOrBlank()) {
-                    text = "0"
-                    editTextJumlahRencana.setText(text)
-                    editTextJumlahRencana.setSelection(it.toString().length + 1)
-                }
-
-                if (it.toString().startsWith("0")) {
-                    text = it?.subSequence(1, it.toString().length).toString()
-                    editTextJumlahRencana.setText(text)
-                    editTextJumlahRencana.setSelection(it.toString().length - 1)
-                }
-
-                rencanaViewModel.processAction(
-                    RencanaAction.UpdateJumlahRencanaPenanganan(text.toInt())
-                )
             }
 
             buttonPilihTanggal.setOnClickListener {
                 timePicker.show(childFragmentManager, "Time Picker Dialog")
             }
 
-            buttonSubmit.setOnClickListener {
-                rencanaViewModel.processAction(RencanaAction.UploadRencanaPenanganan)
+            recyclerViewListLubang.apply {
+                adapter = lubangAdapter
+                layoutManager = LinearLayoutManager(requireContext())
+                addItemDecoration(spaceItemDecoration)
+                setHasFixedSize(true)
+            }
+
+            buttonLoadData.setOnClickListener {
+                rencanaViewModel.processAction(RencanaAction.LoadData)
             }
         }
     }
@@ -133,14 +122,21 @@ class EntryRencanaFragment : Fragment() {
 
                     if (it.isSuccess) {
                         loadingDialog.dismiss()
-                        findNavController().popBackStack()
+                        if (it.listLubang.isNotEmpty()) {
+                            binding.recyclerViewListLubang.visibility = View.VISIBLE
+                            binding.textViewEmpty.visibility = View.GONE
+                            lubangAdapter.submitList(it.listLubang)
+                        } else {
+                            binding.recyclerViewListLubang.visibility = View.GONE
+                            binding.textViewEmpty.visibility = View.VISIBLE
+                        }
                     }
 
                     binding.apply {
                         textViewContentTanggal.text =
                             CalendarUtils.formatCalendarToString(it.tanggal)
 
-                        buttonSubmit.isEnabled = it.idRuasJalan != ""
+                        buttonLoadData.isEnabled = it.idRuasJalan != ""
                     }
                 }
             }
