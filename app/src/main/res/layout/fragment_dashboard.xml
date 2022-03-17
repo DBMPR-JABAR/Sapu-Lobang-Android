@@ -16,9 +16,9 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.appbar.MaterialToolbar
-            android:background="@color/black"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/black">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -94,7 +94,7 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/card_entry_jumlah_penanganan"
+        android:id="@+id/card_entry_jumlah_rencana"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
@@ -112,11 +112,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Entry Jumlah Penanganan Lubang"
+                android:text="Entry Jumlah Rencana Penanganan"
                 android:textAppearance="?textAppearanceSubtitle2" />
 
             <Button
-                android:id="@+id/button_entry_penanganan"
+                android:id="@+id/button_entry_rencana"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
@@ -128,7 +128,7 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/card_entry_jumlah_rencana"
+        android:id="@+id/card_entry_jumlah_penanganan"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
@@ -136,7 +136,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/card_entry_jumlah_penanganan">
+        app:layout_constraintTop_toBottomOf="@+id/card_entry_jumlah_rencana">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -146,11 +146,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Entry Jumlah Rencana Penanganan"
+                android:text="Entry Jumlah Penanganan Lubang"
                 android:textAppearance="?textAppearanceSubtitle2" />
 
             <Button
-                android:id="@+id/button_entry_rencana"
+                android:id="@+id/button_entry_penanganan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"

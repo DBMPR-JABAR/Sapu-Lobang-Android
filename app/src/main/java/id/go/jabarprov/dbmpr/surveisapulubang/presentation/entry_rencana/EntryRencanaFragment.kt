@@ -1,6 +1,7 @@
 package id.go.jabarprov.dbmpr.surveisapulubang.presentation.entry_rencana
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,6 +26,8 @@ import id.go.jabarprov.dbmpr.surveisapulubang.presentation.widgets.LoadingDialog
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.CalendarUtils
 import kotlinx.coroutines.launch
 
+private const val TAG = "EntryRencanaFragment"
+
 @AndroidEntryPoint
 class EntryRencanaFragment : Fragment() {
 
@@ -36,7 +39,26 @@ class EntryRencanaFragment : Fragment() {
 
     private val loadingDialog by lazy { LoadingDialog.create() }
 
-    private val lubangAdapter by lazy { LubangAdapter(LubangAdapter.TYPE.RENCANA) }
+    private val rencanaDialog by lazy {
+        ConfirmationRencanaDialog.create(
+            onPositiveButtonClickListener = { dialog, tanggal, keteranganRencana ->
+                Log.d(
+                    TAG,
+                    "RENCANA: TANGGAL (${CalendarUtils.formatCalendarToString(tanggal)}) | KETERANGAN ($keteranganRencana)"
+                )
+                dialog.dismiss()
+            },
+            onNegativeButtonClickListener = {
+                it.dismiss()
+            },
+        )
+    }
+
+    private val lubangAdapter by lazy {
+        LubangAdapter(LubangAdapter.TYPE.RENCANA).setOnItemClickListener {
+            rencanaDialog.show(childFragmentManager, "Rencana Dialog")
+        }
+    }
 
     private val spaceItemDecoration by lazy { SpaceItemDecoration(32) }
 
