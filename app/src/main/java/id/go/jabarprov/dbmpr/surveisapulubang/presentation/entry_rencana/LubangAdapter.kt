@@ -56,6 +56,12 @@ class LubangAdapter(private val type: TYPE) :
                 buttonProses.setOnClickListener {
                     action?.invoke(lubang)
                 }
+
+                buttonProses.isEnabled = lubang.status.isNullOrBlank()
+
+                if (!lubang.status.isNullOrBlank()) {
+                    buttonProses.text = "Dijadwalkan"
+                }
             }
         }
     }

@@ -1,7 +1,6 @@
 package id.go.jabarprov.dbmpr.surveisapulubang.presentation.entry_rencana
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +18,7 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import dagger.hilt.android.AndroidEntryPoint
 import id.go.jabarprov.dbmpr.surveisapulubang.common.presentation.widget.SpaceItemDecoration
 import id.go.jabarprov.dbmpr.surveisapulubang.databinding.FragmentEntryRencanaBinding
+import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.Lubang
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.rencana.RencanaViewModel
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.rencana.store.RencanaAction
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.user.AuthViewModel
@@ -42,9 +42,12 @@ class EntryRencanaFragment : Fragment() {
     private val rencanaDialog by lazy {
         ConfirmationRencanaDialog.create(
             onPositiveButtonClickListener = { dialog, tanggal, keteranganRencana ->
-                Log.d(
-                    TAG,
-                    "RENCANA: TANGGAL (${CalendarUtils.formatCalendarToString(tanggal)}) | KETERANGAN ($keteranganRencana)"
+                rencanaViewModel.processAction(
+                    RencanaAction.UploadRencanaLubang(
+                        selectedLubang.id,
+                        tanggal,
+                        keteranganRencana
+                    )
                 )
                 dialog.dismiss()
             },
@@ -56,6 +59,7 @@ class EntryRencanaFragment : Fragment() {
 
     private val lubangAdapter by lazy {
         LubangAdapter(LubangAdapter.TYPE.RENCANA).setOnItemClickListener {
+            selectedLubang = it
             rencanaDialog.show(childFragmentManager, "Rencana Dialog")
         }
     }
@@ -75,6 +79,8 @@ class EntryRencanaFragment : Fragment() {
                 }
             }
     }
+
+    lateinit var selectedLubang: Lubang
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

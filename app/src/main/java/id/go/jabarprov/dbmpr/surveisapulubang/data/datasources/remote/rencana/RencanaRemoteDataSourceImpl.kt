@@ -3,8 +3,8 @@ package id.go.jabarprov.dbmpr.surveisapulubang.data.datasources.remote.rencana
 import android.util.Log
 import id.go.jabarprov.dbmpr.surveisapulubang.core.exceptions.RemoteDataSourceException
 import id.go.jabarprov.dbmpr.surveisapulubang.data.datasources.remote.service.RencanaAPI
+import id.go.jabarprov.dbmpr.surveisapulubang.data.models.request.ExecuteRequest
 import id.go.jabarprov.dbmpr.surveisapulubang.data.models.request.ListLubangRequest
-import id.go.jabarprov.dbmpr.surveisapulubang.data.models.request.RencanaRequest
 import id.go.jabarprov.dbmpr.surveisapulubang.data.models.response.LubangResponse
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.CalendarUtils
 import java.net.UnknownHostException
@@ -37,20 +37,20 @@ class RencanaRemoteDataSourceImpl @Inject constructor(private val rencanaAPI: Re
     }
 
     override suspend fun storeRencana(
+        idLubang: Int,
         tanggal: Calendar,
-        idRuasJalan: String,
-        jumlah: Int
-    ) {
+        keterangan: String
+    ): List<LubangResponse> {
         try {
-            val request = RencanaRequest(
+            val request = ExecuteRequest(
                 tanggal = CalendarUtils.formatCalendarToString(tanggal),
-                idRuasJalan = idRuasJalan,
-                jumlah = jumlah
+                keterangan = keterangan
             )
-            val response = rencanaAPI.storeRencana(request)
+            val response = rencanaAPI.storeRencana(idLubang, request)
             if (!response.isSuccessful) {
                 throw RemoteDataSourceException("Gagal Menyimpan Rencana Penanganan Lubang")
             }
+            return response.body()?.listLubang!! + response.body()?.listScheduledLubang!!
         } catch (e: UnknownHostException) {
             Log.d(TAG, "login: ERROR LOGIN $e")
             throw RemoteDataSourceException("Tidak Dapat Menghubungi Server")

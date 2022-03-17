@@ -13,8 +13,8 @@ interface RencanaRepository {
     ): Either<Failure, List<Lubang>>
 
     suspend fun storeRencana(
+        idLubang: Int,
         tanggal: Calendar,
-        idRuasJalan: String,
-        jumlah: Int
-    ): Either<Failure, None>
+        keterangan: String
+    ): Either<Failure, List<Lubang>>
 }

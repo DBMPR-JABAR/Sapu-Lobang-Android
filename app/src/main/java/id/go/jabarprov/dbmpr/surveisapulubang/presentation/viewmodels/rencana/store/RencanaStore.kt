@@ -2,11 +2,15 @@ package id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.rencana.s
 
 import id.go.jabarprov.dbmpr.surveisapulubang.core.store.Store
 import id.go.jabarprov.dbmpr.surveisapulubang.domain.usecases.GetListLubangPerencanaan
+import id.go.jabarprov.dbmpr.surveisapulubang.domain.usecases.UploadRencanaPenangananLubang
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.CalendarUtils
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class RencanaStore @Inject constructor(private val getListLubangPerencanaan: GetListLubangPerencanaan) :
+class RencanaStore @Inject constructor(
+    private val getListLubangPerencanaan: GetListLubangPerencanaan,
+    private val uploadRencanaPenangananLubang: UploadRencanaPenangananLubang
+) :
     Store<RencanaAction, RencanaState>(RencanaState()) {
     override fun reduce(action: RencanaAction) {
         coroutineScope.launch {
@@ -35,6 +39,39 @@ class RencanaStore @Inject constructor(private val getListLubangPerencanaan: Get
                         currentState.idRuasJalan,
                     )
                     val result = getListLubangPerencanaan.run(params)
+                    result.either(
+                        fnL = { failure ->
+                            state.value = state.value.copy(
+                                isLoading = false,
+                                isFailed = true,
+                                errorMessage = failure.message,
+                                isSuccess = false
+                            )
+                        },
+                        fnR = { listLubang ->
+                            state.value = state.value.copy(
+                                isLoading = false,
+                                isFailed = false,
+                                errorMessage = "",
+                                isSuccess = true,
+                                listLubang = listLubang
+                            )
+                        }
+                    )
+                }
+                is RencanaAction.UploadRencanaLubang -> {
+                    state.value = state.value.copy(
+                        isLoading = true,
+                        isFailed = false,
+                        errorMessage = "",
+                        isSuccess = false
+                    )
+                    val params = UploadRencanaPenangananLubang.Params(
+                        action.idLubang,
+                        action.tanggal,
+                        action.keterangan
+                    )
+                    val result = uploadRencanaPenangananLubang.run(params)
                     result.either(
                         fnL = { failure ->
                             state.value = state.value.copy(

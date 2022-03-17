@@ -1,6 +1,5 @@
 package id.go.jabarprov.dbmpr.surveisapulubang.data.repositories
 
-import id.go.jabarprov.dbmpr.surveisapulubang.core.None
 import id.go.jabarprov.dbmpr.surveisapulubang.core.either.Either
 import id.go.jabarprov.dbmpr.surveisapulubang.core.exceptions.RemoteDataSourceException
 import id.go.jabarprov.dbmpr.surveisapulubang.core.extensions.toError
@@ -29,13 +28,13 @@ class RencanaRepositoryImpl @Inject constructor(private val rencanaRemoteDataSou
     }
 
     override suspend fun storeRencana(
+        idLubang: Int,
         tanggal: Calendar,
-        idRuasJalan: String,
-        jumlah: Int
-    ): Either<Failure, None> {
+        keterangan: String
+    ): Either<Failure, List<Lubang>> {
         return try {
-            rencanaRemoteDataSource.storeRencana(tanggal, idRuasJalan, jumlah)
-            None.toSuccess()
+            val response = rencanaRemoteDataSource.storeRencana(idLubang, tanggal, keterangan)
+            LubangDataMapper.convertListOfLubangDataResponseToListOfEntity(response).toSuccess()
         } catch (e: RemoteDataSourceException) {
             RemoteDataSourceFailure(e.message!!).toError()
         }
