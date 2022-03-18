@@ -34,7 +34,7 @@ class PenangananRepositoryImpl @Inject constructor(private val penangananRemoteD
         idRuasJalan: String
     ): Either<Failure, List<UnhandledLubang>> {
         return try {
-            val response = penangananRemoteDataSource.getListUnhandledLubang(idRuasJalan, tanggal)
+            val response = penangananRemoteDataSource.getListPenangananLubang(idRuasJalan, tanggal)
             UnhandledLubangMapper.convertListOfUnhandledLubangResponseToListOfEntity(response)
                 .toSuccess()
         } catch (e: RemoteDataSourceException) {

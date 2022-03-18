@@ -4,7 +4,7 @@ import android.util.Log
 import id.go.jabarprov.dbmpr.surveisapulubang.core.exceptions.RemoteDataSourceException
 import id.go.jabarprov.dbmpr.surveisapulubang.data.datasources.remote.service.RencanaAPI
 import id.go.jabarprov.dbmpr.surveisapulubang.data.models.request.ExecuteRequest
-import id.go.jabarprov.dbmpr.surveisapulubang.data.models.request.ListLubangRequest
+import id.go.jabarprov.dbmpr.surveisapulubang.data.models.request.ListLubangPerencanaanRequest
 import id.go.jabarprov.dbmpr.surveisapulubang.data.models.response.LubangResponse
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.CalendarUtils
 import java.net.UnknownHostException
@@ -21,7 +21,7 @@ class RencanaRemoteDataSourceImpl @Inject constructor(private val rencanaAPI: Re
     ): List<LubangResponse> {
         try {
             val request =
-                ListLubangRequest(idRuasJalan, CalendarUtils.formatCalendarToString(tanggal))
+                ListLubangPerencanaanRequest(idRuasJalan, CalendarUtils.formatCalendarToString(tanggal))
             val response = rencanaAPI.getListLubang(request)
             if (!response.isSuccessful) {
                 throw RemoteDataSourceException("Gagal Mengambil List Lubang Hasil Survei Penanganan Lubang")

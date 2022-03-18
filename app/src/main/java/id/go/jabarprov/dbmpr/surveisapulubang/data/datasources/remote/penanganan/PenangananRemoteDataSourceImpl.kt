@@ -3,10 +3,9 @@ package id.go.jabarprov.dbmpr.surveisapulubang.data.datasources.remote.penangana
 import android.util.Log
 import id.go.jabarprov.dbmpr.surveisapulubang.core.exceptions.RemoteDataSourceException
 import id.go.jabarprov.dbmpr.surveisapulubang.data.datasources.remote.service.PenangananAPI
-import id.go.jabarprov.dbmpr.surveisapulubang.data.models.request.ListUnhandledLubangRequest
+import id.go.jabarprov.dbmpr.surveisapulubang.data.models.request.ListLubangPenangananRequest
 import id.go.jabarprov.dbmpr.surveisapulubang.data.models.request.PenangananLubangRequest
-import id.go.jabarprov.dbmpr.surveisapulubang.data.models.request.PenangananRequest
-import id.go.jabarprov.dbmpr.surveisapulubang.data.models.response.UnhandledLubangResponse
+import id.go.jabarprov.dbmpr.surveisapulubang.data.models.response.LubangResponse
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.CalendarUtils
 import java.net.UnknownHostException
 import java.util.*
@@ -17,69 +16,45 @@ private const val TAG = "PenangananRemoteDataSou"
 class PenangananRemoteDataSourceImpl @Inject constructor(private val penangananAPI: PenangananAPI) :
     PenangananRemoteDataSource {
     override suspend fun storePenanganan(
+        idLubang: Int,
         tanggal: Calendar,
-        idRuasJalan: String,
-        jumlah: Int
-    ) {
+        keterangan: String
+    ): List<LubangResponse> {
         try {
-            val request = PenangananRequest(
-                tanggal = CalendarUtils.formatCalendarToString(tanggal),
-                idRuasJalan = idRuasJalan,
-                jumlah = jumlah
+            val request = PenangananLubangRequest(keterangan)
+            val response = penangananAPI.storePenanganan(
+                idLubang,
+                CalendarUtils.formatCalendarToString(tanggal),
+                request
             )
-            val response = penangananAPI.storePenanganan(request)
             if (!response.isSuccessful) {
                 throw RemoteDataSourceException("Gagal Menyimpan Penanganan Lubang")
             }
+            return response.body()?.listLubang!! + response.body()?.listFinishedLubang!!
         } catch (e: UnknownHostException) {
             Log.d(TAG, "login: ERROR LOGIN $e")
             throw RemoteDataSourceException("Tidak Dapat Menghubungi Server")
         }
     }
 
-    override suspend fun getListUnhandledLubang(
+    override suspend fun getListPenangananLubang(
         idRuasJalan: String,
         tanggal: Calendar
-    ): List<UnhandledLubangResponse> {
+    ): List<LubangResponse> {
         try {
-            val request = ListUnhandledLubangRequest(
+            val request = ListLubangPenangananRequest(
                 idRuasJalan,
                 CalendarUtils.formatCalendarToString(tanggal)
             )
-            val response = penangananAPI.getListUnhandledLubang(request)
+            val response = penangananAPI.getListLubangPenanganan(request)
             if (!response.isSuccessful) {
                 throw RemoteDataSourceException("Gagal Mengambil List Lubang yang Belum Ditangani")
             }
-            return response.body()?.data!!
+            return response.body()?.listLubang!! + response.body()?.listFinishedLubang!!
         } catch (e: UnknownHostException) {
             Log.d(TAG, "login: ERROR LOGIN $e")
             throw RemoteDataSourceException("Tidak Dapat Menghubungi Server")
-        }  catch (e: Exception) {
-            Log.d(TAG, "login: ERROR LOGIN $e")
-            throw RemoteDataSourceException("Terjadi Kesalahan Pada Sistem")
-        }
-    }
-
-    override suspend fun resolveUnhandledLubang(
-        idUnhandledLubang: Int,
-        tanggal: Calendar,
-        keterangan: String
-    ): List<UnhandledLubangResponse> {
-        try {
-            val requestBody = PenangananLubangRequest(keterangan)
-            val response = penangananAPI.resolveUnhandledLubang(
-                idUnhandledLubang,
-                CalendarUtils.formatCalendarToString(tanggal),
-                requestBody
-            )
-            if (!response.isSuccessful) {
-                throw RemoteDataSourceException("Gagal Menandai Lubang Yang Sudah Ditangani")
-            }
-            return response.body()?.data!!
-        } catch (e: UnknownHostException) {
-            Log.d(TAG, "login: ERROR LOGIN $e")
-            throw RemoteDataSourceException("Tidak Dapat Menghubungi Server")
-        }  catch (e: Exception) {
+        } catch (e: Exception) {
             Log.d(TAG, "login: ERROR LOGIN $e")
             throw RemoteDataSourceException("Terjadi Kesalahan Pada Sistem")
         }
