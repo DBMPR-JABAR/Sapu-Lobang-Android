@@ -194,6 +194,14 @@ class EntryLubangFragment : Fragment() {
                 )
             }
 
+            editTextJumlahLubangGroup.doOnTextChanged { text, _, _, _ ->
+                    surveiLubangViewModel.processAction(
+                    SurveiLubangAction.UpdateJumlahLubangPerGroup(
+                        text.toString().toIntOrNull().getValueOrElse(0)
+                    )
+                )
+            }
+
             radioGroupKategori.setOnCheckedChangeListener { radioGroup, checkedId ->
                 if (checkedId == R.id.radio_button_kategori_single) {
                     surveiLubangViewModel.processAction(
@@ -375,7 +383,7 @@ class EntryLubangFragment : Fragment() {
                             it.isStarted && it.kodeLokasi.isNotBlank() && it.lokasiKm.isNotBlank() && it.lokasiM.isNotBlank() && it.panjangLubang > 0 && it.gambarLubang != null
 
                         buttonTambahLubangGroup.isEnabled =
-                            it.isStarted && it.kodeLokasi.isNotBlank() && it.lokasiKm.isNotBlank() && it.lokasiM.isNotBlank() && it.panjangLubang > 0 && it.gambarLubang != null
+                            it.isStarted && it.kodeLokasi.isNotBlank() && it.lokasiKm.isNotBlank() && it.lokasiM.isNotBlank() && it.panjangLubang > 0 && it.gambarLubang != null && it.jumlahLubangPerGroup > 0
 
                         buttonKurangLubangSingle.isEnabled =
                             it.isStarted && it.kodeLokasi.isNotBlank() && it.lokasiKm.isNotBlank() && it.lokasiM.isNotBlank() && it.panjangLubang > 0 && it.gambarLubang != null && it.jumlahLubang > 0

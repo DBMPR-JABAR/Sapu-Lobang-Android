@@ -1,6 +1,5 @@
 package id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.survei_lubang.store
 
-import android.graphics.Bitmap
 import android.net.Uri
 import id.go.jabarprov.dbmpr.surveisapulubang.core.store.Action
 import java.util.*
@@ -28,6 +27,8 @@ sealed class SurveiLubangAction : Action {
     data class UpdateKategoriLubang(val kategoriLubang: KategoriLubang) : SurveiLubangAction()
 
     data class UpdatePanjangLubang(val panjangLubang: Int) : SurveiLubangAction()
+
+    data class UpdateJumlahLubangPerGroup(val jumlahLubangPerGroup: Int) : SurveiLubangAction()
 
     data class UpdateFotoLubang(val gambarLubang: Uri) : SurveiLubangAction()
 

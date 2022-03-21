@@ -171,6 +171,11 @@ class SurveiLubangStore @Inject constructor(
                         panjangLubang = action.panjangLubang
                     )
                 }
+                is SurveiLubangAction.UpdateJumlahLubangPerGroup -> {
+                    state.value = state.value.copy(
+                        jumlahLubangPerGroup = action.jumlahLubangPerGroup
+                    )
+                }
             }
         }
     }
