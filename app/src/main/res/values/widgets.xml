@@ -18,13 +18,12 @@
         </item>
     </style>
 
-    <style name="Widget.SurveiSapuLubang.Button.Green" parent="Widget.MaterialComponents.Button">
-        <item name="android:paddingTop">10dp</item>
-        <item name="android:paddingBottom">10dp</item>
-        <item name="android:textStyle">bold</item>
-        <item name="materialThemeOverlay">@style/ThemeOverlay.SurveiSapuLubang.Button</item>
-        <item name="shapeAppearance">@style/ShapeAppearance.SurveiSapuLubang.SmallComponent
-        </item>
+    <style name="Widget.SurveiSapuLubang.Button.Green" parent="Widget.SurveiSapuLubang.Button">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.SurveiSapuLubang.Button.Green</item>
+    </style>
+
+    <style name="Widget.SurveiSapuLubang.Button.Red" parent="Widget.SurveiSapuLubang.Button">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.SurveiSapuLubang.Button.Red</item>
     </style>
 
 </resources>

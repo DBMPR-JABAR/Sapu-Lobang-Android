@@ -31,4 +31,12 @@
         <item name="colorOnPrimary">@color/on_tertiary</item>
     </style>
 
+    <style name="ThemeOverlay.SurveiSapuLubang.Button.Green" parent="">
+        <item name="colorPrimary">@color/green</item>
+    </style>
+
+    <style name="ThemeOverlay.SurveiSapuLubang.Button.Red" parent="">
+        <item name="colorPrimary">@color/red</item>
+    </style>
+
 </resources>
