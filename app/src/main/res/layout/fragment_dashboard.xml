@@ -59,7 +59,7 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/card_entry_jumlah_lubang"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -93,9 +93,9 @@
 
         </LinearLayout>
 
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/card_entry_jumlah_rencana"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -129,9 +129,9 @@
 
         </LinearLayout>
 
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/card_entry_jumlah_penanganan"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -165,9 +165,9 @@
 
         </LinearLayout>
 
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/card_rekap_hasil_survei"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -201,6 +201,6 @@
 
         </LinearLayout>
 
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -19,6 +19,12 @@
         <item name="textInputStyle">@style/Widget.SurveiSapuLubang.TextInputLayout</item>
         <item name="materialButtonStyle">@style/Widget.SurveiSapuLubang.Button</item>
         <item name="textAppearanceButton">@style/TextAppearance.SurveiSapuJalan.Button</item>
+        <item name="shapeAppearanceSmallComponent">
+            @style/ShapeAppearance.SurveiSapuLubang.SmallComponent
+        </item>
+        <item name="shapeAppearanceMediumComponent">
+            @style/ShapeAppearance.SurveiSapuLubang.MediumComponent
+        </item>
     </style>
 
     <style name="Theme.SurveiSapuLubang.Dialog" parent="Theme.AppCompat.Light.Dialog">

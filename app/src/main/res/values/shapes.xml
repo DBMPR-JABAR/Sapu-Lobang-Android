@@ -6,4 +6,9 @@
         <item name="cornerSize">@dimen/small_radius</item>
     </style>
 
+    <style name="ShapeAppearance.SurveiSapuLubang.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/small_radius</item>
+    </style>
+
 </resources>
