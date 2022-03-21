@@ -153,6 +153,24 @@ class SurveiLubangStore @Inject constructor(
                         lokasiM = action.lokasiM
                     )
                 }
+
+                is SurveiLubangAction.UpdateFotoLubang -> {
+                    state.value = state.value.copy(
+                        gambarLubang = action.gambarLubang
+                    )
+                }
+
+                is SurveiLubangAction.UpdateKategoriLubang -> {
+                    state.value = state.value.copy(
+                        kategoriLubang = action.kategoriLubang
+                    )
+                }
+
+                is SurveiLubangAction.UpdatePanjangLubang -> {
+                    state.value = state.value.copy(
+                        panjangLubang = action.panjangLubang
+                    )
+                }
             }
         }
     }

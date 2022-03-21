@@ -1,6 +1,7 @@
 package id.go.jabarprov.dbmpr.surveisapulubang.presentation.entry_lubang
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
@@ -22,8 +23,10 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.gms.location.LocationServices
 import com.google.android.material.datepicker.MaterialDatePicker
 import dagger.hilt.android.AndroidEntryPoint
+import id.go.jabarprov.dbmpr.surveisapulubang.R
 import id.go.jabarprov.dbmpr.surveisapulubang.databinding.FragmentEntryLubangBinding
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.survei_lubang.SurveiLubangViewModel
+import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.survei_lubang.store.KategoriLubang
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.survei_lubang.store.SurveiLubangAction
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.user.AuthViewModel
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.widgets.LoadingDialog
@@ -126,7 +129,13 @@ class EntryLubangFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        initUI()
         checkLocationPermission()
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun initUI() {
+        setVisibilityFormEntry(false)
 
         binding.apply {
             buttonPilihTanggal.setOnClickListener {
@@ -149,6 +158,22 @@ class EntryLubangFragment : Fragment() {
                 surveiLubangViewModel.processAction(SurveiLubangAction.UpdateLokasiM(text.toString()))
             }
 
+            radioGroupKategori.setOnCheckedChangeListener { radioGroup, checkedId ->
+                if (checkedId == R.id.radio_button_kategori_single) {
+                    surveiLubangViewModel.processAction(
+                        SurveiLubangAction.UpdateKategoriLubang(
+                            KategoriLubang.SINGLE
+                        )
+                    )
+                } else {
+                    surveiLubangViewModel.processAction(
+                        SurveiLubangAction.UpdateKategoriLubang(
+                            KategoriLubang.GROUP
+                        )
+                    )
+                }
+            }
+
             buttonStart.setOnClickListener {
                 surveiLubangViewModel.processAction(
                     SurveiLubangAction.StartSurveiAction(
@@ -158,9 +183,7 @@ class EntryLubangFragment : Fragment() {
                 )
             }
 
-
-
-            buttonTambah.setOnClickListener {
+            buttonTambahLubangSingle.setOnClickListener {
                 fusedLocationProviderClient.lastLocation.addOnSuccessListener {
                     surveiLubangViewModel.processAction(
                         SurveiLubangAction.TambahLubangAction(
@@ -171,7 +194,7 @@ class EntryLubangFragment : Fragment() {
                 }
             }
 
-            buttonKurang.setOnClickListener {
+            buttonKurangLubangSingle.setOnClickListener {
                 fusedLocationProviderClient.lastLocation.addOnSuccessListener {
                     surveiLubangViewModel.processAction(
                         SurveiLubangAction.KurangLubangAction(
@@ -181,6 +204,55 @@ class EntryLubangFragment : Fragment() {
                     )
                 }
             }
+        }
+    }
+
+    private fun setVisibilityFormEntry(isVisible: Boolean) {
+        val visibility = if (isVisible) View.VISIBLE else View.GONE
+        binding.apply {
+            buttonStart.visibility = if (isVisible) View.GONE else View.VISIBLE
+            textViewLabelKategori.visibility = visibility
+            radioGroupKategori.visibility = visibility
+            textViewLabelLokasi.visibility = visibility
+            textFieldKodeLokasi.visibility = visibility
+            textViewLabelKm.visibility = visibility
+            textFieldLokasiKm.visibility = visibility
+            textViewSymbolTambah.visibility = visibility
+            textFieldLokasiM.visibility = visibility
+            textViewLabelPanjangLubang.visibility = visibility
+            constraintLayoutContainerPanjangLubang.visibility = visibility
+            textViewLabelUploadFoto.visibility = visibility
+            constraintLayoutContainerUploadFoto.visibility = visibility
+            textViewLabelTambahLubang.visibility = visibility
+            buttonLihatHasilSurvei.visibility = visibility
+
+            if (isVisible) {
+                setVisibilityKategoriLubang(surveiLubangViewModel.uiState.value.kategoriLubang)
+            } else {
+                textViewJumlahLubangSingle.visibility = visibility
+                textViewLabelLubangSingle.visibility = visibility
+                buttonTambahLubangSingle.visibility = visibility
+                buttonKurangLubangSingle.visibility = visibility
+
+                editTextJumlahLubangGroup.visibility = visibility
+                buttonTambahLubangGroup.visibility = visibility
+            }
+        }
+    }
+
+    private fun setVisibilityKategoriLubang(kategoriLubang: KategoriLubang) {
+        val singleLubangVisibility =
+            if (kategoriLubang == KategoriLubang.SINGLE) View.VISIBLE else View.GONE
+        val groupLubangVisibility =
+            if (kategoriLubang == KategoriLubang.GROUP) View.VISIBLE else View.GONE
+        binding.apply {
+            textViewJumlahLubangSingle.visibility = singleLubangVisibility
+            textViewLabelLubangSingle.visibility = singleLubangVisibility
+            buttonTambahLubangSingle.visibility = singleLubangVisibility
+            buttonKurangLubangSingle.visibility = singleLubangVisibility
+
+            editTextJumlahLubangGroup.visibility = groupLubangVisibility
+            buttonTambahLubangGroup.visibility = groupLubangVisibility
         }
     }
 
@@ -219,37 +291,38 @@ class EntryLubangFragment : Fragment() {
                         loadingDialog.dismiss()
                     }
 
+                    setVisibilityFormEntry(it.isStarted)
+
                     binding.apply {
                         buttonStart.isEnabled = it.idRuasJalan != ""
                         textViewContentTanggal.text =
                             CalendarUtils.formatCalendarToString(it.tanggal)
 
-                        textFieldRuasJalan.isVisible = !it.isStarted
+                        textFieldRuasJalan.isEnabled = !it.isStarted
                         buttonPilihTanggal.isVisible = !it.isStarted
                         buttonStart.isVisible = !it.isStarted
 
-                        textViewLabelKm.isVisible = it.isStarted
-                        textFieldKodeLokasi.isVisible = it.isStarted
-                        textFieldLokasiKm.isVisible = it.isStarted
-                        textViewSymbolTambah.isVisible = it.isStarted
-                        textFieldLokasiM.isVisible = it.isStarted
+                        textViewJumlahLubangSingle.text = it.jumlahLubang.toString()
 
-                        textViewJumlahLubang.isVisible = it.isStarted
-                        buttonTambah.isVisible = it.isStarted
-                        buttonKurang.isVisible = it.isStarted
+                        /**
+                         * Button Enable If
+                         * kode lokasi filled
+                         * lokasi km filled
+                         * lokasi m filled
+                         * panjang lubang filled
+                         * gambar filled
+                         * */
 
-                        textViewLabelRuasJalan.isVisible = it.isStarted
-                        textViewContentRuasJalan.isVisible = it.isStarted
-                        textViewContentRuasJalan.text = it.ruasJalan
+                        buttonTambahLubangSingle.isEnabled =
+                            it.isStarted && it.kodeLokasi.isNotBlank() && it.lokasiKm.isNotBlank() && it.lokasiM.isNotBlank() && it.panjangLubang > 0 && it.gambarLubang != null
 
-                        textViewJumlahLubang.text = it.jumlahLubang.toString()
+                        buttonTambahLubangGroup.isEnabled =
+                            it.isStarted && it.kodeLokasi.isNotBlank() && it.lokasiKm.isNotBlank() && it.lokasiM.isNotBlank() && it.panjangLubang > 0 && it.gambarLubang != null
 
-                        buttonTambah.isEnabled =
-                            it.isStarted && it.kodeLokasi.isNotBlank() && it.lokasiKm.isNotBlank() && it.lokasiM.isNotBlank()
-
-                        buttonKurang.isEnabled =
-                            it.isStarted && it.kodeLokasi.isNotBlank() && it.lokasiKm.isNotBlank() && it.lokasiM.isNotBlank() && it.jumlahLubang > 0
+                        buttonKurangLubangSingle.isEnabled =
+                            it.isStarted && it.kodeLokasi.isNotBlank() && it.lokasiKm.isNotBlank() && it.lokasiM.isNotBlank() && it.panjangLubang > 0 && it.gambarLubang != null
                     }
+
                 }
             }
         }

@@ -22,7 +22,7 @@ class PenangananRepositoryImpl @Inject constructor(private val penangananRemoteD
         jumlah: Int
     ): Either<Failure, None> {
         return try {
-            penangananRemoteDataSource.storePenanganan(tanggal, idRuasJalan, jumlah)
+//            penangananRemoteDataSource.storePenanganan(tanggal, idRuasJalan, jumlah)
             None.toSuccess()
         } catch (e: RemoteDataSourceException) {
             RemoteDataSourceFailure(e.message!!).toError()
@@ -33,13 +33,14 @@ class PenangananRepositoryImpl @Inject constructor(private val penangananRemoteD
         tanggal: Calendar,
         idRuasJalan: String
     ): Either<Failure, List<UnhandledLubang>> {
-        return try {
-            val response = penangananRemoteDataSource.getListPenangananLubang(idRuasJalan, tanggal)
-            UnhandledLubangMapper.convertListOfUnhandledLubangResponseToListOfEntity(response)
-                .toSuccess()
-        } catch (e: RemoteDataSourceException) {
-            RemoteDataSourceFailure(e.message!!).toError()
-        }
+//        return try {
+//            val response = penangananRemoteDataSource.getListPenangananLubang(idRuasJalan, tanggal)
+//            UnhandledLubangMapper.convertListOfUnhandledLubangResponseToListOfEntity(response)
+//                .toSuccess()
+//        } catch (e: RemoteDataSourceException) {
+//            RemoteDataSourceFailure(e.message!!).toError()
+//        }
+        TODO()
     }
 
     override suspend fun resolveUnhandledLubang(
@@ -47,17 +48,18 @@ class PenangananRepositoryImpl @Inject constructor(private val penangananRemoteD
         tanggal: Calendar,
         keterangan: String
     ): Either<Failure, List<UnhandledLubang>> {
-        return try {
-            val response =
-                penangananRemoteDataSource.resolveUnhandledLubang(
-                    idUnhandledLubang,
-                    tanggal,
-                    keterangan
-                )
-            UnhandledLubangMapper.convertListOfUnhandledLubangResponseToListOfEntity(response)
-                .toSuccess()
-        } catch (e: RemoteDataSourceException) {
-            RemoteDataSourceFailure(e.message!!).toError()
-        }
+//        return try {
+//            val response =
+//                penangananRemoteDataSource.resolveUnhandledLubang(
+//                    idUnhandledLubang,
+//                    tanggal,
+//                    keterangan
+//                )
+//            UnhandledLubangMapper.convertListOfUnhandledLubangResponseToListOfEntity(response)
+//                .toSuccess()
+//        } catch (e: RemoteDataSourceException) {
+//            RemoteDataSourceFailure(e.message!!).toError()
+//        }
+        TODO()
     }
 }
