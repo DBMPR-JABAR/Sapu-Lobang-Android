@@ -21,6 +21,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import com.google.android.gms.location.LocationServices
 import com.google.android.material.datepicker.MaterialDatePicker
 import dagger.hilt.android.AndroidEntryPoint
@@ -161,6 +162,10 @@ class EntryLubangFragment : Fragment() {
         setVisibilityFormEntry(false)
 
         binding.apply {
+            buttonBack.setOnClickListener {
+                findNavController().popBackStack()
+            }
+
             buttonPilihTanggal.setOnClickListener {
                 timePicker.show(childFragmentManager, "Date Picker Dialog")
             }
