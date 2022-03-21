@@ -16,7 +16,7 @@ data class SurveiLubangState(
     val jumlahLubang: Int = 0,
     val jumlahLubangPerGroup: Int = 0,
     val panjangLubang: Int = 0,
-    val gambarLubang: Bitmap? = null,
+    val gambarLubang: Uri? = null,
     val isStarted: Boolean = false,
     val ruasJalan: String = "",
     val kodeLokasi: String = "",

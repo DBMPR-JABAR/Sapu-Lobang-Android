@@ -166,7 +166,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/text_field_ruas_jalan"
-            tools:visibility="visible" />
+            tools:visibility="gone" />
 
         <!--  End Button Start  -->
 
@@ -400,28 +400,31 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/text_view_label_upload_foto">
 
-            <TextView
-                android:id="@+id/text_view_desc_upload_foto"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Ukuran maksimal file adalah 1 Mb. File yang didukung adalah .jpg dan .png"
-                android:textAppearance="?textAppearanceSubtitle1"
-                android:textSize="12sp"
+            <ImageView
+                android:id="@+id/image_view_lubang"
+                android:layout_width="match_parent"
+                android:layout_height="500dp"
+                android:layout_marginBottom="16dp"
+                android:scaleType="centerCrop"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/button_ambil_gambar"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:visibility="visible" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <Button
-                android:layout_width="wrap_content"
+                android:id="@+id/button_ambil_gambar"
+                style="@style/Widget.SurveiSapuLubang.Button.Green"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:text="Ambil Gambar"
                 android:textSize="12sp"
                 app:icon="@drawable/ic_camera"
                 app:iconGravity="textEnd"
                 app:iconSize="24dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/text_view_desc_upload_foto" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

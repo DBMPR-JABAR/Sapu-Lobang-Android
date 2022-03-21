@@ -29,6 +29,6 @@ sealed class SurveiLubangAction : Action {
 
     data class UpdatePanjangLubang(val panjangLubang: Int) : SurveiLubangAction()
 
-    data class UpdateFotoLubang(val gambarLubang: Bitmap) : SurveiLubangAction()
+    data class UpdateFotoLubang(val gambarLubang: Uri) : SurveiLubangAction()
 
 }

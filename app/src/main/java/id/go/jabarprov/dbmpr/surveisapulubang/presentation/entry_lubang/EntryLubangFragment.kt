@@ -3,8 +3,8 @@ package id.go.jabarprov.dbmpr.surveisapulubang.presentation.entry_lubang
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
@@ -31,7 +32,10 @@ import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.survei_lub
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.user.AuthViewModel
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.widgets.LoadingDialog
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.CalendarUtils
+import id.go.jabarprov.dbmpr.surveisapulubang.utils.FILE_PROVIDER_AUTHORITY
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.LocationUtils
+import id.go.jabarprov.dbmpr.surveisapulubang.utils.extensions.createPictureCacheFile
+import id.go.jabarprov.dbmpr.surveisapulubang.utils.extensions.getValueOrElse
 import kotlinx.coroutines.launch
 
 private const val TAG = "EntryLubangFragment"
@@ -43,30 +47,47 @@ class EntryLubangFragment : Fragment() {
 
     private val surveiLubangViewModel: SurveiLubangViewModel by viewModels()
 
-    private val requestLocationPermissionLauncher by lazy {
-        registerForActivityResult(
-            ActivityResultContracts.RequestMultiplePermissions()
-        ) { permissions ->
-            when {
-                permissions.getOrDefault(
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    false
-                ) -> {
-                    setUpLocationSetting()
-                }
-                permissions.getOrDefault(
-                    Manifest.permission.ACCESS_COARSE_LOCATION,
-                    false
-                ) -> {
-                    setUpLocationSetting()
-                }
-                else -> {
-                    Toast.makeText(requireContext(), "Izin Lokasi Ditolak", Toast.LENGTH_SHORT)
-                        .show()
-                }
+    private val requestLocationPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        when {
+            permissions.getOrDefault(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                false
+            ) -> {
+                setUpLocationSetting()
+            }
+            permissions.getOrDefault(
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                false
+            ) -> {
+                setUpLocationSetting()
+            }
+            else -> {
+                Toast.makeText(requireContext(), "Izin Lokasi Ditolak", Toast.LENGTH_SHORT)
+                    .show()
             }
         }
     }
+
+    private val takePictureLauncher =
+        registerForActivityResult(ActivityResultContracts.TakePicture()) { isSuccess ->
+            if (isSuccess) surveiLubangViewModel.processAction(
+                SurveiLubangAction.UpdateFotoLubang(
+                    photoUri
+                )
+            )
+        }
+
+    private val requestCameraPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) {
+                takePicture()
+            } else {
+                Toast.makeText(requireContext(), "Izin Kamera Ditolak", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
 
     private val fusedLocationProviderClient by lazy {
         LocationServices.getFusedLocationProviderClient(
@@ -93,6 +114,8 @@ class EntryLubangFragment : Fragment() {
                 }
             }
     }
+
+    private lateinit var photoUri: Uri
 
     private fun setUpLocationSetting() {
         locationUtils.enableLocationService()
@@ -158,6 +181,14 @@ class EntryLubangFragment : Fragment() {
                 surveiLubangViewModel.processAction(SurveiLubangAction.UpdateLokasiM(text.toString()))
             }
 
+            editTextPanjangLubang.doOnTextChanged { text, _, _, _ ->
+                surveiLubangViewModel.processAction(
+                    SurveiLubangAction.UpdatePanjangLubang(
+                        text.toString().toIntOrNull().getValueOrElse(0)
+                    )
+                )
+            }
+
             radioGroupKategori.setOnCheckedChangeListener { radioGroup, checkedId ->
                 if (checkedId == R.id.radio_button_kategori_single) {
                     surveiLubangViewModel.processAction(
@@ -171,6 +202,18 @@ class EntryLubangFragment : Fragment() {
                             KategoriLubang.GROUP
                         )
                     )
+                }
+            }
+
+            buttonAmbilGambar.setOnClickListener {
+                if (ContextCompat.checkSelfPermission(
+                        requireContext(),
+                        Manifest.permission.CAMERA
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    requestCameraPermissionLauncher.launch(Manifest.permission.CAMERA)
+                } else {
+                    takePicture()
                 }
             }
 
@@ -205,6 +248,15 @@ class EntryLubangFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun takePicture() {
+        photoUri = FileProvider.getUriForFile(
+            requireContext(),
+            FILE_PROVIDER_AUTHORITY,
+            requireContext().createPictureCacheFile()
+        )
+        takePictureLauncher.launch(photoUri)
     }
 
     private fun setVisibilityFormEntry(isVisible: Boolean) {
@@ -276,8 +328,6 @@ class EntryLubangFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 surveiLubangViewModel.uiState.collect {
-                    Log.d(TAG, "observeState: $it")
-
                     if (it.isLoading) {
                         loadingDialog.show(childFragmentManager, "Loading Dialog")
                     }
@@ -304,6 +354,9 @@ class EntryLubangFragment : Fragment() {
 
                         textViewJumlahLubangSingle.text = it.jumlahLubang.toString()
 
+                        imageViewLubang.setImageURI(it.gambarLubang)
+                        imageViewLubang.isVisible = it.gambarLubang != null
+
                         /**
                          * Button Enable If
                          * kode lokasi filled
@@ -320,7 +373,7 @@ class EntryLubangFragment : Fragment() {
                             it.isStarted && it.kodeLokasi.isNotBlank() && it.lokasiKm.isNotBlank() && it.lokasiM.isNotBlank() && it.panjangLubang > 0 && it.gambarLubang != null
 
                         buttonKurangLubangSingle.isEnabled =
-                            it.isStarted && it.kodeLokasi.isNotBlank() && it.lokasiKm.isNotBlank() && it.lokasiM.isNotBlank() && it.panjangLubang > 0 && it.gambarLubang != null
+                            it.isStarted && it.kodeLokasi.isNotBlank() && it.lokasiKm.isNotBlank() && it.lokasiM.isNotBlank() && it.panjangLubang > 0 && it.gambarLubang != null && it.jumlahLubang > 0
                     }
 
                 }
