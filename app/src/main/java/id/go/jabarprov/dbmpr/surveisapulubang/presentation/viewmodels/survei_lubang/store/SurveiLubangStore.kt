@@ -66,7 +66,8 @@ class SurveiLubangStore @Inject constructor(
                         panjangLubang = state.value.panjangLubang,
                         jumlahLubangPerGroup = state.value.jumlahLubangPerGroup,
                         kategoriLubang = if (state.value.kategoriLubang == KategoriLubang.SINGLE) "Single" else "Group",
-                        gambarLubang = state.value.gambarLubangFile!!
+                        gambarLubang = state.value.gambarLubangFile!!,
+                        keterangan = state.value.keteranganLubang
                     )
                     val result = tambahLubang.run(param)
                     result.either(
@@ -86,7 +87,9 @@ class SurveiLubangStore @Inject constructor(
                                 isLoading = false,
                                 jumlahLubang = surveiLubang.jumlah,
                                 gambarLubangFile = null,
-                                gambarLubangUri = null
+                                gambarLubangUri = null,
+                                keteranganLubang = null,
+                                panjangLubang = 0.0
                             )
                         }
                     )
@@ -182,6 +185,11 @@ class SurveiLubangStore @Inject constructor(
                 is SurveiLubangAction.UpdateJumlahLubangPerGroup -> {
                     state.value = state.value.copy(
                         jumlahLubangPerGroup = action.jumlahLubangPerGroup
+                    )
+                }
+                is SurveiLubangAction.UpdateKeterangan -> {
+                    state.value = state.value.copy(
+                        keteranganLubang = action.keterangan
                     )
                 }
             }

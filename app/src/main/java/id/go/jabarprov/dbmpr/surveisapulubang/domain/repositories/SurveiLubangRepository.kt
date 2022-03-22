@@ -25,7 +25,8 @@ interface SurveiLubangRepository {
         panjangLubang: Double,
         jumlahLubangPerGroup: Int? = null,
         kategoriLubang: String,
-        gambarLubang: File
+        gambarLubang: File,
+        keterangan: String?
     ): Either<Failure, SurveiLubang>
 
     suspend fun kurangLubang(

@@ -23,7 +23,8 @@ class TambahLubang @Inject constructor(private val surveiLubangRepository: Surve
         val panjangLubang: Double,
         val jumlahLubangPerGroup: Int? = null,
         val kategoriLubang: String,
-        val gambarLubang: File
+        val gambarLubang: File,
+        val keterangan: String?
     )
 
     override suspend fun run(params: Params): Either<Failure, SurveiLubang> {
@@ -38,7 +39,8 @@ class TambahLubang @Inject constructor(private val surveiLubangRepository: Surve
             params.panjangLubang,
             params.jumlahLubangPerGroup,
             params.kategoriLubang,
-            params.gambarLubang
+            params.gambarLubang,
+            params.keterangan
         )
     }
 

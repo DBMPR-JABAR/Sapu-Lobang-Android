@@ -28,7 +28,8 @@ interface SurveiLubangAPI {
         @Part("lokasi_km") lokasiKm: RequestBody,
         @Part("lokasi_m") lokasiM: RequestBody,
         @Part("kategori") kategoriLubang: RequestBody,
-        @Part gambarLubang: MultipartBody.Part
+        @Part gambarLubang: MultipartBody.Part,
+        @Part("description") keterangan: RequestBody?
     ): Response<BaseResponse<SurveiLubangResponse>>
 
     @POST("survei-lubang/store/kurang")

@@ -100,7 +100,8 @@ class SurveiLubangRemoteDataSourceImpl @Inject constructor(private val surveiLub
         panjangLubang: Double,
         jumlahLubangPerGroup: Int?,
         kategoriLubang: String,
-        gambarLubang: File
+        gambarLubang: File,
+        keterangan: String?
     ): SurveiLubangResponse {
         try {
             val response = surveiLubangAPI.tambahLubang(
@@ -114,7 +115,8 @@ class SurveiLubangRemoteDataSourceImpl @Inject constructor(private val surveiLub
                 lokasiKm = lokasiKm.toRequestBody(),
                 lokasiM = lokasiM.toRequestBody(),
                 kategoriLubang = kategoriLubang.toRequestBody(),
-                gambarLubang = gambarLubang.toMultipart("image")
+                gambarLubang = gambarLubang.toMultipart("image"),
+                keterangan = keterangan?.toRequestBody()
             )
             if (response.isSuccessful) {
                 return response.body()?.data!!

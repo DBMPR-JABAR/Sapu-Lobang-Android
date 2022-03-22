@@ -35,4 +35,5 @@ sealed class SurveiLubangAction : Action {
     data class UpdateFotoLubang(val gambarLubang: Uri, val gambarLubangFile: File) :
         SurveiLubangAction()
 
+    data class UpdateKeterangan(val keterangan: String) : SurveiLubangAction()
 }

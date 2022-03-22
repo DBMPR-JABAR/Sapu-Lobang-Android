@@ -23,7 +23,8 @@ interface SurveiLubangRemoteDataSource {
         panjangLubang: Double,
         jumlahLubangPerGroup: Int? = null,
         kategoriLubang: String,
-        gambarLubang: File
+        gambarLubang: File,
+        keterangan: String?
     ): SurveiLubangResponse
 
     suspend fun kurangLubang(

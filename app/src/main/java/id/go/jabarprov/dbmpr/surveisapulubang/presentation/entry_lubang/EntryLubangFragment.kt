@@ -234,6 +234,10 @@ class EntryLubangFragment : Fragment() {
                 }
             }
 
+            editTextKeterangan.doOnTextChanged { text, _, _, _ ->
+                surveiLubangViewModel.processAction(SurveiLubangAction.UpdateKeterangan(text.toString()))
+            }
+
             buttonStart.setOnClickListener {
                 surveiLubangViewModel.processAction(
                     SurveiLubangAction.StartSurveiAction(
@@ -313,6 +317,8 @@ class EntryLubangFragment : Fragment() {
             constraintLayoutContainerPanjangLubang.visibility = visibility
             textViewLabelUploadFoto.visibility = visibility
             constraintLayoutContainerUploadFoto.visibility = visibility
+            textViewLabelKeterangan.visibility = visibility
+            textFieldKeterangan.visibility = visibility
             textViewLabelTambahLubang.visibility = visibility
             buttonLihatHasilSurvei.visibility = visibility
 
@@ -412,7 +418,7 @@ class EntryLubangFragment : Fragment() {
                             it.isStarted && it.kodeLokasi.isNotBlank() && it.lokasiKm.isNotBlank() && it.lokasiM.isNotBlank() && it.panjangLubang > 0 && it.gambarLubangUri != null && it.jumlahLubangPerGroup > 0
 
                         buttonKurangLubangSingle.isEnabled =
-                            it.isStarted && it.kodeLokasi.isNotBlank() && it.lokasiKm.isNotBlank() && it.lokasiM.isNotBlank() && it.panjangLubang > 0 && it.gambarLubangUri != null && it.jumlahLubang > 0
+                            it.isStarted && it.kodeLokasi.isNotBlank() && it.lokasiKm.isNotBlank() && it.lokasiM.isNotBlank() && it.panjangLubang > 0 && it.jumlahLubang > 0
                     }
 
                 }

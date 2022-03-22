@@ -63,7 +63,8 @@ class SurveiLubangRepositoryImpl @Inject constructor(private val surveiLubangRem
         panjangLubang: Double,
         jumlahLubangPerGroup: Int?,
         kategoriLubang: String,
-        gambarLubang: File
+        gambarLubang: File,
+        keterangan: String?
     ): Either<Failure, SurveiLubang> {
         return try {
             val response =
@@ -78,7 +79,8 @@ class SurveiLubangRepositoryImpl @Inject constructor(private val surveiLubangRem
                     panjangLubang,
                     jumlahLubangPerGroup,
                     kategoriLubang,
-                    gambarLubang
+                    gambarLubang,
+                    keterangan
                 )
             SurveiLubangDataMapper.convertSurveiLubangDataResponseToEntity(response).toSuccess()
         } catch (e: RemoteDataSourceException) {
