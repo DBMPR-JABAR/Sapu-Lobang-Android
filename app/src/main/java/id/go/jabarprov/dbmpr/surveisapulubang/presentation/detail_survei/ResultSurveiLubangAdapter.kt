@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import id.go.jabarprov.dbmpr.surveisapulubang.databinding.LayoutItemLubangResultSurveiBinding
+import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.KategoriLubang
 import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.Lubang
 
 class ResultSurveiLubangAdapter :
@@ -54,6 +55,8 @@ class ResultSurveiLubangAdapter :
 
                 textViewContentLatitude.text = lubang.latitude.toString()
                 textViewContentLongitude.text = lubang.longitude.toString()
+                textViewContentKategori.text = if (lubang.kategori == KategoriLubang.SINGLE) "Single" else "Group"
+                textViewContentPanjangLubang.text = "${lubang.panjang} M"
 
                 buttonDetail.setOnClickListener {
                     detailAction?.invoke(lubang)
