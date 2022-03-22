@@ -24,5 +24,6 @@ data class LubangResponse(
     val tanggal_rencana_penanganan: String?,
     val updated_at: String?,
     val updated_by: String?,
-    val uptd_id: Int?
+    val uptd_id: Int?,
+    val keterangan: String?
 )

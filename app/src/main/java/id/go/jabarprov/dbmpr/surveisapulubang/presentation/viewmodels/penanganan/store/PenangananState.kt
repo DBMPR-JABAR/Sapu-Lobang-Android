@@ -1,6 +1,7 @@
 package id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.penanganan.store
 
 import id.go.jabarprov.dbmpr.surveisapulubang.core.store.State
+import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.Lubang
 import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.UnhandledLubang
 import java.util.*
 
@@ -12,5 +13,5 @@ data class PenangananState(
     val isSuccess: Boolean = false,
     val isLoading: Boolean = false,
     val ruasJalan: String = "",
-    val listUnhandledLubang: List<UnhandledLubang> = listOf()
+    val listLubang: List<Lubang> = listOf()
 ) : State

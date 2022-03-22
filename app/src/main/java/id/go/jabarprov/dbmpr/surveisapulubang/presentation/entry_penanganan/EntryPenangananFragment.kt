@@ -18,9 +18,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.datepicker.MaterialDatePicker
 import dagger.hilt.android.AndroidEntryPoint
+import id.go.jabarprov.dbmpr.surveisapulubang.AppNavigationDirections
 import id.go.jabarprov.dbmpr.surveisapulubang.common.presentation.widget.SpaceItemDecoration
 import id.go.jabarprov.dbmpr.surveisapulubang.databinding.FragmentEntryPenangananBinding
-import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.UnhandledLubang
+import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.Lubang
+import id.go.jabarprov.dbmpr.surveisapulubang.presentation.adapter.LubangAdapter
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.penanganan.PenangananViewModel
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.penanganan.store.PenangananAction
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.user.AuthViewModel
@@ -45,9 +47,8 @@ class EntryPenangananFragment : Fragment() {
         ConfirmationPenangananDialog.create(
             onPositiveButtonClickListener = { dialog, keteranganPenanganan ->
                 penangananViewModel.processAction(
-                    PenangananAction.ResolveUnhandledLubang(
-                        selectedUnhandledLubang.id,
-                        selectedUnhandledLubang.tanggal,
+                    PenangananAction.StorePenangananLubang(
+                        selectedLubang.id,
                         keteranganPenanganan
                     )
                 )
@@ -61,7 +62,25 @@ class EntryPenangananFragment : Fragment() {
 
     private val spaceItemDecoration by lazy { SpaceItemDecoration(32) }
 
-    private val unhandleLubangAdapter by lazy { UnhandleLubangAdapter() }
+    private val lubangAdapter by lazy {
+        LubangAdapter(LubangAdapter.TYPE.PENANGANAN)
+            .setOnItemClickListener { lubang ->
+                selectedLubang = lubang
+                confirmationDialog.apply {
+                    if (lubang.keterangan != null) {
+                        setKeterangan(lubang.keterangan)
+                    }
+                }.show(childFragmentManager, "Penanganan Dialog")
+            }.setOnDetailItemClickListener { lubang ->
+                if (lubang.urlGambar != null) {
+                    findNavController().navigate(
+                        AppNavigationDirections.actionGlobalPreviewPhotoFragment(
+                            lubang.urlGambar
+                        )
+                    )
+                }
+            }
+    }
 
     private val timePicker by lazy {
         MaterialDatePicker.Builder.datePicker()
@@ -77,7 +96,7 @@ class EntryPenangananFragment : Fragment() {
             }
     }
 
-    lateinit var selectedUnhandledLubang: UnhandledLubang
+    lateinit var selectedLubang: Lubang
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -106,20 +125,15 @@ class EntryPenangananFragment : Fragment() {
                 timePicker.show(childFragmentManager, "Time Picker Dialog")
             }
 
-            unhandleLubangAdapter.setOnClickListener {
-                selectedUnhandledLubang = it
-                confirmationDialog.show(childFragmentManager, "Confirmation Dialog")
-            }
-
             recyclerViewListLubang.apply {
-                adapter = unhandleLubangAdapter
+                adapter = lubangAdapter
                 layoutManager = LinearLayoutManager(requireContext())
                 addItemDecoration(spaceItemDecoration)
                 setHasFixedSize(true)
             }
 
             buttonSubmit.setOnClickListener {
-                penangananViewModel.processAction(PenangananAction.GetListUnhandledLubang)
+                penangananViewModel.processAction(PenangananAction.GetListLubang)
             }
         }
     }
@@ -156,10 +170,10 @@ class EntryPenangananFragment : Fragment() {
 
                     if (it.isSuccess) {
                         loadingDialog.dismiss()
-                        if (it.listUnhandledLubang.isNotEmpty()) {
+                        if (it.listLubang.isNotEmpty()) {
                             binding.recyclerViewListLubang.visibility = View.VISIBLE
                             binding.textViewEmpty.visibility = View.GONE
-                            unhandleLubangAdapter.submitList(it.listUnhandledLubang)
+                            lubangAdapter.submitList(it.listLubang)
                         } else {
                             binding.recyclerViewListLubang.visibility = View.GONE
                             binding.textViewEmpty.visibility = View.VISIBLE

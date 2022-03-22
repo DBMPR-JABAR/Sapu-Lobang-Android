@@ -24,9 +24,22 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
         android:text="Apakah anda yakin untuk menandai lubang ini sudah selesai?"
+        android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+    <TextView
+        android:id="@+id/text_view_label_keterangan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Keterangan"
+        android:textAppearance="?textAppearanceBody2"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView4" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout3"
@@ -35,16 +48,18 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
+        app:hintEnabled="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textView4">
+        app:layout_constraintTop_toBottomOf="@id/text_view_label_keterangan">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edit_text_penanganan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Keterangan Penanganan"
+            android:padding="16dp"
             android:textSize="14sp" />
 
     </com.google.android.material.textfield.TextInputLayout>

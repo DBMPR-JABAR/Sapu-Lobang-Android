@@ -6,10 +6,9 @@ import java.util.*
 sealed class PenangananAction : Action {
     data class UpdateRuasJalan(val ruasJalan: String) : PenangananAction()
     data class UpdateTanggal(val timeMilles: Long) : PenangananAction()
-    object GetListUnhandledLubang : PenangananAction()
-    data class ResolveUnhandledLubang(
-        val idUnhandledLubang: Int,
-        val tanggal: Calendar,
+    object GetListLubang : PenangananAction()
+    data class StorePenangananLubang(
+        val idLubang: Int,
         val keterangan: String
     ) : PenangananAction()
 }

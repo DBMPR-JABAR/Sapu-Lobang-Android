@@ -1,4 +1,4 @@
-package id.go.jabarprov.dbmpr.surveisapulubang.presentation.entry_rencana
+package id.go.jabarprov.dbmpr.surveisapulubang.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -31,7 +31,7 @@ class LubangAdapter(private val type: TYPE) :
 
     override fun onBindViewHolder(holder: LubangItemViewHolder, position: Int) {
         getItem(position)?.let {
-            holder.bind(it, onItemClickListener, onDetailClickListener)
+            holder.bind(it, type, onItemClickListener, onDetailClickListener)
         }
     }
 
@@ -51,6 +51,7 @@ class LubangAdapter(private val type: TYPE) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(
             lubang: Lubang,
+            type: TYPE,
             prosesAction: ((Lubang) -> Unit)?,
             detailAction: ((Lubang) -> Unit)?
         ) {
@@ -74,10 +75,18 @@ class LubangAdapter(private val type: TYPE) :
                     prosesAction?.invoke(lubang)
                 }
 
-                buttonProses.isEnabled = lubang.status.isNullOrBlank()
+                if (type == TYPE.RENCANA) {
+                    buttonProses.isEnabled = lubang.status.isNullOrBlank()
+                    if (!lubang.status.isNullOrBlank()) {
+                        buttonProses.text = "Dijadwalkan"
+                    }
+                } else {
+                    buttonProses.isEnabled = lubang.status == "Perencanaan"
+                    if (lubang.status == "Selesai") {
+                        buttonProses.text = "Selesai"
+                    } else {
 
-                if (!lubang.status.isNullOrBlank()) {
-                    buttonProses.text = "Dijadwalkan"
+                    }
                 }
             }
         }

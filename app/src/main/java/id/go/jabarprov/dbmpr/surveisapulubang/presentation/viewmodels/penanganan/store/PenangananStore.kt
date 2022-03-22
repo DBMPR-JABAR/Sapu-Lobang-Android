@@ -1,9 +1,8 @@
 package id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.penanganan.store
 
-import android.util.Log
 import id.go.jabarprov.dbmpr.surveisapulubang.core.store.Store
-import id.go.jabarprov.dbmpr.surveisapulubang.domain.usecases.GetListUnhandledLubang
-import id.go.jabarprov.dbmpr.surveisapulubang.domain.usecases.ResolveUnhandledLubang
+import id.go.jabarprov.dbmpr.surveisapulubang.domain.usecases.GetListLubangPenanganan
+import id.go.jabarprov.dbmpr.surveisapulubang.domain.usecases.UploadPenangananLubang
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.CalendarUtils
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -11,8 +10,8 @@ import javax.inject.Inject
 private const val TAG = "PenangananStore"
 
 class PenangananStore @Inject constructor(
-    private val getListUnhandledLubang: GetListUnhandledLubang,
-    private val resolveUnhandledLubang: ResolveUnhandledLubang
+    private val getListLubangPenanganan: GetListLubangPenanganan,
+    private val uploadPenangananLubang: UploadPenangananLubang
 ) :
     Store<PenangananAction, PenangananState>(PenangananState()) {
     override fun reduce(action: PenangananAction) {
@@ -29,7 +28,7 @@ class PenangananStore @Inject constructor(
                         tanggal = CalendarUtils.formatTimeInMilliesToCalendar(action.timeMilles)
                     )
                 }
-                is PenangananAction.GetListUnhandledLubang -> {
+                is PenangananAction.GetListLubang -> {
                     state.value = state.value.copy(
                         isFailed = false,
                         errorMessage = "",
@@ -37,8 +36,8 @@ class PenangananStore @Inject constructor(
                         isLoading = true
                     )
                     val param =
-                        GetListUnhandledLubang.Params(state.value.tanggal, state.value.idRuasJalan)
-                    val result = getListUnhandledLubang.run(param)
+                        GetListLubangPenanganan.Params(state.value.tanggal, state.value.idRuasJalan)
+                    val result = getListLubangPenanganan.run(param)
                     result.either(
                         fnL = { failure ->
                             state.value = state.value.copy(
@@ -48,19 +47,18 @@ class PenangananStore @Inject constructor(
                                 isLoading = false
                             )
                         },
-                        fnR = { listUnhandledLubang ->
-                            Log.d(TAG, "reduce: $listUnhandledLubang")
+                        fnR = { listLubang ->
                             state.value = state.value.copy(
                                 isFailed = false,
                                 errorMessage = "",
                                 isSuccess = true,
                                 isLoading = false,
-                                listUnhandledLubang = listUnhandledLubang
+                                listLubang = listLubang
                             )
                         },
                     )
                 }
-                is PenangananAction.ResolveUnhandledLubang -> {
+                is PenangananAction.StorePenangananLubang -> {
                     state.value = state.value.copy(
                         isFailed = false,
                         errorMessage = "",
@@ -68,12 +66,12 @@ class PenangananStore @Inject constructor(
                         isLoading = true
                     )
                     val param =
-                        ResolveUnhandledLubang.Params(
-                            action.idUnhandledLubang,
-                            action.tanggal,
+                        UploadPenangananLubang.Params(
+                            action.idLubang,
+                            state.value.tanggal,
                             action.keterangan
                         )
-                    val result = resolveUnhandledLubang.run(param)
+                    val result = uploadPenangananLubang.run(param)
                     result.either(
                         fnL = { failure ->
                             state.value = state.value.copy(
@@ -83,14 +81,13 @@ class PenangananStore @Inject constructor(
                                 isLoading = false
                             )
                         },
-                        fnR = { listUnhandledLubang ->
-                            Log.d(TAG, "reduce: $listUnhandledLubang")
+                        fnR = { listLubang ->
                             state.value = state.value.copy(
                                 isFailed = false,
                                 errorMessage = "",
                                 isSuccess = true,
                                 isLoading = false,
-                                listUnhandledLubang = listUnhandledLubang
+                                listLubang = listLubang
                             )
                         },
                     )

@@ -16,6 +16,8 @@ class ConfirmationPenangananDialog private constructor() : DialogFragment() {
 
     lateinit var binding: LayoutDialogKonfirmasiPenangananBinding
 
+    private var keterangan: String? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -27,6 +29,8 @@ class ConfirmationPenangananDialog private constructor() : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.apply {
+            editTextPenanganan.setText(keterangan)
+
             buttonIya.setOnClickListener {
                 positiveClickListener(
                     this@ConfirmationPenangananDialog,
@@ -48,6 +52,11 @@ class ConfirmationPenangananDialog private constructor() : DialogFragment() {
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
+    }
+
+    fun setKeterangan(ket: String) : ConfirmationPenangananDialog {
+        keterangan = ket
+        return this
     }
 
     private fun setOnPositiveClickListener(action: (dialog: DialogFragment, keteranganPenanganan: String) -> Unit) {

@@ -17,6 +17,7 @@ data class Lubang(
     val status: String?,
     val panjang: Double,
     val jumlah: Int,
+    val keterangan: String?,
     val kategori: KategoriLubang,
     val urlGambar: String?
 )

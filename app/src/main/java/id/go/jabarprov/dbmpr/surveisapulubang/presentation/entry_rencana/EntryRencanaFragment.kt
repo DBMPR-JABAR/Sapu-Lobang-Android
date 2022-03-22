@@ -21,6 +21,7 @@ import id.go.jabarprov.dbmpr.surveisapulubang.AppNavigationDirections
 import id.go.jabarprov.dbmpr.surveisapulubang.common.presentation.widget.SpaceItemDecoration
 import id.go.jabarprov.dbmpr.surveisapulubang.databinding.FragmentEntryRencanaBinding
 import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.Lubang
+import id.go.jabarprov.dbmpr.surveisapulubang.presentation.adapter.LubangAdapter
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.rencana.RencanaViewModel
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.rencana.store.RencanaAction
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.user.AuthViewModel
@@ -59,10 +60,6 @@ class EntryRencanaFragment : Fragment() {
         )
     }
 
-    private val detailLubangDialog by lazy {
-        DetailLubangDialog.create()
-    }
-
     private val lubangAdapter by lazy {
         LubangAdapter(LubangAdapter.TYPE.RENCANA)
             .setOnItemClickListener {
@@ -70,7 +67,6 @@ class EntryRencanaFragment : Fragment() {
                 rencanaDialog.show(childFragmentManager, "Rencana Dialog")
             }.setOnDetailItemClickListener {
                 if (it.urlGambar != null) {
-//                    detailLubangDialog.showImage(it.urlGambar, childFragmentManager)
                     findNavController().navigate(
                         AppNavigationDirections.actionGlobalPreviewPhotoFragment(
                             it.urlGambar
