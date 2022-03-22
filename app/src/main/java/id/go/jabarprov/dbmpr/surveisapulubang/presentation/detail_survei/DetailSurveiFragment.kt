@@ -1,21 +1,27 @@
 package id.go.jabarprov.dbmpr.surveisapulubang.presentation.detail_survei
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
+import id.go.jabarprov.dbmpr.surveisapulubang.AppNavigationDirections
+import id.go.jabarprov.dbmpr.surveisapulubang.common.presentation.widget.SpaceItemDecoration
 import id.go.jabarprov.dbmpr.surveisapulubang.databinding.FragmentDetailSurveiBinding
+import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.Lubang
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.detail_survei.DetailSurveiViewModel
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.detail_survei.store.DetailSurveiAction
+import id.go.jabarprov.dbmpr.surveisapulubang.presentation.widgets.KonfirmasiDialog
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.widgets.LoadingDialog
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.CalendarUtils
 import kotlinx.coroutines.launch
@@ -31,6 +37,41 @@ class DetailSurveiFragment : Fragment() {
 
     private val loadingDialog by lazy { LoadingDialog.create() }
 
+    private val konfirmasiDialog by lazy {
+        KonfirmasiDialog.create(
+            title = "Konfirmasi Penghapusan",
+            description = "Apakah anda yakin untuk menghapus lubang ini?",
+            onNegative = { it.dismiss() },
+            onPositive = {
+                detailSurveiViewModel.processAction(
+                    DetailSurveiAction.DeleteLubang(
+                        selectedSurveiItem.id
+                    )
+                )
+                it.dismiss()
+            }
+        )
+    }
+
+    private lateinit var selectedSurveiItem: Lubang
+
+    private val resultSurveiAdapter by lazy {
+        ResultSurveiLubangAdapter()
+            .setOnDetailButtonClickListener {
+                findNavController().navigate(
+                    AppNavigationDirections.actionGlobalPreviewPhotoFragment(
+                        it.urlGambar
+                    )
+                )
+            }
+            .setOnDeleteButtonClickListener {
+                selectedSurveiItem = it
+                konfirmasiDialog.show(childFragmentManager, "Konfirmasi Dialog")
+            }
+    }
+
+    private val spaceItemDecoration by lazy { SpaceItemDecoration(32) }
+
     private val args: DetailSurveiFragmentArgs by navArgs()
 
     override fun onCreateView(
@@ -43,7 +84,19 @@ class DetailSurveiFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         loadDataSurvei()
+        initUI()
         observeDetailSurveiViewModel()
+    }
+
+    private fun initUI() {
+        binding.apply {
+            recyclerViewListLubang.apply {
+                adapter = resultSurveiAdapter
+                layoutManager = LinearLayoutManager(requireContext())
+                addItemDecoration(spaceItemDecoration)
+                setHasFixedSize(true)
+            }
+        }
     }
 
     private fun loadDataSurvei() {
@@ -65,12 +118,27 @@ class DetailSurveiFragment : Fragment() {
 
                     if (it.isSuccess) {
                         loadingDialog.dismiss()
-                        Log.d(TAG, "observeDetailSurveiViewModel: ${it.listLubang}")
+                        if (it.listLubang.isNullOrEmpty()) {
+                            binding.apply {
+                                recyclerViewListLubang.isVisible = false
+                                textViewEmpty.isVisible = true
+                            }
+                        } else {
+                            binding.apply {
+                                recyclerViewListLubang.isVisible = true
+                                textViewEmpty.isVisible = false
+                                resultSurveiAdapter.submitList(it.listLubang)
+                            }
+                        }
                     }
 
                     if (it.isFailed) {
                         Toast.makeText(requireContext(), it.errorMessage, Toast.LENGTH_SHORT).show()
                         loadingDialog.dismiss()
+                    }
+
+                    if (it.isDelete) {
+                        loadDataSurvei()
                     }
                 }
             }

@@ -8,5 +8,6 @@ data class DetailSurveiState(
     val errorMessage: String = "",
     val isSuccess: Boolean = false,
     val isLoading: Boolean = false,
-    val listLubang: List<Lubang>? = null
+    val listLubang: List<Lubang>? = null,
+    val isDelete: Boolean = false
 ) : State

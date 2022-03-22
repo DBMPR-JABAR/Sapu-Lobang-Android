@@ -9,10 +9,7 @@ import id.go.jabarprov.dbmpr.surveisapulubang.data.models.response.SurveiLubangR
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.Multipart
-import retrofit2.http.POST
-import retrofit2.http.Part
+import retrofit2.http.*
 
 interface SurveiLubangAPI {
     @POST("survei-lubang/start")
@@ -39,4 +36,7 @@ interface SurveiLubangAPI {
 
     @POST("survei-lubang/result")
     suspend fun resultSurvei(@Body body: DetailSurveiRequest): Response<BaseResponse<DetailSurveiResponse>>
+
+    @GET("survei-lubang/delete/{id}")
+    suspend fun deleteSurveiItem(@Path("id") idLubang: Int): Response<BaseResponse<Unit>>
 }

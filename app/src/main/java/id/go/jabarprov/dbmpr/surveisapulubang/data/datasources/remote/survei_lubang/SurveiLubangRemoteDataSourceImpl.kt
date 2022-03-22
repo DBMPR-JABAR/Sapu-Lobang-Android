@@ -6,7 +6,6 @@ import id.go.jabarprov.dbmpr.surveisapulubang.data.datasources.remote.service.Su
 import id.go.jabarprov.dbmpr.surveisapulubang.data.models.request.DetailSurveiRequest
 import id.go.jabarprov.dbmpr.surveisapulubang.data.models.request.StartSurveiLubangRequest
 import id.go.jabarprov.dbmpr.surveisapulubang.data.models.request.SurveiLubangRequest
-import id.go.jabarprov.dbmpr.surveisapulubang.data.models.response.DetailSurveiResponse
 import id.go.jabarprov.dbmpr.surveisapulubang.data.models.response.LubangResponse
 import id.go.jabarprov.dbmpr.surveisapulubang.data.models.response.SurveiLubangResponse
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.CalendarUtils
@@ -50,13 +49,33 @@ class SurveiLubangRemoteDataSourceImpl @Inject constructor(private val surveiLub
         idRuasJalan: String
     ): List<LubangResponse> {
         try {
-            val request = DetailSurveiRequest(CalendarUtils.formatCalendarToString(tanggal), idRuasJalan)
+            val request =
+                DetailSurveiRequest(CalendarUtils.formatCalendarToString(tanggal), idRuasJalan)
             val response = surveiLubangAPI.resultSurvei(request)
             if (response.isSuccessful) {
                 return response.body()?.data?.listLubang!!
             } else {
-                Log.d(TAG, "startSurvei: Gagal Memulai Survei")
-                throw RemoteDataSourceException("Gagal Memulai Survei")
+                Log.d(TAG, "startSurvei: Gagal Mengambil Data Hasil Survei")
+                throw RemoteDataSourceException("Gagal Mengambil Data Hasil Survei")
+            }
+        } catch (e: UnknownHostException) {
+            Log.d(TAG, "login: ERROR LOGIN $e")
+            throw RemoteDataSourceException("Tidak Dapat Menghubungi Server")
+        } catch (e: SocketTimeoutException) {
+            Log.d(TAG, "login: ERROR LOGIN $e")
+            throw RemoteDataSourceException("Tidak Dapat Menghubungi Server")
+        } catch (e: Exception) {
+            Log.d(TAG, "login: ERROR LOGIN $e")
+            throw RemoteDataSourceException("Terjadi Kesalahan Pada Sistem")
+        }
+    }
+
+    override suspend fun deleteSurveiItem(idLubang: Int) {
+        try {
+            val response = surveiLubangAPI.deleteSurveiItem(idLubang)
+            if (!response.isSuccessful) {
+                Log.d(TAG, "startSurvei: Gagal Menghapus Item Survei")
+                throw RemoteDataSourceException("Gagal Menghapus Item Survei")
             }
         } catch (e: UnknownHostException) {
             Log.d(TAG, "login: ERROR LOGIN $e")
