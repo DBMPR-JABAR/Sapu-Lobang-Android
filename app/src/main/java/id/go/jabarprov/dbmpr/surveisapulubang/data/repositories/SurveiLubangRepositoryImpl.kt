@@ -10,6 +10,7 @@ import id.go.jabarprov.dbmpr.surveisapulubang.data.datasources.remote.survei_lub
 import id.go.jabarprov.dbmpr.surveisapulubang.data.mapper.SurveiLubangDataMapper
 import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.SurveiLubang
 import id.go.jabarprov.dbmpr.surveisapulubang.domain.repositories.SurveiLubangRepository
+import java.io.File
 import java.util.*
 import javax.inject.Inject
 
@@ -34,8 +35,12 @@ class SurveiLubangRepositoryImpl @Inject constructor(private val surveiLubangRem
         kodeLokasi: String,
         lokasiKm: String,
         lokasiM: String,
-        lat: Double?,
-        long: Double?
+        lat: Double,
+        long: Double,
+        panjangLubang: Double,
+        jumlahLubangPerGroup: Int?,
+        kategoriLubang: String,
+        gambarLubang: File
     ): Either<Failure, SurveiLubang> {
         return try {
             val response =
@@ -46,7 +51,11 @@ class SurveiLubangRepositoryImpl @Inject constructor(private val surveiLubangRem
                     lokasiKm,
                     lokasiM,
                     lat,
-                    long
+                    long,
+                    panjangLubang,
+                    jumlahLubangPerGroup,
+                    kategoriLubang,
+                    gambarLubang
                 )
             SurveiLubangDataMapper.convertSurveiLubangDataResponseToEntity(response).toSuccess()
         } catch (e: RemoteDataSourceException) {
@@ -60,8 +69,8 @@ class SurveiLubangRepositoryImpl @Inject constructor(private val surveiLubangRem
         kodeLokasi: String,
         lokasiKm: String,
         lokasiM: String,
-        lat: Double?,
-        long: Double?
+        lat: Double,
+        long: Double
     ): Either<Failure, SurveiLubang> {
         return try {
             val response =

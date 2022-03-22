@@ -17,8 +17,8 @@ class KurangLubang @Inject constructor(private val surveiLubangRepository: Surve
         val kodeLokasi: String,
         val lokasiKm: String,
         val lokasiM: String,
-        val lat: Double? = null,
-        val long: Double? = null
+        val lat: Double,
+        val long: Double
     )
 
     override suspend fun run(params: Params): Either<Failure, SurveiLubang> {

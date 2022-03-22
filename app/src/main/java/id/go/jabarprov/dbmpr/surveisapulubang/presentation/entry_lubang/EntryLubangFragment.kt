@@ -38,6 +38,7 @@ import id.go.jabarprov.dbmpr.surveisapulubang.utils.LocationUtils
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.extensions.createPictureCacheFile
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.extensions.getValueOrElse
 import kotlinx.coroutines.launch
+import java.io.File
 
 private const val TAG = "EntryLubangFragment"
 
@@ -75,7 +76,8 @@ class EntryLubangFragment : Fragment() {
         registerForActivityResult(ActivityResultContracts.TakePicture()) { isSuccess ->
             if (isSuccess) surveiLubangViewModel.processAction(
                 SurveiLubangAction.UpdateFotoLubang(
-                    photoUri
+                    photoUri,
+                    photoFile
                 )
             )
         }
@@ -117,6 +119,8 @@ class EntryLubangFragment : Fragment() {
     }
 
     private lateinit var photoUri: Uri
+
+    private lateinit var photoFile: File
 
     private fun setUpLocationSetting() {
         locationUtils.enableLocationService()
@@ -189,13 +193,13 @@ class EntryLubangFragment : Fragment() {
             editTextPanjangLubang.doOnTextChanged { text, _, _, _ ->
                 surveiLubangViewModel.processAction(
                     SurveiLubangAction.UpdatePanjangLubang(
-                        text.toString().toIntOrNull().getValueOrElse(0)
+                        text.toString().toDoubleOrNull().getValueOrElse(0.0)
                     )
                 )
             }
 
             editTextJumlahLubangGroup.doOnTextChanged { text, _, _, _ ->
-                    surveiLubangViewModel.processAction(
+                surveiLubangViewModel.processAction(
                     SurveiLubangAction.UpdateJumlahLubangPerGroup(
                         text.toString().toIntOrNull().getValueOrElse(0)
                     )
@@ -260,14 +264,26 @@ class EntryLubangFragment : Fragment() {
                     )
                 }
             }
+
+            buttonTambahLubangGroup.setOnClickListener {
+                fusedLocationProviderClient.lastLocation.addOnSuccessListener {
+                    surveiLubangViewModel.processAction(
+                        SurveiLubangAction.TambahLubangAction(
+                            it.latitude,
+                            it.longitude,
+                        )
+                    )
+                }
+            }
         }
     }
 
     private fun takePicture() {
+        photoFile = requireContext().createPictureCacheFile()
         photoUri = FileProvider.getUriForFile(
             requireContext(),
             FILE_PROVIDER_AUTHORITY,
-            requireContext().createPictureCacheFile()
+            photoFile
         )
         takePictureLauncher.launch(photoUri)
     }
@@ -367,8 +383,8 @@ class EntryLubangFragment : Fragment() {
 
                         textViewJumlahLubangSingle.text = it.jumlahLubang.toString()
 
-                        imageViewLubang.setImageURI(it.gambarLubang)
-                        imageViewLubang.isVisible = it.gambarLubang != null
+                        imageViewLubang.setImageURI(it.gambarLubangUri)
+                        imageViewLubang.isVisible = it.gambarLubangUri != null
 
                         /**
                          * Button Enable If
@@ -380,13 +396,13 @@ class EntryLubangFragment : Fragment() {
                          * */
 
                         buttonTambahLubangSingle.isEnabled =
-                            it.isStarted && it.kodeLokasi.isNotBlank() && it.lokasiKm.isNotBlank() && it.lokasiM.isNotBlank() && it.panjangLubang > 0 && it.gambarLubang != null
+                            it.isStarted && it.kodeLokasi.isNotBlank() && it.lokasiKm.isNotBlank() && it.lokasiM.isNotBlank() && it.panjangLubang > 0 && it.gambarLubangUri != null
 
                         buttonTambahLubangGroup.isEnabled =
-                            it.isStarted && it.kodeLokasi.isNotBlank() && it.lokasiKm.isNotBlank() && it.lokasiM.isNotBlank() && it.panjangLubang > 0 && it.gambarLubang != null && it.jumlahLubangPerGroup > 0
+                            it.isStarted && it.kodeLokasi.isNotBlank() && it.lokasiKm.isNotBlank() && it.lokasiM.isNotBlank() && it.panjangLubang > 0 && it.gambarLubangUri != null && it.jumlahLubangPerGroup > 0
 
                         buttonKurangLubangSingle.isEnabled =
-                            it.isStarted && it.kodeLokasi.isNotBlank() && it.lokasiKm.isNotBlank() && it.lokasiM.isNotBlank() && it.panjangLubang > 0 && it.gambarLubang != null && it.jumlahLubang > 0
+                            it.isStarted && it.kodeLokasi.isNotBlank() && it.lokasiKm.isNotBlank() && it.lokasiM.isNotBlank() && it.panjangLubang > 0 && it.gambarLubangUri != null && it.jumlahLubang > 0
                     }
 
                 }

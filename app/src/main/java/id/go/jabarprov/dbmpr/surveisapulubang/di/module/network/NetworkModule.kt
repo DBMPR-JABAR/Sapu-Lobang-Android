@@ -15,6 +15,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -27,6 +28,8 @@ abstract class NetworkModule {
                 .baseUrl("https://tj.temanjabar.net/api/")
                 .client(
                     OkHttpClient.Builder()
+                        .readTimeout(60, TimeUnit.SECONDS)
+                        .connectTimeout(60, TimeUnit.SECONDS)
                         .addInterceptor(
                             HttpLoggingInterceptor()
                                 .setLevel(HttpLoggingInterceptor.Level.BODY)
@@ -44,6 +47,8 @@ abstract class NetworkModule {
                 .baseUrl("https://tj.temanjabar.net/api/")
                 .client(
                     OkHttpClient.Builder()
+                        .readTimeout(60, TimeUnit.SECONDS)
+                        .connectTimeout(60, TimeUnit.SECONDS)
                         .addInterceptor { chain ->
                             val requestBuilder = chain.request().newBuilder()
                             requestBuilder.addHeader(

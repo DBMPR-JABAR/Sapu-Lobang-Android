@@ -5,6 +5,7 @@ import id.go.jabarprov.dbmpr.surveisapulubang.core.failures.Failure
 import id.go.jabarprov.dbmpr.surveisapulubang.core.usecase.UseCase
 import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.SurveiLubang
 import id.go.jabarprov.dbmpr.surveisapulubang.domain.repositories.SurveiLubangRepository
+import java.io.File
 import java.util.*
 import javax.inject.Inject
 
@@ -17,8 +18,12 @@ class TambahLubang @Inject constructor(private val surveiLubangRepository: Surve
         val kodeLokasi: String,
         val lokasiKm: String,
         val lokasiM: String,
-        val lat: Double? = null,
-        val long: Double? = null
+        val lat: Double,
+        val long: Double,
+        val panjangLubang: Double,
+        val jumlahLubangPerGroup: Int? = null,
+        val kategoriLubang: String,
+        val gambarLubang: File
     )
 
     override suspend fun run(params: Params): Either<Failure, SurveiLubang> {
@@ -29,7 +34,11 @@ class TambahLubang @Inject constructor(private val surveiLubangRepository: Surve
             params.lokasiKm,
             params.lokasiM,
             params.lat,
-            params.long
+            params.long,
+            params.panjangLubang,
+            params.jumlahLubangPerGroup,
+            params.kategoriLubang,
+            params.gambarLubang
         )
     }
 

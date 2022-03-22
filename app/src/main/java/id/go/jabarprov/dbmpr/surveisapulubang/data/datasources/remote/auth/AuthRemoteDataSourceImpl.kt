@@ -5,6 +5,7 @@ import id.go.jabarprov.dbmpr.surveisapulubang.core.exceptions.RemoteDataSourceEx
 import id.go.jabarprov.dbmpr.surveisapulubang.data.datasources.remote.service.AuthAPI
 import id.go.jabarprov.dbmpr.surveisapulubang.data.models.request.LoginRequest
 import id.go.jabarprov.dbmpr.surveisapulubang.data.models.response.LoginResponse
+import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import javax.inject.Inject
 
@@ -23,6 +24,9 @@ class AuthRemoteDataSourceImpl @Inject constructor(private val authAPI: AuthAPI)
                 throw RemoteDataSourceException("Tidak Dapat Login")
             }
         } catch (e: UnknownHostException) {
+            Log.d(TAG, "login: ERROR LOGIN $e")
+            throw RemoteDataSourceException("Tidak Dapat Menghubungi Server")
+        } catch (e: SocketTimeoutException) {
             Log.d(TAG, "login: ERROR LOGIN $e")
             throw RemoteDataSourceException("Tidak Dapat Menghubungi Server")
         } catch (e: Exception) {

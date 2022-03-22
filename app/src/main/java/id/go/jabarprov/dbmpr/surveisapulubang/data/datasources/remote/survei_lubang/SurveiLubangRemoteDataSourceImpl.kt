@@ -7,6 +7,10 @@ import id.go.jabarprov.dbmpr.surveisapulubang.data.models.request.StartSurveiLub
 import id.go.jabarprov.dbmpr.surveisapulubang.data.models.request.SurveiLubangRequest
 import id.go.jabarprov.dbmpr.surveisapulubang.data.models.response.SurveiLubangResponse
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.CalendarUtils
+import id.go.jabarprov.dbmpr.surveisapulubang.utils.extensions.toMultipart
+import id.go.jabarprov.dbmpr.surveisapulubang.utils.extensions.toRequestBody
+import java.io.File
+import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import java.util.*
 import javax.inject.Inject
@@ -29,6 +33,9 @@ class SurveiLubangRemoteDataSourceImpl @Inject constructor(private val surveiLub
         } catch (e: UnknownHostException) {
             Log.d(TAG, "login: ERROR LOGIN $e")
             throw RemoteDataSourceException("Tidak Dapat Menghubungi Server")
+        } catch (e: SocketTimeoutException) {
+            Log.d(TAG, "login: ERROR LOGIN $e")
+            throw RemoteDataSourceException("Tidak Dapat Menghubungi Server")
         } catch (e: Exception) {
             Log.d(TAG, "login: ERROR LOGIN $e")
             throw RemoteDataSourceException("Terjadi Kesalahan Pada Sistem")
@@ -41,21 +48,27 @@ class SurveiLubangRemoteDataSourceImpl @Inject constructor(private val surveiLub
         kodeLokasi: String,
         lokasiKm: String,
         lokasiM: String,
-        lat: Double?,
-        long: Double?
+        lat: Double,
+        long: Double,
+        panjangLubang: Double,
+        jumlahLubangPerGroup: Int?,
+        kategoriLubang: String,
+        gambarLubang: File
     ): SurveiLubangResponse {
         try {
-            val request =
-                SurveiLubangRequest(
-                    CalendarUtils.formatCalendarToString(tanggal),
-                    idRuasJalan,
-                    kodeLokasi,
-                    lokasiKm,
-                    lokasiM,
-                    lat,
-                    long
-                )
-            val response = surveiLubangAPI.tambahLubang(request)
+            val response = surveiLubangAPI.tambahLubang(
+                tanggal = CalendarUtils.formatCalendarToString(tanggal).toRequestBody(),
+                idRuasJalan = idRuasJalan.toRequestBody(),
+                jumlahLubangPerGroup = jumlahLubangPerGroup?.toRequestBody(),
+                panjangLubang = panjangLubang.toRequestBody(),
+                latitude = lat.toRequestBody(),
+                longitude = long.toRequestBody(),
+                kodeLokasi = kodeLokasi.toRequestBody(),
+                lokasiKm = lokasiKm.toRequestBody(),
+                lokasiM = lokasiM.toRequestBody(),
+                kategoriLubang = kategoriLubang.toRequestBody(),
+                gambarLubang = gambarLubang.toMultipart("image")
+            )
             if (response.isSuccessful) {
                 return response.body()?.data!!
             } else {
@@ -63,6 +76,9 @@ class SurveiLubangRemoteDataSourceImpl @Inject constructor(private val surveiLub
                 throw RemoteDataSourceException("Gagal Menambah Lubang Survei")
             }
         } catch (e: UnknownHostException) {
+            Log.d(TAG, "login: ERROR LOGIN $e")
+            throw RemoteDataSourceException("Tidak Dapat Menghubungi Server")
+        } catch (e: SocketTimeoutException) {
             Log.d(TAG, "login: ERROR LOGIN $e")
             throw RemoteDataSourceException("Tidak Dapat Menghubungi Server")
         } catch (e: Exception) {
@@ -77,8 +93,8 @@ class SurveiLubangRemoteDataSourceImpl @Inject constructor(private val surveiLub
         kodeLokasi: String,
         lokasiKm: String,
         lokasiM: String,
-        lat: Double?,
-        long: Double?
+        lat: Double,
+        long: Double
     ): SurveiLubangResponse {
         try {
             val request =
@@ -99,6 +115,9 @@ class SurveiLubangRemoteDataSourceImpl @Inject constructor(private val surveiLub
                 throw RemoteDataSourceException("Gagal Mengurangi Lubang Survei")
             }
         } catch (e: Exception) {
+            Log.d(TAG, "login: ERROR LOGIN $e")
+            throw RemoteDataSourceException("Tidak Dapat Menghubungi Server")
+        } catch (e: SocketTimeoutException) {
             Log.d(TAG, "login: ERROR LOGIN $e")
             throw RemoteDataSourceException("Tidak Dapat Menghubungi Server")
         } catch (e: Exception) {

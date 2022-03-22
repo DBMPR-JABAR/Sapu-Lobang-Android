@@ -1,6 +1,8 @@
 package id.go.jabarprov.dbmpr.surveisapulubang.data.datasources.remote.survei_lubang
 
+import android.net.Uri
 import id.go.jabarprov.dbmpr.surveisapulubang.data.models.response.SurveiLubangResponse
+import java.io.File
 import java.util.*
 
 interface SurveiLubangRemoteDataSource {
@@ -12,8 +14,12 @@ interface SurveiLubangRemoteDataSource {
         kodeLokasi: String,
         lokasiKm: String,
         lokasiM: String,
-        lat: Double? = null,
-        long: Double? = null
+        lat: Double,
+        long: Double,
+        panjangLubang: Double,
+        jumlahLubangPerGroup: Int? = null,
+        kategoriLubang: String,
+        gambarLubang: File
     ): SurveiLubangResponse
 
     suspend fun kurangLubang(
@@ -22,7 +28,7 @@ interface SurveiLubangRemoteDataSource {
         kodeLokasi: String,
         lokasiKm: String,
         lokasiM: String,
-        lat: Double? = null,
-        long: Double? = null
+        lat: Double,
+        long: Double
     ): SurveiLubangResponse
 }

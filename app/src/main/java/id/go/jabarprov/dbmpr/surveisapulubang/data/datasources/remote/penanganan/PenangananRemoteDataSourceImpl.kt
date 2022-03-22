@@ -7,6 +7,7 @@ import id.go.jabarprov.dbmpr.surveisapulubang.data.models.request.ListLubangPena
 import id.go.jabarprov.dbmpr.surveisapulubang.data.models.request.PenangananLubangRequest
 import id.go.jabarprov.dbmpr.surveisapulubang.data.models.response.LubangResponse
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.CalendarUtils
+import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import java.util.*
 import javax.inject.Inject
@@ -31,6 +32,9 @@ class PenangananRemoteDataSourceImpl @Inject constructor(private val penangananA
                 throw RemoteDataSourceException("Gagal Menyimpan Penanganan Lubang")
             }
             return response.body()?.listLubang!! + response.body()?.listFinishedLubang!!
+        } catch (e: SocketTimeoutException) {
+            Log.d(TAG, "login: ERROR LOGIN $e")
+            throw RemoteDataSourceException("Tidak Dapat Menghubungi Server")
         } catch (e: UnknownHostException) {
             Log.d(TAG, "login: ERROR LOGIN $e")
             throw RemoteDataSourceException("Tidak Dapat Menghubungi Server")
@@ -52,6 +56,9 @@ class PenangananRemoteDataSourceImpl @Inject constructor(private val penangananA
             }
             return response.body()?.listLubang!! + response.body()?.listFinishedLubang!!
         } catch (e: UnknownHostException) {
+            Log.d(TAG, "login: ERROR LOGIN $e")
+            throw RemoteDataSourceException("Tidak Dapat Menghubungi Server")
+        } catch (e: SocketTimeoutException) {
             Log.d(TAG, "login: ERROR LOGIN $e")
             throw RemoteDataSourceException("Tidak Dapat Menghubungi Server")
         } catch (e: Exception) {

@@ -55,13 +55,17 @@ class SurveiLubangStore @Inject constructor(
                         isLoading = true
                     )
                     val param = TambahLubang.Params(
-                        state.value.tanggal,
-                        state.value.idRuasJalan,
-                        state.value.kodeLokasi,
-                        state.value.lokasiKm,
-                        state.value.lokasiM,
-                        action.lat,
-                        action.long
+                        tanggal = state.value.tanggal,
+                        idRuasJalan = state.value.idRuasJalan,
+                        kodeLokasi = state.value.kodeLokasi,
+                        lokasiKm = state.value.lokasiKm,
+                        lokasiM = state.value.lokasiM,
+                        lat = action.lat,
+                        long = action.long,
+                        panjangLubang = state.value.panjangLubang,
+                        jumlahLubangPerGroup = state.value.jumlahLubangPerGroup,
+                        kategoriLubang = if (state.value.kategoriLubang == KategoriLubang.SINGLE) "Single" else "Group",
+                        gambarLubang = state.value.gambarLubangFile!!
                     )
                     val result = tambahLubang.run(param)
                     result.either(
@@ -79,7 +83,9 @@ class SurveiLubangStore @Inject constructor(
                                 errorMessage = "",
                                 isSuccess = true,
                                 isLoading = false,
-                                jumlahLubang = surveiLubang.jumlah
+                                jumlahLubang = surveiLubang.jumlah,
+                                gambarLubangFile = null,
+                                gambarLubangUri = null
                             )
                         }
                     )
@@ -108,7 +114,7 @@ class SurveiLubangStore @Inject constructor(
                                 isFailed = true,
                                 errorMessage = failure.message,
                                 isSuccess = false,
-                                isLoading = false
+                                isLoading = false,
                             )
                         },
                         fnR = { surveiLubang ->
@@ -117,7 +123,7 @@ class SurveiLubangStore @Inject constructor(
                                 errorMessage = "",
                                 isSuccess = true,
                                 isLoading = false,
-                                jumlahLubang = surveiLubang.jumlah
+                                jumlahLubang = surveiLubang.jumlah,
                             )
                         }
                     )
@@ -156,7 +162,8 @@ class SurveiLubangStore @Inject constructor(
 
                 is SurveiLubangAction.UpdateFotoLubang -> {
                     state.value = state.value.copy(
-                        gambarLubang = action.gambarLubang
+                        gambarLubangUri = action.gambarLubang,
+                        gambarLubangFile = action.gambarLubangFile
                     )
                 }
 

@@ -3,6 +3,7 @@ package id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.survei_lu
 import android.graphics.Bitmap
 import android.net.Uri
 import id.go.jabarprov.dbmpr.surveisapulubang.core.store.State
+import java.io.File
 import java.util.*
 
 data class SurveiLubangState(
@@ -15,8 +16,9 @@ data class SurveiLubangState(
     val kategoriLubang: KategoriLubang = KategoriLubang.SINGLE,
     val jumlahLubang: Int = 0,
     val jumlahLubangPerGroup: Int = 0,
-    val panjangLubang: Int = 0,
-    val gambarLubang: Uri? = null,
+    val panjangLubang: Double = 0.0,
+    val gambarLubangUri: Uri? = null,
+    val gambarLubangFile: File? = null,
     val isStarted: Boolean = false,
     val ruasJalan: String = "",
     val kodeLokasi: String = "",
