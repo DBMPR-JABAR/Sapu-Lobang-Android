@@ -3,8 +3,11 @@ package id.go.jabarprov.dbmpr.surveisapulubang.data.datasources.remote.survei_lu
 import android.util.Log
 import id.go.jabarprov.dbmpr.surveisapulubang.core.exceptions.RemoteDataSourceException
 import id.go.jabarprov.dbmpr.surveisapulubang.data.datasources.remote.service.SurveiLubangAPI
+import id.go.jabarprov.dbmpr.surveisapulubang.data.models.request.DetailSurveiRequest
 import id.go.jabarprov.dbmpr.surveisapulubang.data.models.request.StartSurveiLubangRequest
 import id.go.jabarprov.dbmpr.surveisapulubang.data.models.request.SurveiLubangRequest
+import id.go.jabarprov.dbmpr.surveisapulubang.data.models.response.DetailSurveiResponse
+import id.go.jabarprov.dbmpr.surveisapulubang.data.models.response.LubangResponse
 import id.go.jabarprov.dbmpr.surveisapulubang.data.models.response.SurveiLubangResponse
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.CalendarUtils
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.extensions.toMultipart
@@ -26,6 +29,31 @@ class SurveiLubangRemoteDataSourceImpl @Inject constructor(private val surveiLub
             val response = surveiLubangAPI.startSurvei(request)
             if (response.isSuccessful) {
                 return response.body()?.data!!
+            } else {
+                Log.d(TAG, "startSurvei: Gagal Memulai Survei")
+                throw RemoteDataSourceException("Gagal Memulai Survei")
+            }
+        } catch (e: UnknownHostException) {
+            Log.d(TAG, "login: ERROR LOGIN $e")
+            throw RemoteDataSourceException("Tidak Dapat Menghubungi Server")
+        } catch (e: SocketTimeoutException) {
+            Log.d(TAG, "login: ERROR LOGIN $e")
+            throw RemoteDataSourceException("Tidak Dapat Menghubungi Server")
+        } catch (e: Exception) {
+            Log.d(TAG, "login: ERROR LOGIN $e")
+            throw RemoteDataSourceException("Terjadi Kesalahan Pada Sistem")
+        }
+    }
+
+    override suspend fun resultSurvei(
+        tanggal: Calendar,
+        idRuasJalan: String
+    ): List<LubangResponse> {
+        try {
+            val request = DetailSurveiRequest(CalendarUtils.formatCalendarToString(tanggal), idRuasJalan)
+            val response = surveiLubangAPI.resultSurvei(request)
+            if (response.isSuccessful) {
+                return response.body()?.data?.listLubang!!
             } else {
                 Log.d(TAG, "startSurvei: Gagal Memulai Survei")
                 throw RemoteDataSourceException("Gagal Memulai Survei")

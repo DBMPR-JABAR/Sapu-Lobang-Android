@@ -56,7 +56,11 @@
         android:id="@+id/entryLubangFragment"
         android:name="id.go.jabarprov.dbmpr.surveisapulubang.presentation.entry_lubang.EntryLubangFragment"
         android:label="fragment_entry_lubang"
-        tools:layout="@layout/fragment_entry_lubang" />
+        tools:layout="@layout/fragment_entry_lubang" >
+        <action
+            android:id="@+id/action_entryLubangFragment_to_detailSurveiFragment"
+            app:destination="@id/detailSurveiFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/entryPenangananFragment"
@@ -91,5 +95,18 @@
             app:argType="string"
             app:nullable="true" />
     </action>
+
+    <fragment
+        android:id="@+id/detailSurveiFragment"
+        android:name="id.go.jabarprov.dbmpr.surveisapulubang.presentation.detail_survei.DetailSurveiFragment"
+        android:label="fragment_detail_survei"
+        tools:layout="@layout/fragment_detail_survei" >
+        <argument
+            android:name="tanggal"
+            app:argType="string" />
+        <argument
+            android:name="idRuasJalan"
+            app:argType="string" />
+    </fragment>
 
 </navigation>

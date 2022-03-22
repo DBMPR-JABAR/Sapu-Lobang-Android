@@ -275,6 +275,15 @@ class EntryLubangFragment : Fragment() {
                     )
                 }
             }
+
+            buttonLihatHasilSurvei.setOnClickListener {
+                findNavController().navigate(
+                    EntryLubangFragmentDirections.actionEntryLubangFragmentToDetailSurveiFragment(
+                        CalendarUtils.formatCalendarToString(surveiLubangViewModel.uiState.value.tanggal),
+                        surveiLubangViewModel.uiState.value.idRuasJalan
+                    )
+                )
+            }
         }
     }
 
@@ -305,7 +314,7 @@ class EntryLubangFragment : Fragment() {
             textViewLabelUploadFoto.visibility = visibility
             constraintLayoutContainerUploadFoto.visibility = visibility
             textViewLabelTambahLubang.visibility = visibility
-//            buttonLihatHasilSurvei.visibility = visibility
+            buttonLihatHasilSurvei.visibility = visibility
 
             if (isVisible) {
                 setVisibilityKategoriLubang(surveiLubangViewModel.uiState.value.kategoriLubang)
@@ -374,6 +383,7 @@ class EntryLubangFragment : Fragment() {
 
                     binding.apply {
                         buttonStart.isEnabled = it.idRuasJalan != ""
+
                         textViewContentTanggal.text =
                             CalendarUtils.formatCalendarToString(it.tanggal)
 

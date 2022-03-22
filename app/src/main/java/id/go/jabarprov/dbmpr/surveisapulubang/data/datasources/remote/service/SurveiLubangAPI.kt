@@ -1,8 +1,10 @@
 package id.go.jabarprov.dbmpr.surveisapulubang.data.datasources.remote.service
 
 import id.go.jabarprov.dbmpr.surveisapulubang.common.data.remote.models.BaseResponse
+import id.go.jabarprov.dbmpr.surveisapulubang.data.models.request.DetailSurveiRequest
 import id.go.jabarprov.dbmpr.surveisapulubang.data.models.request.StartSurveiLubangRequest
 import id.go.jabarprov.dbmpr.surveisapulubang.data.models.request.SurveiLubangRequest
+import id.go.jabarprov.dbmpr.surveisapulubang.data.models.response.DetailSurveiResponse
 import id.go.jabarprov.dbmpr.surveisapulubang.data.models.response.SurveiLubangResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -15,9 +17,6 @@ import retrofit2.http.Part
 interface SurveiLubangAPI {
     @POST("survei-lubang/start")
     suspend fun startSurvei(@Body body: StartSurveiLubangRequest): Response<BaseResponse<SurveiLubangResponse>>
-
-//    @POST("survei-lubang/store/tambah")
-//    suspend fun tambahLubang(@Body body: SurveiLubangRequest): Response<BaseResponse<SurveiLubangResponse>>
 
     @POST("survei-lubang/store/tambah")
     @Multipart
@@ -37,4 +36,7 @@ interface SurveiLubangAPI {
 
     @POST("survei-lubang/store/kurang")
     suspend fun kurangLubang(@Body body: SurveiLubangRequest): Response<BaseResponse<SurveiLubangResponse>>
+
+    @POST("survei-lubang/result")
+    suspend fun resultSurvei(@Body body: DetailSurveiRequest): Response<BaseResponse<DetailSurveiResponse>>
 }
