@@ -14,6 +14,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.datepicker.MaterialDatePicker
 import dagger.hilt.android.AndroidEntryPoint
@@ -92,6 +93,11 @@ class EntryPenangananFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.apply {
+
+            buttonBack.setOnClickListener {
+                findNavController().popBackStack()
+            }
+
             editTextRuasJalan.doOnTextChanged { text, _, _, _ ->
                 penangananViewModel.processAction(PenangananAction.UpdateRuasJalan(text.toString()))
             }
