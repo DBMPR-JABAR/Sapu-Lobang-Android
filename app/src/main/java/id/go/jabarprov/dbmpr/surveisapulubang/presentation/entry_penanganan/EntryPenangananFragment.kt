@@ -28,6 +28,7 @@ import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.penanganan
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.user.AuthViewModel
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.widgets.LoadingDialog
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.CalendarUtils
+import id.go.jabarprov.dbmpr.surveisapulubang.utils.getSapuLubangImageUrl
 import kotlinx.coroutines.launch
 
 private const val TAG = "EntryPenangananFragment"
@@ -75,7 +76,7 @@ class EntryPenangananFragment : Fragment() {
                 if (lubang.urlGambar != null) {
                     findNavController().navigate(
                         AppNavigationDirections.actionGlobalPreviewPhotoFragment(
-                            lubang.urlGambar
+                            getSapuLubangImageUrl(lubang.urlGambar)
                         )
                     )
                 }

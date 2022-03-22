@@ -25,9 +25,9 @@ import id.go.jabarprov.dbmpr.surveisapulubang.presentation.adapter.LubangAdapter
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.rencana.RencanaViewModel
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.rencana.store.RencanaAction
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.user.AuthViewModel
-import id.go.jabarprov.dbmpr.surveisapulubang.presentation.widgets.DetailLubangDialog
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.widgets.LoadingDialog
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.CalendarUtils
+import id.go.jabarprov.dbmpr.surveisapulubang.utils.getSapuLubangImageUrl
 import kotlinx.coroutines.launch
 
 private const val TAG = "EntryRencanaFragment"
@@ -69,7 +69,7 @@ class EntryRencanaFragment : Fragment() {
                 if (it.urlGambar != null) {
                     findNavController().navigate(
                         AppNavigationDirections.actionGlobalPreviewPhotoFragment(
-                            it.urlGambar
+                            getSapuLubangImageUrl(it.urlGambar)
                         )
                     )
                 }

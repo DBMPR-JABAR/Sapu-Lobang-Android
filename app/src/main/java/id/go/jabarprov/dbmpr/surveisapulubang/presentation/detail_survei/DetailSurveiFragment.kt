@@ -23,6 +23,7 @@ import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.detail_sur
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.widgets.KonfirmasiDialog
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.widgets.LoadingDialog
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.CalendarUtils
+import id.go.jabarprov.dbmpr.surveisapulubang.utils.getSapuLubangImageUrl
 import kotlinx.coroutines.launch
 
 private const val TAG = "DetailSurveiFragment"
@@ -57,11 +58,13 @@ class DetailSurveiFragment : Fragment() {
     private val resultSurveiAdapter by lazy {
         ResultSurveiLubangAdapter()
             .setOnDetailButtonClickListener {
-                findNavController().navigate(
-                    AppNavigationDirections.actionGlobalPreviewPhotoFragment(
-                        it.urlGambar
+                if (it.urlGambar != null) {
+                    findNavController().navigate(
+                        AppNavigationDirections.actionGlobalPreviewPhotoFragment(
+                            getSapuLubangImageUrl(it.urlGambar)
+                        )
                     )
-                )
+                }
             }
             .setOnDeleteButtonClickListener {
                 selectedSurveiItem = it
