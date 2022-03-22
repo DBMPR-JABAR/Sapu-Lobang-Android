@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -90,6 +89,10 @@ class DetailSurveiFragment : Fragment() {
 
     private fun initUI() {
         binding.apply {
+            swipeRefeshLayoutHasilSurvei.setOnRefreshListener {
+                loadDataSurvei()
+            }
+
             recyclerViewListLubang.apply {
                 adapter = resultSurveiAdapter
                 layoutManager = LinearLayoutManager(requireContext())
@@ -118,14 +121,17 @@ class DetailSurveiFragment : Fragment() {
 
                     if (it.isSuccess) {
                         loadingDialog.dismiss()
+                        binding.swipeRefeshLayoutHasilSurvei.isRefreshing = false
                         if (it.listLubang.isNullOrEmpty()) {
                             binding.apply {
                                 recyclerViewListLubang.isVisible = false
+                                textViewError.isVisible = false
                                 textViewEmpty.isVisible = true
                             }
                         } else {
                             binding.apply {
                                 recyclerViewListLubang.isVisible = true
+                                textViewError.isVisible = false
                                 textViewEmpty.isVisible = false
                                 resultSurveiAdapter.submitList(it.listLubang)
                             }
@@ -133,7 +139,13 @@ class DetailSurveiFragment : Fragment() {
                     }
 
                     if (it.isFailed) {
-                        Toast.makeText(requireContext(), it.errorMessage, Toast.LENGTH_SHORT).show()
+                        binding.swipeRefeshLayoutHasilSurvei.isRefreshing = false
+                        binding.apply {
+                            recyclerViewListLubang.isVisible = false
+                            textViewEmpty.isVisible = false
+                            textViewError.text = it.errorMessage
+                            textViewError.isVisible = true
+                        }
                         loadingDialog.dismiss()
                     }
 
