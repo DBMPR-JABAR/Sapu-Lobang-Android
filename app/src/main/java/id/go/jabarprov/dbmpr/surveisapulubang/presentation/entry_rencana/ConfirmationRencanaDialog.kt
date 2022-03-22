@@ -13,28 +13,11 @@ import java.util.*
 
 class ConfirmationRencanaDialog : DialogFragment() {
 
-    lateinit var positiveClickListener: (DialogFragment, Calendar, String) -> Unit
+    lateinit var positiveClickListener: (DialogFragment, String) -> Unit
 
     lateinit var negativeClickListener: (DialogFragment) -> Unit
 
     lateinit var binding: LayoutDialogKonfirmasiRencanaBinding
-
-    private val datePickerDialog by lazy {
-        MaterialDatePicker.Builder.datePicker()
-            .setTitleText("Pilih Tanggal Perencanaan")
-            .build()
-            .apply {
-                addOnPositiveButtonClickListener {
-                    selectedDate = CalendarUtils.formatTimeInMilliesToCalendar(it)
-                    dismiss()
-                }
-                addOnNegativeButtonClickListener {
-                    dismiss()
-                }
-            }
-    }
-
-    var selectedDate = Calendar.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,7 +33,6 @@ class ConfirmationRencanaDialog : DialogFragment() {
             buttonIya.setOnClickListener {
                 positiveClickListener(
                     this@ConfirmationRencanaDialog,
-                    selectedDate,
                     editTextPenanganan.text.toString()
                 )
             }
@@ -58,12 +40,6 @@ class ConfirmationRencanaDialog : DialogFragment() {
             buttonBatal.setOnClickListener {
                 negativeClickListener(this@ConfirmationRencanaDialog)
             }
-
-            constraintLayoutTanggal.setOnClickListener {
-                datePickerDialog.show(childFragmentManager, "Date Picker Dialog")
-            }
-
-            textViewContentTanggal.text = CalendarUtils.formatCalendarToString(selectedDate)
 
             editTextPenanganan.doOnTextChanged { text, _, _, _ ->
                 buttonIya.isEnabled = !text.isNullOrBlank()
@@ -79,7 +55,7 @@ class ConfirmationRencanaDialog : DialogFragment() {
         )
     }
 
-    private fun setOnPositiveClickListener(action: (dialog: DialogFragment, tanggal: Calendar, keteranganRencana: String) -> Unit) {
+    private fun setOnPositiveClickListener(action: (dialog: DialogFragment, keteranganRencana: String) -> Unit) {
         positiveClickListener = action
     }
 
@@ -89,7 +65,7 @@ class ConfirmationRencanaDialog : DialogFragment() {
 
     companion object {
         fun create(
-            onPositiveButtonClickListener: (dialog: DialogFragment, tanggal: Calendar, keteranganRencana: String) -> Unit,
+            onPositiveButtonClickListener: (dialog: DialogFragment, keteranganRencana: String) -> Unit,
             onNegativeButtonClickListener: (dialog: DialogFragment) -> Unit
         ): ConfirmationRencanaDialog {
             return ConfirmationRencanaDialog().apply {

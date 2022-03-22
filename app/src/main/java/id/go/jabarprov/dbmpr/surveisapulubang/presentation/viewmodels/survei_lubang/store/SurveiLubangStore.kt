@@ -1,6 +1,7 @@
 package id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.survei_lubang.store
 
 import id.go.jabarprov.dbmpr.surveisapulubang.core.store.Store
+import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.KategoriLubang
 import id.go.jabarprov.dbmpr.surveisapulubang.domain.usecases.KurangLubang
 import id.go.jabarprov.dbmpr.surveisapulubang.domain.usecases.StartSurvei
 import id.go.jabarprov.dbmpr.surveisapulubang.domain.usecases.TambahLubang

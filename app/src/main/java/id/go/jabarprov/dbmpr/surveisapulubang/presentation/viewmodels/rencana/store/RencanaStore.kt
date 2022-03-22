@@ -68,7 +68,7 @@ class RencanaStore @Inject constructor(
                     )
                     val params = UploadRencanaPenangananLubang.Params(
                         action.idLubang,
-                        action.tanggal,
+                        state.value.tanggal,
                         action.keterangan
                     )
                     val result = uploadRencanaPenangananLubang.run(params)

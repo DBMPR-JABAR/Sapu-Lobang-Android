@@ -12,9 +12,6 @@ interface RencanaAPI {
     @POST("rencana-penanganan-lubang/list")
     suspend fun getListLubang(@Body body: ListLubangPerencanaanRequest): Response<ListLubangPerencanaanResponse>
 
-//    @POST("rencana-penanganan-lubang/store")
-//    suspend fun storeRencana(@Body body: RencanaRequest): Response<BaseResponse<Unit>>
-
     @POST("rencana-penanganan-lubang/execute/{id}")
     suspend fun storeRencana(
         @Path("id") id: Int,

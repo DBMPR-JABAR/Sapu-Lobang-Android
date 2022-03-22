@@ -17,12 +17,14 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.datepicker.MaterialDatePicker
 import dagger.hilt.android.AndroidEntryPoint
+import id.go.jabarprov.dbmpr.surveisapulubang.AppNavigationDirections
 import id.go.jabarprov.dbmpr.surveisapulubang.common.presentation.widget.SpaceItemDecoration
 import id.go.jabarprov.dbmpr.surveisapulubang.databinding.FragmentEntryRencanaBinding
 import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.Lubang
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.rencana.RencanaViewModel
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.rencana.store.RencanaAction
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.user.AuthViewModel
+import id.go.jabarprov.dbmpr.surveisapulubang.presentation.widgets.DetailLubangDialog
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.widgets.LoadingDialog
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.CalendarUtils
 import kotlinx.coroutines.launch
@@ -42,11 +44,10 @@ class EntryRencanaFragment : Fragment() {
 
     private val rencanaDialog by lazy {
         ConfirmationRencanaDialog.create(
-            onPositiveButtonClickListener = { dialog, tanggal, keteranganRencana ->
+            onPositiveButtonClickListener = { dialog, keteranganRencana ->
                 rencanaViewModel.processAction(
                     RencanaAction.UploadRencanaLubang(
                         selectedLubang.id,
-                        tanggal,
                         keteranganRencana
                     )
                 )
@@ -58,11 +59,25 @@ class EntryRencanaFragment : Fragment() {
         )
     }
 
+    private val detailLubangDialog by lazy {
+        DetailLubangDialog.create()
+    }
+
     private val lubangAdapter by lazy {
-        LubangAdapter(LubangAdapter.TYPE.RENCANA).setOnItemClickListener {
-            selectedLubang = it
-            rencanaDialog.show(childFragmentManager, "Rencana Dialog")
-        }
+        LubangAdapter(LubangAdapter.TYPE.RENCANA)
+            .setOnItemClickListener {
+                selectedLubang = it
+                rencanaDialog.show(childFragmentManager, "Rencana Dialog")
+            }.setOnDetailItemClickListener {
+                if (it.urlGambar != null) {
+//                    detailLubangDialog.showImage(it.urlGambar, childFragmentManager)
+                    findNavController().navigate(
+                        AppNavigationDirections.actionGlobalPreviewPhotoFragment(
+                            it.urlGambar
+                        )
+                    )
+                }
+            }
     }
 
     private val spaceItemDecoration by lazy { SpaceItemDecoration(32) }

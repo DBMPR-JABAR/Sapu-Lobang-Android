@@ -14,5 +14,14 @@ data class Lubang(
     val lokasiM: Int,
     val idSurvei: Int,
     val idRuasJalan: String,
-    val status: String?
+    val status: String?,
+    val panjang: Double,
+    val jumlah: Int,
+    val kategori: KategoriLubang,
+    val urlGambar: String?
 )
+
+enum class KategoriLubang {
+    SINGLE,
+    GROUP
+}

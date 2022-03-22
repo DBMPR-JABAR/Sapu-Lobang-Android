@@ -2,6 +2,7 @@ package id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.survei_lu
 
 import android.net.Uri
 import id.go.jabarprov.dbmpr.surveisapulubang.core.store.Action
+import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.KategoriLubang
 import java.io.File
 import java.util.*
 

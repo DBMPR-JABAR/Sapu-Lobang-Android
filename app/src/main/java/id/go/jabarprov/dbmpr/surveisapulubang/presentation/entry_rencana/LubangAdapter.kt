@@ -15,6 +15,8 @@ class LubangAdapter(private val type: TYPE) :
 
     private var onItemClickListener: ((Lubang) -> Unit)? = null
 
+    private var onDetailClickListener: ((Lubang) -> Unit)? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LubangItemViewHolder {
         val binding =
             LayoutItemLubangBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -29,7 +31,7 @@ class LubangAdapter(private val type: TYPE) :
 
     override fun onBindViewHolder(holder: LubangItemViewHolder, position: Int) {
         getItem(position)?.let {
-            holder.bind(it, onItemClickListener)
+            holder.bind(it, onItemClickListener, onDetailClickListener)
         }
     }
 
@@ -39,9 +41,19 @@ class LubangAdapter(private val type: TYPE) :
         }
     }
 
+    fun setOnDetailItemClickListener(action: (Lubang) -> Unit): LubangAdapter {
+        return this.apply {
+            onDetailClickListener = action
+        }
+    }
+
     class LubangItemViewHolder(private val binding: LayoutItemLubangBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(lubang: Lubang, action: ((Lubang) -> Unit)?) {
+        fun bind(
+            lubang: Lubang,
+            prosesAction: ((Lubang) -> Unit)?,
+            detailAction: ((Lubang) -> Unit)?
+        ) {
             binding.apply {
                 textViewContentLokasi.text =
                     if (!lubang.kodeLokasi.isNullOrBlank()) {
@@ -53,8 +65,13 @@ class LubangAdapter(private val type: TYPE) :
                     }
                 textViewContentLatitude.text = lubang.latitude.toString()
                 textViewContentLongitude.text = lubang.longitude.toString()
+
+                buttonDetail.setOnClickListener {
+                    detailAction?.invoke(lubang)
+                }
+
                 buttonProses.setOnClickListener {
-                    action?.invoke(lubang)
+                    prosesAction?.invoke(lubang)
                 }
 
                 buttonProses.isEnabled = lubang.status.isNullOrBlank()

@@ -1,8 +1,8 @@
 package id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.survei_lubang.store
 
-import android.graphics.Bitmap
 import android.net.Uri
 import id.go.jabarprov.dbmpr.surveisapulubang.core.store.State
+import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.KategoriLubang
 import java.io.File
 import java.util.*
 
@@ -25,8 +25,3 @@ data class SurveiLubangState(
     val lokasiKm: String = "",
     val lokasiM: String = ""
 ) : State
-
-enum class KategoriLubang {
-    SINGLE,
-    GROUP
-}

@@ -70,4 +70,26 @@
         android:label="fragment_entry_rencana"
         tools:layout="@layout/fragment_entry_rencana" />
 
+    <fragment
+        android:id="@+id/previewPhotoFragment"
+        android:name="id.go.jabarprov.dbmpr.surveisapulubang.presentation.preview_photo.PreviewPhotoFragment"
+        android:label="fragment_preview_photo"
+        tools:layout="@layout/fragment_preview_photo">
+        <argument
+            android:name="imageUrl"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
+
+    <action
+        android:id="@+id/action_global_previewPhotoFragment"
+        app:destination="@id/previewPhotoFragment">
+        <argument
+            android:name="imageUrl"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+    </action>
+
 </navigation>
