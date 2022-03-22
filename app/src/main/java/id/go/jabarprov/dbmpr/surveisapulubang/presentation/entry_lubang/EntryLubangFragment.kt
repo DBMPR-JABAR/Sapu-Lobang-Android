@@ -305,7 +305,7 @@ class EntryLubangFragment : Fragment() {
             textViewLabelUploadFoto.visibility = visibility
             constraintLayoutContainerUploadFoto.visibility = visibility
             textViewLabelTambahLubang.visibility = visibility
-            buttonLihatHasilSurvei.visibility = visibility
+//            buttonLihatHasilSurvei.visibility = visibility
 
             if (isVisible) {
                 setVisibilityKategoriLubang(surveiLubangViewModel.uiState.value.kategoriLubang)
