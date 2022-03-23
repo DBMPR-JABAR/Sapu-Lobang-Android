@@ -89,7 +89,9 @@ class SurveiLubangStore @Inject constructor(
                                 gambarLubangFile = null,
                                 gambarLubangUri = null,
                                 keteranganLubang = null,
-                                panjangLubang = 0.0
+                                panjangLubang = 0.0,
+                                jumlahLubangPerGroup = 0,
+                                isResetting = true
                             )
                         }
                     )
@@ -190,6 +192,11 @@ class SurveiLubangStore @Inject constructor(
                 is SurveiLubangAction.UpdateKeterangan -> {
                     state.value = state.value.copy(
                         keteranganLubang = action.keterangan
+                    )
+                }
+                SurveiLubangAction.InputLubangResetted -> {
+                    state.value = state.value.copy(
+                        isResetting = false
                     )
                 }
             }

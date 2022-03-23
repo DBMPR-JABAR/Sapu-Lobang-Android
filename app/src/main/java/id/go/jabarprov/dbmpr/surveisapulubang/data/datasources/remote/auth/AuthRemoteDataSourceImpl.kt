@@ -21,7 +21,7 @@ class AuthRemoteDataSourceImpl @Inject constructor(private val authAPI: AuthAPI)
                 return response.body()?.data!!
             } else {
                 Log.d(TAG, "login: ERROR LOGIN")
-                throw RemoteDataSourceException("Tidak Dapat Login")
+                throw RemoteDataSourceException("Tidak Dapat Login Atau User Tidak Ditemukkan")
             }
         } catch (e: UnknownHostException) {
             Log.d(TAG, "login: ERROR LOGIN $e")

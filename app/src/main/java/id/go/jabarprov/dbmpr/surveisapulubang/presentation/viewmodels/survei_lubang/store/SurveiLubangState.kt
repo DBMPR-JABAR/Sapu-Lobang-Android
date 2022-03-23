@@ -24,5 +24,6 @@ data class SurveiLubangState(
     val kodeLokasi: String = "",
     val lokasiKm: String = "",
     val lokasiM: String = "",
-    val keteranganLubang: String? = null
+    val keteranganLubang: String? = null,
+    val isResetting: Boolean = false
 ) : State

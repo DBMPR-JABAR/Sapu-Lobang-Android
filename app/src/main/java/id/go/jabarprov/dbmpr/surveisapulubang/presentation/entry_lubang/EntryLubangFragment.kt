@@ -301,6 +301,14 @@ class EntryLubangFragment : Fragment() {
         takePictureLauncher.launch(photoUri)
     }
 
+    private fun clearInputLubang() {
+        binding.apply {
+            editTextKeterangan.text = null
+            editTextPanjangLubang.text = null
+            editTextJumlahLubangGroup.text = null
+        }
+    }
+
     private fun setVisibilityFormEntry(isVisible: Boolean) {
         val visibility = if (isVisible) View.VISIBLE else View.GONE
         binding.apply {
@@ -383,6 +391,11 @@ class EntryLubangFragment : Fragment() {
                     if (it.isFailed) {
                         Toast.makeText(requireContext(), it.errorMessage, Toast.LENGTH_SHORT).show()
                         loadingDialog.dismiss()
+                    }
+
+                    if (it.isResetting) {
+                        clearInputLubang()
+                        surveiLubangViewModel.processAction(SurveiLubangAction.InputLubangResetted)
                     }
 
                     setVisibilityFormEntry(it.isStarted)

@@ -36,4 +36,6 @@ sealed class SurveiLubangAction : Action {
         SurveiLubangAction()
 
     data class UpdateKeterangan(val keterangan: String) : SurveiLubangAction()
+
+    object InputLubangResetted : SurveiLubangAction()
 }
