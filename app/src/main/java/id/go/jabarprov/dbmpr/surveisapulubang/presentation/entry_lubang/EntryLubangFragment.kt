@@ -326,6 +326,8 @@ class EntryLubangFragment : Fragment() {
             textViewLabelUploadFoto.visibility = visibility
             constraintLayoutContainerUploadFoto.visibility = visibility
             textViewLabelKeterangan.visibility = visibility
+            textViewLabelTotalPanjang.visibility = visibility
+            constraintLayoutContainerTotalPanjangLubang.visibility = visibility
             textFieldKeterangan.visibility = visibility
             textViewLabelTambahLubang.visibility = visibility
             buttonLihatHasilSurvei.visibility = visibility
@@ -410,7 +412,9 @@ class EntryLubangFragment : Fragment() {
                         buttonPilihTanggal.isVisible = !it.isStarted
                         buttonStart.isVisible = !it.isStarted
 
-                        textViewJumlahLubangSingle.text = it.jumlahLubang.toString()
+                        textViewJumlahLubangSingle.text = it.jumlahLubangTotal.toString()
+
+                        editTextTotalPanjangLubang.setText(it.panjangLubangTotal.toString())
 
                         imageViewLubang.setImageURI(it.gambarLubangUri)
                         imageViewLubang.isVisible = it.gambarLubangUri != null
@@ -431,7 +435,7 @@ class EntryLubangFragment : Fragment() {
                             it.isStarted && it.kodeLokasi.isNotBlank() && it.lokasiKm.isNotBlank() && it.lokasiM.isNotBlank() && it.panjangLubang > 0 && it.gambarLubangUri != null && it.jumlahLubangPerGroup > 0
 
                         buttonKurangLubangSingle.isEnabled =
-                            it.isStarted && it.kodeLokasi.isNotBlank() && it.lokasiKm.isNotBlank() && it.lokasiM.isNotBlank() && it.panjangLubang > 0 && it.jumlahLubang > 0
+                            it.isStarted && it.kodeLokasi.isNotBlank() && it.lokasiKm.isNotBlank() && it.lokasiM.isNotBlank() && it.panjangLubangTotal > 0 && it.jumlahLubangTotal > 0
                     }
 
                 }

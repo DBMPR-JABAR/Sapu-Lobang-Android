@@ -4,5 +4,6 @@ import java.util.*
 
 data class SurveiLubang(
     val tanggal: Calendar,
-    val jumlah: Int
+    val jumlahTotal: Int,
+    val panjangTotal: Double,
 )

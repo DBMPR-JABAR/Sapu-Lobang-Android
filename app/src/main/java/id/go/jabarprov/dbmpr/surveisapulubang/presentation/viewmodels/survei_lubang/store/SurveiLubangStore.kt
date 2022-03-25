@@ -41,7 +41,8 @@ class SurveiLubangStore @Inject constructor(
                                 errorMessage = "",
                                 isSuccess = true,
                                 isLoading = false,
-                                jumlahLubang = surveiLubang.jumlah,
+                                jumlahLubangTotal = surveiLubang.jumlahTotal,
+                                panjangLubangTotal = surveiLubang.panjangTotal,
                                 isStarted = true
                             )
                         }
@@ -85,7 +86,8 @@ class SurveiLubangStore @Inject constructor(
                                 errorMessage = "",
                                 isSuccess = true,
                                 isLoading = false,
-                                jumlahLubang = surveiLubang.jumlah,
+                                jumlahLubangTotal = surveiLubang.jumlahTotal,
+                                panjangLubangTotal = surveiLubang.panjangTotal,
                                 gambarLubangFile = null,
                                 gambarLubangUri = null,
                                 keteranganLubang = null,
@@ -129,7 +131,8 @@ class SurveiLubangStore @Inject constructor(
                                 errorMessage = "",
                                 isSuccess = true,
                                 isLoading = false,
-                                jumlahLubang = surveiLubang.jumlah,
+                                jumlahLubangTotal = surveiLubang.jumlahTotal,
+                                panjangLubangTotal = surveiLubang.panjangTotal
                             )
                         }
                     )

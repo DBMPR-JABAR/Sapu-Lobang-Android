@@ -9,7 +9,8 @@ abstract class SurveiLubangDataMapper {
         fun convertSurveiLubangDataResponseToEntity(surveiLubangResponse: SurveiLubangResponse): SurveiLubang {
             return SurveiLubang(
                 CalendarUtils.formatStringToCalendar(surveiLubangResponse.tanggal),
-                surveiLubangResponse.jumlah
+                surveiLubangResponse.jumlah,
+                surveiLubangResponse.panjang
             )
         }
     }

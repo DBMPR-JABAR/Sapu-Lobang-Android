@@ -79,6 +79,9 @@ class LubangAdapter(private val type: TYPE) :
                     prosesAction?.invoke(lubang)
                 }
 
+                buttonDetail.text =
+                    if (lubang.status == "Selesai") "Foto Penanganan" else "Foto Lubang"
+
                 if (type == TYPE.RENCANA) {
                     buttonProses.isEnabled = lubang.status.isNullOrBlank()
                     if (!lubang.status.isNullOrBlank()) {
