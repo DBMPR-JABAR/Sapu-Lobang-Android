@@ -69,7 +69,8 @@ class PenangananStore @Inject constructor(
                         UploadPenangananLubang.Params(
                             action.idLubang,
                             state.value.tanggal,
-                            action.keterangan
+                            action.keterangan,
+                            action.gambarPenanganan
                         )
                     val result = uploadPenangananLubang.run(param)
                     result.either(

@@ -46,11 +46,12 @@ class EntryPenangananFragment : Fragment() {
 
     private val confirmationDialog by lazy {
         ConfirmationPenangananDialog.create(
-            onPositiveButtonClickListener = { dialog, keteranganPenanganan ->
+            onPositiveButtonClickListener = { dialog, keteranganPenanganan, gambarPenanganan, _ ->
                 penangananViewModel.processAction(
                     PenangananAction.StorePenangananLubang(
                         selectedLubang.id,
-                        keteranganPenanganan
+                        keteranganPenanganan,
+                        gambarPenanganan
                     )
                 )
                 dialog.dismiss()
@@ -73,10 +74,10 @@ class EntryPenangananFragment : Fragment() {
                     }
                 }.show(childFragmentManager, "Penanganan Dialog")
             }.setOnDetailItemClickListener { lubang ->
-                if (lubang.urlGambar != null) {
+                if (lubang.urlGambarPenanganan != null) {
                     findNavController().navigate(
                         AppNavigationDirections.actionGlobalPreviewPhotoFragment(
-                            getSapuLubangImageUrl(lubang.urlGambar)
+                            getSapuLubangImageUrl(lubang.urlGambarPenanganan)
                         )
                     )
                 }

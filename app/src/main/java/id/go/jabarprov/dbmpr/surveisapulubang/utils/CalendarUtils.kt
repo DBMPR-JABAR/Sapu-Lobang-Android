@@ -5,8 +5,8 @@ import java.util.*
 
 abstract class CalendarUtils {
     companion object {
-        fun formatCalendarToString(calendar: Calendar): String {
-            val format = SimpleDateFormat("yyyy-MM-dd", Locale("en", "US"))
+        fun formatCalendarToString(calendar: Calendar, pattern: String = "yyyy-MM-dd"): String {
+            val format = SimpleDateFormat(pattern, Locale("en", "US"))
             return format.format(calendar.timeInMillis)
         }
 

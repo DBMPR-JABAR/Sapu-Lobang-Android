@@ -1,16 +1,17 @@
 package id.go.jabarprov.dbmpr.surveisapulubang.domain.repositories
 
-import id.go.jabarprov.dbmpr.surveisapulubang.core.None
 import id.go.jabarprov.dbmpr.surveisapulubang.core.either.Either
 import id.go.jabarprov.dbmpr.surveisapulubang.core.failures.Failure
 import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.Lubang
+import java.io.File
 import java.util.*
 
 interface PenangananRepository {
     suspend fun storePenanganan(
         idLubang: Int,
         tanggal: Calendar,
-        keterangan: String
+        keterangan: String,
+        gambarPenanganan: File,
     ): Either<Failure, List<Lubang>>
 
     suspend fun getListLubang(

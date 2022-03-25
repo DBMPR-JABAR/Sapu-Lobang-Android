@@ -5,7 +5,12 @@ import id.go.jabarprov.dbmpr.surveisapulubang.utils.CalendarUtils
 import java.io.File
 import java.util.*
 
-fun Context.createPictureCacheFile(fileName: String = CalendarUtils.formatCalendarToString(Calendar.getInstance())): File {
+fun Context.createPictureCacheFile(
+    fileName: String = CalendarUtils.formatCalendarToString(
+        Calendar.getInstance(),
+        pattern = "yyyy_MM_dd_HH_mm_ss"
+    )
+): File {
     val cachePictureDir = File(cacheDir, "Pictures")
     if (!cachePictureDir.exists()) {
         cachePictureDir.mkdirs()

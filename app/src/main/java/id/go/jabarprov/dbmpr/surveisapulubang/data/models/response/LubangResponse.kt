@@ -6,6 +6,7 @@ data class LubangResponse(
     val icon: String,
     val id: Int,
     val image: String,
+    val image_penanganan: String?,
     val jumlah: Int,
     val kategori: String,
     val lat: String,

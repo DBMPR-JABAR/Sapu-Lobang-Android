@@ -10,6 +10,7 @@ import id.go.jabarprov.dbmpr.surveisapulubang.data.datasources.remote.penanganan
 import id.go.jabarprov.dbmpr.surveisapulubang.data.mapper.LubangDataMapper
 import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.Lubang
 import id.go.jabarprov.dbmpr.surveisapulubang.domain.repositories.PenangananRepository
+import java.io.File
 import java.util.*
 import javax.inject.Inject
 
@@ -18,10 +19,16 @@ class PenangananRepositoryImpl @Inject constructor(private val penangananRemoteD
     override suspend fun storePenanganan(
         idLubang: Int,
         tanggal: Calendar,
-        keterangan: String
+        keterangan: String,
+        gambarPenanganan: File
     ): Either<Failure, List<Lubang>> {
         return try {
-            val response = penangananRemoteDataSource.storePenanganan(idLubang, tanggal, keterangan)
+            val response = penangananRemoteDataSource.storePenanganan(
+                idLubang,
+                tanggal,
+                keterangan,
+                gambarPenanganan
+            )
             LubangDataMapper.convertListOfLubangDataResponseToListOfEntity(response).toSuccess()
         } catch (e: RemoteDataSourceException) {
             RemoteDataSourceFailure(e.message!!).toError()

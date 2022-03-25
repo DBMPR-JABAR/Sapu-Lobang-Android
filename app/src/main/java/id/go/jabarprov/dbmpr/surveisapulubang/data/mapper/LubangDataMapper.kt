@@ -29,7 +29,8 @@ abstract class LubangDataMapper {
                 jumlah = lubang.jumlah,
                 kategori = if (lubang.kategori == "Group") KategoriLubang.GROUP else KategoriLubang.SINGLE,
                 urlGambar = lubang.image,
-                keterangan = lubang.keterangan
+                keterangan = lubang.keterangan,
+                urlGambarPenanganan = lubang.imagePenanganan
             )
         }
 

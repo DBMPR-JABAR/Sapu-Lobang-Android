@@ -7,6 +7,9 @@ import id.go.jabarprov.dbmpr.surveisapulubang.data.models.request.ListLubangPena
 import id.go.jabarprov.dbmpr.surveisapulubang.data.models.request.PenangananLubangRequest
 import id.go.jabarprov.dbmpr.surveisapulubang.data.models.response.LubangResponse
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.CalendarUtils
+import id.go.jabarprov.dbmpr.surveisapulubang.utils.extensions.toMultipart
+import id.go.jabarprov.dbmpr.surveisapulubang.utils.extensions.toRequestBody
+import java.io.File
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import java.util.*
@@ -19,14 +22,15 @@ class PenangananRemoteDataSourceImpl @Inject constructor(private val penangananA
     override suspend fun storePenanganan(
         idLubang: Int,
         tanggal: Calendar,
-        keterangan: String
+        keterangan: String,
+        gambarPenanganan: File
     ): List<LubangResponse> {
         try {
-            val request = PenangananLubangRequest(keterangan)
             val response = penangananAPI.storePenanganan(
                 idLubang,
                 CalendarUtils.formatCalendarToString(tanggal),
-                request
+                keterangan.toRequestBody(),
+                gambarPenanganan.toMultipart("image_penanganan")
             )
             if (!response.isSuccessful) {
                 throw RemoteDataSourceException("Gagal Menyimpan Penanganan Lubang")

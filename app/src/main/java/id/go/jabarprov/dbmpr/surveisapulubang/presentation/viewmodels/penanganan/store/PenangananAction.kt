@@ -1,7 +1,7 @@
 package id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.penanganan.store
 
 import id.go.jabarprov.dbmpr.surveisapulubang.core.store.Action
-import java.util.*
+import java.io.File
 
 sealed class PenangananAction : Action {
     data class UpdateRuasJalan(val ruasJalan: String) : PenangananAction()
@@ -9,6 +9,7 @@ sealed class PenangananAction : Action {
     object GetListLubang : PenangananAction()
     data class StorePenangananLubang(
         val idLubang: Int,
-        val keterangan: String
+        val keterangan: String,
+        val gambarPenanganan: File,
     ) : PenangananAction()
 }

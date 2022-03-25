@@ -19,7 +19,8 @@ data class Lubang(
     val jumlah: Int,
     val keterangan: String?,
     val kategori: KategoriLubang,
-    val urlGambar: String?
+    val urlGambar: String?,
+    val urlGambarPenanganan: String?,
 )
 
 enum class KategoriLubang {
