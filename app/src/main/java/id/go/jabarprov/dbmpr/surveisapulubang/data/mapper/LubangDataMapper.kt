@@ -30,7 +30,7 @@ abstract class LubangDataMapper {
                 kategori = if (lubang.kategori == "Group") KategoriLubang.GROUP else KategoriLubang.SINGLE,
                 urlGambar = lubang.image,
                 keterangan = lubang.keterangan,
-                urlGambarPenanganan = lubang.imagePenanganan
+                urlGambarPenanganan = lubang.image_penanganan
             )
         }
 

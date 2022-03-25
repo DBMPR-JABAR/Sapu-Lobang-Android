@@ -122,7 +122,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="4dp"
-            android:text="Detail"
+            android:text="Lihat Foto"
             app:layout_constraintEnd_toStartOf="@+id/button_proses"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
