@@ -52,7 +52,11 @@ class AuthLocalDataSourceImpl @Inject constructor(private val dataStorePreferenc
     }
 
     override suspend fun clearToken() {
-        dataStorePreference.deleteString(TOKEN_KEY)
+        dataStorePreference.apply {
+            deleteString(TOKEN_KEY)
+            deleteString(TOKEN_EXPIRED_DATE_KEY)
+            deleteString(USER_KEY)
+        }
     }
 
     companion object {
