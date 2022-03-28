@@ -9,12 +9,15 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import coil.load
 import id.go.jabarprov.dbmpr.surveisapulubang.databinding.FragmentPreviewPhotoBinding
+import id.go.jabarprov.dbmpr.surveisapulubang.presentation.widgets.LoadingDialog
 
 class PreviewPhotoFragment : Fragment() {
 
     private val args: PreviewPhotoFragmentArgs by navArgs()
 
     private lateinit var binding: FragmentPreviewPhotoBinding
+
+    private val loadingDialog by lazy { LoadingDialog.create() }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,7 +30,19 @@ class PreviewPhotoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.apply {
             if (args.imageUrl != null) {
-                imageViewLubang.load(args.imageUrl)
+                imageViewLubang.load(args.imageUrl) {
+                    listener(
+                        onStart = {
+                            loadingDialog.show(childFragmentManager, "Loading Dialog")
+                        },
+                        onSuccess = { _, _ ->
+                            loadingDialog.dismiss()
+                        },
+                        onError = { _, _ ->
+                            loadingDialog.dismiss()
+                        },
+                    )
+                }
             }
 
             buttonBack.setOnClickListener {
