@@ -15,6 +15,11 @@
             app:destination="@id/loginFragment"
             app:popUpTo="@id/splashScreenFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_splashScreenFragment_to_dashboardFragment"
+            app:destination="@id/dashboardFragment"
+            app:popUpTo="@id/splashScreenFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
@@ -56,7 +61,7 @@
         android:id="@+id/entryLubangFragment"
         android:name="id.go.jabarprov.dbmpr.surveisapulubang.presentation.entry_lubang.EntryLubangFragment"
         android:label="fragment_entry_lubang"
-        tools:layout="@layout/fragment_entry_lubang" >
+        tools:layout="@layout/fragment_entry_lubang">
         <action
             android:id="@+id/action_entryLubangFragment_to_detailSurveiFragment"
             app:destination="@id/detailSurveiFragment" />
@@ -100,7 +105,7 @@
         android:id="@+id/detailSurveiFragment"
         android:name="id.go.jabarprov.dbmpr.surveisapulubang.presentation.detail_survei.DetailSurveiFragment"
         android:label="fragment_detail_survei"
-        tools:layout="@layout/fragment_detail_survei" >
+        tools:layout="@layout/fragment_detail_survei">
         <argument
             android:name="tanggal"
             app:argType="string" />

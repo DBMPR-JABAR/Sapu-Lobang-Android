@@ -7,5 +7,6 @@ import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.User
 
 interface AuthenticationRepository {
     suspend fun login(username: String, password: String): Either<Failure, User>
+    suspend fun checkToken(): Either<Failure, User>
     suspend fun logout(): Either<Failure, None>
 }

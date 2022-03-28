@@ -16,6 +16,7 @@ import id.go.jabarprov.dbmpr.surveisapulubang.databinding.FragmentLoginBinding
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.user.AuthViewModel
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.user.store.AuthAction
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.widgets.LoadingDialog
+import id.go.jabarprov.dbmpr.surveisapulubang.utils.runSafety
 import kotlinx.coroutines.launch
 
 private const val TAG = "LoginFragment"
@@ -63,11 +64,15 @@ class LoginFragment : Fragment() {
 
                     if (it.isFailed) {
                         Toast.makeText(requireContext(), it.errorMessage, Toast.LENGTH_SHORT).show()
-                        loadingDialog.dismiss()
+                        runSafety {
+                            loadingDialog.dismiss()
+                        }
                     }
 
                     if (it.isSuccess && it.user != null) {
-                        loadingDialog.dismiss()
+                        runSafety {
+                            loadingDialog.dismiss()
+                        }
                         val goToDashboardAction =
                             LoginFragmentDirections.actionLoginFragmentToDashboardFragment()
                         findNavController().navigate(goToDashboardAction)

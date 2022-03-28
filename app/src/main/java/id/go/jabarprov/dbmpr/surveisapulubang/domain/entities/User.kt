@@ -1,5 +1,7 @@
 package id.go.jabarprov.dbmpr.surveisapulubang.domain.entities
 
+import java.util.*
+
 data class User(
     val id: Int,
     val nama: String,
@@ -12,5 +14,6 @@ data class User(
     val uptd: String?,
     val idUptd: Int?,
     val ruasJalan: List<Ruas>,
-    val token: String
+    val token: String,
+    val tokenExpiredDate: Calendar
 )

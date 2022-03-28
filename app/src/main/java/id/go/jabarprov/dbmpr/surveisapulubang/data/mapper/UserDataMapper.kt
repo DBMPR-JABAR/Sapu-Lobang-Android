@@ -2,6 +2,8 @@ package id.go.jabarprov.dbmpr.surveisapulubang.data.mapper
 
 import id.go.jabarprov.dbmpr.surveisapulubang.data.models.response.LoginResponse
 import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.User
+import id.go.jabarprov.dbmpr.surveisapulubang.utils.extensions.addSeconds
+import java.util.*
 
 abstract class UserDataMapper {
     companion object {
@@ -19,7 +21,8 @@ abstract class UserDataMapper {
                 uptd = userResponse.internalRole.uptd,
                 idUptd = userResponse.uptdId,
                 ruasJalan = RuasDataMapper.convertListOfRuasDataResponseToListOfEntity(userResponse.ruas),
-                token = loginResponse.token.accessToken
+                token = loginResponse.token.accessToken,
+                tokenExpiredDate = Calendar.getInstance().addSeconds(loginResponse.token.expiresIn)
             )
         }
     }
