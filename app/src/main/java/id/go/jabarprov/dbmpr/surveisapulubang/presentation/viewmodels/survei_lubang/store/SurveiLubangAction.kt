@@ -3,6 +3,9 @@ package id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.survei_lu
 import android.net.Uri
 import id.go.jabarprov.dbmpr.surveisapulubang.core.store.Action
 import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.KategoriLubang
+import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.Kedalaman
+import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.Lajur
+import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.Ukuran
 import java.io.File
 import java.util.*
 
@@ -38,4 +41,10 @@ sealed class SurveiLubangAction : Action {
     data class UpdateKeterangan(val keterangan: String) : SurveiLubangAction()
 
     object InputLubangResetted : SurveiLubangAction()
+
+    data class UpdateLajur(val lajur: Lajur) : SurveiLubangAction()
+
+    data class UpdateUkuran(val ukuran: Ukuran) : SurveiLubangAction()
+
+    data class UpdateKedalaman(val kedalaman: Kedalaman) : SurveiLubangAction()
 }

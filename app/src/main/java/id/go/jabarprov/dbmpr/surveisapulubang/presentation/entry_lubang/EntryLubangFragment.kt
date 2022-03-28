@@ -28,6 +28,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import id.go.jabarprov.dbmpr.surveisapulubang.R
 import id.go.jabarprov.dbmpr.surveisapulubang.databinding.FragmentEntryLubangBinding
 import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.KategoriLubang
+import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.Kedalaman
+import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.Lajur
+import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.Ukuran
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.survei_lubang.SurveiLubangViewModel
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.survei_lubang.store.SurveiLubangAction
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.user.AuthViewModel
@@ -206,7 +209,7 @@ class EntryLubangFragment : Fragment() {
                 )
             }
 
-            radioGroupKategori.setOnCheckedChangeListener { radioGroup, checkedId ->
+            radioGroupKategori.setOnCheckedChangeListener { _, checkedId ->
                 if (checkedId == R.id.radio_button_kategori_single) {
                     surveiLubangViewModel.processAction(
                         SurveiLubangAction.UpdateKategoriLubang(
@@ -217,6 +220,54 @@ class EntryLubangFragment : Fragment() {
                     surveiLubangViewModel.processAction(
                         SurveiLubangAction.UpdateKategoriLubang(
                             KategoriLubang.GROUP
+                        )
+                    )
+                }
+            }
+
+            radioGroupLajur.setOnCheckedChangeListener { _, checkedId ->
+                if (checkedId == R.id.radio_button_kiri) {
+                    surveiLubangViewModel.processAction(
+                        SurveiLubangAction.UpdateLajur(
+                            Lajur.KIRI
+                        )
+                    )
+                } else {
+                    surveiLubangViewModel.processAction(
+                        SurveiLubangAction.UpdateLajur(
+                            Lajur.KANAN
+                        )
+                    )
+                }
+            }
+
+            radioGroupUkuranLubang.setOnCheckedChangeListener { _, checkedId ->
+                if (checkedId == R.id.radio_button_kecil) {
+                    surveiLubangViewModel.processAction(
+                        SurveiLubangAction.UpdateUkuran(
+                            Ukuran.KECIL
+                        )
+                    )
+                } else {
+                    surveiLubangViewModel.processAction(
+                        SurveiLubangAction.UpdateUkuran(
+                            Ukuran.BESAR
+                        )
+                    )
+                }
+            }
+
+            radioGroupKedalamanLubang.setOnCheckedChangeListener { _, checkedId ->
+                if (checkedId == R.id.radio_button_dangkal) {
+                    surveiLubangViewModel.processAction(
+                        SurveiLubangAction.UpdateKedalaman(
+                            Kedalaman.DANGKAL
+                        )
+                    )
+                } else {
+                    surveiLubangViewModel.processAction(
+                        SurveiLubangAction.UpdateKedalaman(
+                            Kedalaman.DALAM
                         )
                     )
                 }
@@ -306,6 +357,9 @@ class EntryLubangFragment : Fragment() {
             editTextKeterangan.text = null
             editTextPanjangLubang.text = null
             editTextJumlahLubangGroup.text = null
+            radioGroupLajur.clearCheck()
+            radioGroupUkuranLubang.clearCheck()
+            radioGroupKedalamanLubang.clearCheck()
         }
     }
 
@@ -331,10 +385,10 @@ class EntryLubangFragment : Fragment() {
             textFieldKeterangan.visibility = visibility
             textViewLabelTambahLubang.visibility = visibility
             buttonLihatHasilSurvei.visibility = visibility
-            textViewLabelPosisiLubang.visibility = visibility
-            radioGroupPosisiLubang.visibility = visibility
-            textViewLabelDiameterLubang.visibility = visibility
-            radioGroupDiameterLubang.visibility = visibility
+            textViewLabelLajur.visibility = visibility
+            radioGroupLajur.visibility = visibility
+            textViewLabelUkuranLubang.visibility = visibility
+            radioGroupUkuranLubang.visibility = visibility
             textViewNoteDiameterLubang.visibility = visibility
             textViewLabelKedalamanLubang.visibility = visibility
             radioGroupKedalamanLubang.visibility = visibility
@@ -437,10 +491,10 @@ class EntryLubangFragment : Fragment() {
                          * */
 
                         buttonTambahLubangSingle.isEnabled =
-                            it.isStarted && it.kodeLokasi.isNotBlank() && it.lokasiKm.isNotBlank() && it.lokasiM.isNotBlank() && it.panjangLubang > 0 && it.gambarLubangUri != null
+                            it.isStarted && it.kodeLokasi.isNotBlank() && it.lokasiKm.isNotBlank() && it.lokasiM.isNotBlank() && it.panjangLubang > 0 && it.gambarLubangUri != null && it.lajur != null && it.ukuran != null && it.kedalaman != null
 
                         buttonTambahLubangGroup.isEnabled =
-                            it.isStarted && it.kodeLokasi.isNotBlank() && it.lokasiKm.isNotBlank() && it.lokasiM.isNotBlank() && it.panjangLubang > 0 && it.gambarLubangUri != null && it.jumlahLubangPerGroup > 0
+                            it.isStarted && it.kodeLokasi.isNotBlank() && it.lokasiKm.isNotBlank() && it.lokasiM.isNotBlank() && it.panjangLubang > 0 && it.gambarLubangUri != null && it.jumlahLubangPerGroup > 0 && it.lajur != null && it.ukuran != null && it.kedalaman != null
 
                         buttonKurangLubangSingle.isEnabled =
                             it.isStarted && it.kodeLokasi.isNotBlank() && it.lokasiKm.isNotBlank() && it.lokasiM.isNotBlank() && it.panjangLubangTotal > 0 && it.jumlahLubangTotal > 0

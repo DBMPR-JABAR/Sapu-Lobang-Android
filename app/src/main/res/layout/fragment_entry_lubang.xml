@@ -450,32 +450,31 @@
             <!--    Radio Button Kiri Kanan Lubang    -->
 
             <TextView
-                android:id="@+id/text_view_label_posisi_lubang"
+                android:id="@+id/text_view_label_lajur"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Posisi Lubang"
+                android:text="Lajur"
                 android:textAppearance="?textAppearanceSubtitle1"
                 app:layout_constraintStart_toStartOf="@+id/text_view_label_ruas_jalan"
                 app:layout_constraintTop_toBottomOf="@+id/constraint_layout_container_upload_foto"
                 tools:visibility="visible" />
 
             <RadioGroup
-                android:id="@+id/radio_group_posisi_lubang"
+                android:id="@+id/radio_group_lajur"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:orientation="horizontal"
-                app:layout_constraintTop_toBottomOf="@id/text_view_label_posisi_lubang">
+                app:layout_constraintTop_toBottomOf="@id/text_view_label_lajur">
 
                 <RadioButton
                     android:id="@+id/radio_button_kiri"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:checked="true"
                     android:text="Kiri" />
 
                 <RadioButton
@@ -492,25 +491,25 @@
             <!--    Radio Button Kiri Kanan Lubang    -->
 
             <TextView
-                android:id="@+id/text_view_label_diameter_lubang"
+                android:id="@+id/text_view_label_ukuran_lubang"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Diameter Lubang"
+                android:text="Ukuran Lubang"
                 android:textAppearance="?textAppearanceSubtitle1"
                 app:layout_constraintStart_toStartOf="@+id/text_view_label_ruas_jalan"
-                app:layout_constraintTop_toBottomOf="@+id/radio_group_posisi_lubang"
+                app:layout_constraintTop_toBottomOf="@+id/radio_group_lajur"
                 tools:visibility="visible" />
 
             <RadioGroup
-                android:id="@+id/radio_group_diameter_lubang"
+                android:id="@+id/radio_group_ukuran_lubang"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:orientation="horizontal"
-                app:layout_constraintTop_toBottomOf="@id/text_view_label_diameter_lubang">
+                app:layout_constraintTop_toBottomOf="@id/text_view_label_ukuran_lubang">
 
                 <RadioButton
                     android:id="@+id/radio_button_kecil"
@@ -540,7 +539,7 @@
                 android:textSize="11sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/radio_group_diameter_lubang"
+                app:layout_constraintTop_toBottomOf="@+id/radio_group_ukuran_lubang"
                 tools:visibility="visible" />
 
             <!--    End Radio Button Kiri Kanan Lubang    -->

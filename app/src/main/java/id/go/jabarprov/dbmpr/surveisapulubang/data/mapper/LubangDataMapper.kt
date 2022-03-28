@@ -1,8 +1,7 @@
 package id.go.jabarprov.dbmpr.surveisapulubang.data.mapper
 
 import id.go.jabarprov.dbmpr.surveisapulubang.data.models.response.LubangResponse
-import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.KategoriLubang
-import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.Lubang
+import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.*
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.CalendarUtils
 
 abstract class LubangDataMapper {
@@ -30,7 +29,14 @@ abstract class LubangDataMapper {
                 kategori = if (lubang.kategori == "Group") KategoriLubang.GROUP else KategoriLubang.SINGLE,
                 urlGambar = lubang.image,
                 keterangan = lubang.keterangan,
-                urlGambarPenanganan = lubang.image_penanganan
+                urlGambarPenanganan = lubang.image_penanganan,
+                lajur = if (!lubang.lajur.isNullOrBlank()) Lajur.convertStringToLajur(lubang.lajur) else null,
+                ukuran = if (!lubang.kategori_kedalaman.isNullOrBlank()) Ukuran.convertStringToUkuran(
+                    lubang.kategori_kedalaman.split(" - ")[0]
+                ) else null,
+                kedalaman = if (!lubang.kategori_kedalaman.isNullOrBlank()) Kedalaman.convertStringToUkuran(
+                    lubang.kategori_kedalaman.split(" - ")[0]
+                ) else null
             )
         }
 

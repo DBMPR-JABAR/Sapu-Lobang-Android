@@ -3,6 +3,9 @@ package id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.survei_lu
 import android.net.Uri
 import id.go.jabarprov.dbmpr.surveisapulubang.core.store.State
 import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.KategoriLubang
+import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.Kedalaman
+import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.Lajur
+import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.Ukuran
 import java.io.File
 import java.util.*
 
@@ -26,5 +29,8 @@ data class SurveiLubangState(
     val lokasiKm: String = "",
     val lokasiM: String = "",
     val keteranganLubang: String? = null,
-    val isResetting: Boolean = false
+    val isResetting: Boolean = false,
+    val lajur: Lajur? = null,
+    val ukuran: Ukuran? = null,
+    val kedalaman: Kedalaman? = null,
 ) : State

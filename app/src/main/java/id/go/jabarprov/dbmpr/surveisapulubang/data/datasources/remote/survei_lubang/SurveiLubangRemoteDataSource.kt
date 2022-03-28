@@ -2,6 +2,9 @@ package id.go.jabarprov.dbmpr.surveisapulubang.data.datasources.remote.survei_lu
 
 import id.go.jabarprov.dbmpr.surveisapulubang.data.models.response.LubangResponse
 import id.go.jabarprov.dbmpr.surveisapulubang.data.models.response.SurveiLubangResponse
+import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.Kedalaman
+import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.Lajur
+import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.Ukuran
 import java.io.File
 import java.util.*
 
@@ -24,7 +27,10 @@ interface SurveiLubangRemoteDataSource {
         jumlahLubangPerGroup: Int? = null,
         kategoriLubang: String,
         gambarLubang: File,
-        keterangan: String?
+        keterangan: String?,
+        lajur: Lajur,
+        ukuran: Ukuran,
+        kedalaman: Kedalaman
     ): SurveiLubangResponse
 
     suspend fun kurangLubang(

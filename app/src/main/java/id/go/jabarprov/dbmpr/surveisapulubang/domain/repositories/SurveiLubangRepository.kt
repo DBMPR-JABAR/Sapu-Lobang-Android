@@ -2,8 +2,7 @@ package id.go.jabarprov.dbmpr.surveisapulubang.domain.repositories
 
 import id.go.jabarprov.dbmpr.surveisapulubang.core.either.Either
 import id.go.jabarprov.dbmpr.surveisapulubang.core.failures.Failure
-import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.Lubang
-import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.SurveiLubang
+import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.*
 import java.io.File
 import java.util.*
 
@@ -26,7 +25,10 @@ interface SurveiLubangRepository {
         jumlahLubangPerGroup: Int? = null,
         kategoriLubang: String,
         gambarLubang: File,
-        keterangan: String?
+        keterangan: String?,
+        lajur: Lajur,
+        ukuran: Ukuran,
+        kedalaman: Kedalaman
     ): Either<Failure, SurveiLubang>
 
     suspend fun kurangLubang(

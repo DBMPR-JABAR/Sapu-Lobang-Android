@@ -8,6 +8,9 @@ import id.go.jabarprov.dbmpr.surveisapulubang.data.models.request.StartSurveiLub
 import id.go.jabarprov.dbmpr.surveisapulubang.data.models.request.SurveiLubangRequest
 import id.go.jabarprov.dbmpr.surveisapulubang.data.models.response.LubangResponse
 import id.go.jabarprov.dbmpr.surveisapulubang.data.models.response.SurveiLubangResponse
+import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.Kedalaman
+import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.Lajur
+import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.Ukuran
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.CalendarUtils
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.extensions.toMultipart
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.extensions.toRequestBody
@@ -101,7 +104,10 @@ class SurveiLubangRemoteDataSourceImpl @Inject constructor(private val surveiLub
         jumlahLubangPerGroup: Int?,
         kategoriLubang: String,
         gambarLubang: File,
-        keterangan: String?
+        keterangan: String?,
+        lajur: Lajur,
+        ukuran: Ukuran,
+        kedalaman: Kedalaman
     ): SurveiLubangResponse {
         try {
             val response = surveiLubangAPI.tambahLubang(
@@ -116,7 +122,9 @@ class SurveiLubangRemoteDataSourceImpl @Inject constructor(private val surveiLub
                 lokasiM = lokasiM.toRequestBody(),
                 kategoriLubang = kategoriLubang.toRequestBody(),
                 gambarLubang = gambarLubang.toMultipart("image"),
-                keterangan = keterangan?.toRequestBody()
+                keterangan = keterangan?.toRequestBody(),
+                lajur = lajur.toRequestBody(),
+                kategoriKedalaman = "${ukuran.convertToString()} - ${kedalaman.convertToString()}".toRequestBody()
             )
             if (response.isSuccessful) {
                 return response.body()?.data!!

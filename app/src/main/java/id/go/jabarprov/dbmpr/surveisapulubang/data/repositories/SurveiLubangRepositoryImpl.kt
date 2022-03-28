@@ -9,8 +9,7 @@ import id.go.jabarprov.dbmpr.surveisapulubang.core.failures.RemoteDataSourceFail
 import id.go.jabarprov.dbmpr.surveisapulubang.data.datasources.remote.survei_lubang.SurveiLubangRemoteDataSource
 import id.go.jabarprov.dbmpr.surveisapulubang.data.mapper.LubangDataMapper
 import id.go.jabarprov.dbmpr.surveisapulubang.data.mapper.SurveiLubangDataMapper
-import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.Lubang
-import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.SurveiLubang
+import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.*
 import id.go.jabarprov.dbmpr.surveisapulubang.domain.repositories.SurveiLubangRepository
 import java.io.File
 import java.util.*
@@ -64,7 +63,10 @@ class SurveiLubangRepositoryImpl @Inject constructor(private val surveiLubangRem
         jumlahLubangPerGroup: Int?,
         kategoriLubang: String,
         gambarLubang: File,
-        keterangan: String?
+        keterangan: String?,
+        lajur: Lajur,
+        ukuran: Ukuran,
+        kedalaman: Kedalaman
     ): Either<Failure, SurveiLubang> {
         return try {
             val response =
@@ -80,7 +82,10 @@ class SurveiLubangRepositoryImpl @Inject constructor(private val surveiLubangRem
                     jumlahLubangPerGroup,
                     kategoriLubang,
                     gambarLubang,
-                    keterangan
+                    keterangan,
+                    lajur,
+                    ukuran,
+                    kedalaman
                 )
             SurveiLubangDataMapper.convertSurveiLubangDataResponseToEntity(response).toSuccess()
         } catch (e: RemoteDataSourceException) {
