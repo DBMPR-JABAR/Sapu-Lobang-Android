@@ -331,6 +331,14 @@ class EntryLubangFragment : Fragment() {
             textFieldKeterangan.visibility = visibility
             textViewLabelTambahLubang.visibility = visibility
             buttonLihatHasilSurvei.visibility = visibility
+            textViewLabelPosisiLubang.visibility = visibility
+            radioGroupPosisiLubang.visibility = visibility
+            textViewLabelDiameterLubang.visibility = visibility
+            radioGroupDiameterLubang.visibility = visibility
+            textViewNoteDiameterLubang.visibility = visibility
+            textViewLabelKedalamanLubang.visibility = visibility
+            radioGroupKedalamanLubang.visibility = visibility
+            textViewNoteKedalamanLubang.visibility = visibility
 
             if (isVisible) {
                 setVisibilityKategoriLubang(surveiLubangViewModel.uiState.value.kategoriLubang)
