@@ -447,6 +447,160 @@
 
             <!--  End Upload Foto  -->
 
+            <!--    Radio Button Kiri Kanan Lubang    -->
+
+            <TextView
+                android:id="@+id/text_view_label_posisi_lubang"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Posisi Lubang"
+                android:textAppearance="?textAppearanceSubtitle1"
+                app:layout_constraintStart_toStartOf="@+id/text_view_label_ruas_jalan"
+                app:layout_constraintTop_toBottomOf="@+id/constraint_layout_container_upload_foto"
+                tools:visibility="visible" />
+
+            <RadioGroup
+                android:id="@+id/radio_group_posisi_lubang"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/text_view_label_posisi_lubang">
+
+                <RadioButton
+                    android:id="@+id/radio_button_kiri"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:checked="true"
+                    android:text="Kiri" />
+
+                <RadioButton
+                    android:id="@+id/radio_button_kanan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Kanan" />
+
+            </RadioGroup>
+
+            <!--    End Radio Button Kiri Kanan Lubang    -->
+
+            <!--    Radio Button Kiri Kanan Lubang    -->
+
+            <TextView
+                android:id="@+id/text_view_label_diameter_lubang"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Diameter Lubang"
+                android:textAppearance="?textAppearanceSubtitle1"
+                app:layout_constraintStart_toStartOf="@+id/text_view_label_ruas_jalan"
+                app:layout_constraintTop_toBottomOf="@+id/radio_group_posisi_lubang"
+                tools:visibility="visible" />
+
+            <RadioGroup
+                android:id="@+id/radio_group_diameter_lubang"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/text_view_label_diameter_lubang">
+
+                <RadioButton
+                    android:id="@+id/radio_button_kecil"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Kecil" />
+
+                <RadioButton
+                    android:id="@+id/radio_button_besar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Besar" />
+
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/text_view_note_diameter_lubang"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="16dp"
+                android:text="Catatan: Lubang Kecil (Diameter < 0.5 m), Lubang Besar (Diameter >= 0.5 m)."
+                android:textAppearance="?textAppearanceSubtitle1"
+                android:textSize="11sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/radio_group_diameter_lubang"
+                tools:visibility="visible" />
+
+            <!--    End Radio Button Kiri Kanan Lubang    -->
+
+            <!--    Radio Button Kedalaman Lubang    -->
+
+            <TextView
+                android:id="@+id/text_view_label_kedalaman_lubang"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Kedalaman Lubang"
+                android:textAppearance="?textAppearanceSubtitle1"
+                app:layout_constraintStart_toStartOf="@+id/text_view_label_ruas_jalan"
+                app:layout_constraintTop_toBottomOf="@+id/text_view_note_diameter_lubang"
+                tools:visibility="visible" />
+
+            <RadioGroup
+                android:id="@+id/radio_group_kedalaman_lubang"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/text_view_label_kedalaman_lubang">
+
+                <RadioButton
+                    android:id="@+id/radio_button_dangkal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Dangkal" />
+
+                <RadioButton
+                    android:id="@+id/radio_button_dalam"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Dalam" />
+
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/text_view_note_kedalaman_lubang"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="16dp"
+                android:text="Catatan: Lubang Dangkal (Kedalaman < 5 cm), Lubang Dalam (Kedalaman >= 5 cm)."
+                android:textAppearance="?textAppearanceSubtitle1"
+                android:textSize="11sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/radio_group_kedalaman_lubang"
+                tools:visibility="visible" />
+
+            <!--    End Radio Button Kedalaman Lubang    -->
+
             <!--  Keterangan Lubang  -->
 
             <TextView
@@ -457,7 +611,7 @@
                 android:text="Keterangan Lubang"
                 android:textAppearance="?textAppearanceSubtitle1"
                 app:layout_constraintStart_toStartOf="@+id/text_view_label_ruas_jalan"
-                app:layout_constraintTop_toBottomOf="@+id/constraint_layout_container_upload_foto"
+                app:layout_constraintTop_toBottomOf="@+id/text_view_note_kedalaman_lubang"
                 tools:visibility="visible" />
 
             <com.google.android.material.textfield.TextInputLayout
