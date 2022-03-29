@@ -14,10 +14,12 @@ import androidx.recyclerview.widget.GridLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import id.go.jabarprov.dbmpr.surveisapulubang.R
 import id.go.jabarprov.dbmpr.surveisapulubang.databinding.FragmentDashboardBinding
+import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.Role
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.models.MenuDashboardItem
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.user.AuthViewModel
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.user.store.AuthAction
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.widgets.LoadingDialog
+import id.go.jabarprov.dbmpr.surveisapulubang.utils.extensions.showToast
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -30,47 +32,7 @@ class DashboardFragment : Fragment() {
     private val loadingDialog by lazy { LoadingDialog.create() }
 
     private val listMenuDashboardItem by lazy {
-        listOf(
-            MenuDashboardItem(
-                image = R.drawable.img_entry_lubang,
-                description = "Entry Jumlah Lubang",
-                buttonText = "Entry Data",
-                onClickAction = {
-                    val action =
-                        DashboardFragmentDirections.actionDashboardFragmentToEntryLubangFragment()
-                    findNavController().navigate(action)
-                },
-            ),
-            MenuDashboardItem(
-                image = R.drawable.img_entry_rencana,
-                description = "Entry Rencana Penanganan",
-                buttonText = "Entry Data",
-                onClickAction = {
-                    val action =
-                        DashboardFragmentDirections.actionDashboardFragmentToEntryRencanaFragment()
-                    findNavController().navigate(action)
-                },
-            ),
-            MenuDashboardItem(
-                image = R.drawable.img_entry_penanganan,
-                description = "Entry Penanganan Lubang",
-                buttonText = "Entry Data",
-                onClickAction = {
-                    val action =
-                        DashboardFragmentDirections.actionDashboardFragmentToEntryPenangananFragment()
-                    findNavController().navigate(action)
-                },
-            ),
-            MenuDashboardItem(
-                image = R.drawable.img_rekap,
-                description = "Rekap Hasil Survei",
-                buttonText = "Lihat Data",
-                onClickAction = {
-//                        val action = DashboardFragmentDirections.actionDashboardFragmentToEntryLubangFragment()
-//                        findNavController().navigate(action)
-                },
-            )
-        )
+        mutableListOf<MenuDashboardItem>()
     }
 
     override fun onCreateView(
@@ -113,6 +75,120 @@ class DashboardFragment : Fragment() {
                         val goToLoginFragment =
                             DashboardFragmentDirections.actionDashboardFragmentToLoginFragment()
                         findNavController().navigate(goToLoginFragment)
+                    }
+
+                    if (it.user?.internalRole != null) {
+                        when (it.user.internalRole) {
+                            Role.ADMINISTRATOR -> {
+                                listMenuDashboardItem.clear()
+                                listMenuDashboardItem.addAll(
+                                    listOf(
+                                        MenuDashboardItem(
+                                            image = R.drawable.img_entry_lubang,
+                                            description = "Entry Jumlah Lubang",
+                                            buttonText = "Entry Data",
+                                            onClickAction = {
+                                                val action =
+                                                    DashboardFragmentDirections.actionDashboardFragmentToEntryLubangFragment()
+                                                findNavController().navigate(action)
+                                            },
+                                        ),
+                                        MenuDashboardItem(
+                                            image = R.drawable.img_entry_rencana,
+                                            description = "Entry Rencana Penanganan",
+                                            buttonText = "Entry Data",
+                                            onClickAction = {
+                                                val action =
+                                                    DashboardFragmentDirections.actionDashboardFragmentToEntryLubangFragment()
+                                                findNavController().navigate(action)
+                                            },
+                                        ),
+                                        MenuDashboardItem(
+                                            image = R.drawable.img_entry_penanganan,
+                                            description = "Entry Jumlah Lubang",
+                                            buttonText = "Entry Data",
+                                            onClickAction = {
+                                                val action =
+                                                    DashboardFragmentDirections.actionDashboardFragmentToEntryLubangFragment()
+                                                findNavController().navigate(action)
+                                            },
+                                        ),
+                                        MenuDashboardItem(
+                                            image = R.drawable.img_rekap,
+                                            description = "Rekap Hasil Survei",
+                                            buttonText = "Lihat Data",
+                                            onClickAction = {
+
+                                            },
+                                        )
+                                    )
+                                )
+                            }
+                            Role.KSUP -> {
+                                listMenuDashboardItem.clear()
+                                listMenuDashboardItem.addAll(
+                                    listOf(
+                                        MenuDashboardItem(
+                                            image = R.drawable.img_entry_rencana,
+                                            description = "Entry Rencana Penanganan",
+                                            buttonText = "Entry Data",
+                                            onClickAction = {
+                                                val action =
+                                                    DashboardFragmentDirections.actionDashboardFragmentToEntryLubangFragment()
+                                                findNavController().navigate(action)
+                                            },
+                                        ),
+                                        MenuDashboardItem(
+                                            image = R.drawable.img_rekap,
+                                            description = "Rekap Hasil Survei",
+                                            buttonText = "Lihat Data",
+                                            onClickAction = {
+
+                                            },
+                                        )
+                                    )
+                                )
+                            }
+                            Role.MANDOR -> {
+                                listMenuDashboardItem.clear()
+                                listMenuDashboardItem.addAll(
+                                    listOf(
+                                        MenuDashboardItem(
+                                            image = R.drawable.img_entry_lubang,
+                                            description = "Entry Jumlah Lubang",
+                                            buttonText = "Entry Data",
+                                            onClickAction = {
+                                                val action =
+                                                    DashboardFragmentDirections.actionDashboardFragmentToEntryLubangFragment()
+                                                findNavController().navigate(action)
+                                            },
+                                        ),
+                                        MenuDashboardItem(
+                                            image = R.drawable.img_entry_penanganan,
+                                            description = "Entry Jumlah Lubang",
+                                            buttonText = "Entry Data",
+                                            onClickAction = {
+                                                val action =
+                                                    DashboardFragmentDirections.actionDashboardFragmentToEntryLubangFragment()
+                                                findNavController().navigate(action)
+                                            },
+                                        ),
+                                        MenuDashboardItem(
+                                            image = R.drawable.img_rekap,
+                                            description = "Rekap Hasil Survei",
+                                            buttonText = "Lihat Data",
+                                            onClickAction = {
+
+                                            },
+                                        )
+                                    )
+                                )
+                            }
+                            Role.UNSUPPORTED -> {
+                                showToast("Role Tidak Dapat Digunakan")
+                                authViewModel.processAction(AuthAction.LogoutUserAction)
+                            }
+                        }
                     }
                 }
             }

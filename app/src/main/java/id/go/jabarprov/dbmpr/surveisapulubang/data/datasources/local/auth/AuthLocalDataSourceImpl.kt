@@ -4,6 +4,8 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import com.google.gson.Gson
 import id.go.jabarprov.dbmpr.surveisapulubang.core.exceptions.LocalDataSourceException
 import id.go.jabarprov.dbmpr.surveisapulubang.data.datasources.local.datastore.DataStorePreference
+import id.go.jabarprov.dbmpr.surveisapulubang.data.mapper.UserDataMapper
+import id.go.jabarprov.dbmpr.surveisapulubang.data.models.UserData
 import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.User
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.CalendarUtils
 import java.util.*
@@ -25,14 +27,16 @@ class AuthLocalDataSourceImpl @Inject constructor(private val dataStorePreferenc
     }
 
     override suspend fun storeUser(user: User) {
-        val json = gson.toJson(user)
+        val userData = UserDataMapper.convertEntityToUserData(user)
+        val json = gson.toJson(userData)
         dataStorePreference.putString(USER_KEY, json)
     }
 
     override fun getUser(): User {
         val json = dataStorePreference.getString(USER_KEY)
         return if (json.isNotBlank()) {
-            gson.fromJson(json, User::class.java)
+            val userData = gson.fromJson(json, UserData::class.java)
+            UserDataMapper.convertUserDataToEntity(userData)
         } else {
             throw LocalDataSourceException("Silahkan Login Terlebih Dahulu")
         }
