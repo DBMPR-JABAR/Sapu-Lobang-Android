@@ -9,7 +9,9 @@ interface PenangananRemoteDataSource {
         idLubang: Int,
         tanggal: Calendar,
         keterangan: String,
-        gambarPenanganan: File
+        gambarPenanganan: File,
+        lat: Double,
+        long: Double,
     ): List<LubangResponse>
 
     suspend fun getListPenangananLubang(

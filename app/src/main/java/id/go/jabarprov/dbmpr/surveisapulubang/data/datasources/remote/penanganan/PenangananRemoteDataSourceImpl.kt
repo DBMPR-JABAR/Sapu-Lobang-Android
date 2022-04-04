@@ -4,7 +4,6 @@ import android.util.Log
 import id.go.jabarprov.dbmpr.surveisapulubang.core.exceptions.RemoteDataSourceException
 import id.go.jabarprov.dbmpr.surveisapulubang.data.datasources.remote.service.PenangananAPI
 import id.go.jabarprov.dbmpr.surveisapulubang.data.models.request.ListLubangPenangananRequest
-import id.go.jabarprov.dbmpr.surveisapulubang.data.models.request.PenangananLubangRequest
 import id.go.jabarprov.dbmpr.surveisapulubang.data.models.response.LubangResponse
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.CalendarUtils
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.extensions.toMultipart
@@ -23,14 +22,18 @@ class PenangananRemoteDataSourceImpl @Inject constructor(private val penangananA
         idLubang: Int,
         tanggal: Calendar,
         keterangan: String,
-        gambarPenanganan: File
+        gambarPenanganan: File,
+        lat: Double,
+        long: Double
     ): List<LubangResponse> {
         try {
             val response = penangananAPI.storePenanganan(
-                idLubang,
-                CalendarUtils.formatCalendarToString(tanggal),
-                keterangan.toRequestBody(),
-                gambarPenanganan.toMultipart("image_penanganan")
+                idLubang = idLubang,
+                tanggal = CalendarUtils.formatCalendarToString(tanggal),
+                keterangan = keterangan.toRequestBody(),
+                gambarPenanganan = gambarPenanganan.toMultipart("image_penanganan"),
+                latitude = lat.toRequestBody(),
+                longitude = long.toRequestBody(),
             )
             if (!response.isSuccessful) {
                 throw RemoteDataSourceException("Gagal Menyimpan Penanganan Lubang")

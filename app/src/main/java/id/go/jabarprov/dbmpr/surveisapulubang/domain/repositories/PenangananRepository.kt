@@ -12,6 +12,8 @@ interface PenangananRepository {
         tanggal: Calendar,
         keterangan: String,
         gambarPenanganan: File,
+        lat: Double,
+        long: Double,
     ): Either<Failure, List<Lubang>>
 
     suspend fun getListLubang(

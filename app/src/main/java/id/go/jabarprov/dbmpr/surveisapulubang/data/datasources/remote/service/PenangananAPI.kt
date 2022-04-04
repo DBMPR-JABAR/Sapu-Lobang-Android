@@ -17,6 +17,8 @@ interface PenangananAPI {
         @Path("id") idLubang: Int,
         @Path("tanggal") tanggal: String,
         @Part("keterangan") keterangan: RequestBody,
+        @Part("lat") latitude: RequestBody,
+        @Part("long") longitude: RequestBody,
         @Part gambarPenanganan: MultipartBody.Part
     ): Response<ListLubangPenangananResponse>
 }

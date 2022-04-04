@@ -1,12 +1,17 @@
 package id.go.jabarprov.dbmpr.surveisapulubang.presentation.entry_penanganan
 
+import android.Manifest
 import android.R
+import android.annotation.SuppressLint
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -16,6 +21,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.gms.location.LocationServices
 import com.google.android.material.datepicker.MaterialDatePicker
 import dagger.hilt.android.AndroidEntryPoint
 import id.go.jabarprov.dbmpr.surveisapulubang.AppNavigationDirections
@@ -28,11 +34,13 @@ import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.penanganan
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.user.AuthViewModel
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.widgets.LoadingDialog
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.CalendarUtils
+import id.go.jabarprov.dbmpr.surveisapulubang.utils.LocationUtils
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.getSapuLubangImageUrl
 import kotlinx.coroutines.launch
 
 private const val TAG = "EntryPenangananFragment"
 
+@SuppressLint("MissingPermission")
 @AndroidEntryPoint
 class EntryPenangananFragment : Fragment() {
 
@@ -44,16 +52,75 @@ class EntryPenangananFragment : Fragment() {
 
     private val loadingDialog by lazy { LoadingDialog.create() }
 
+    private val fusedLocationProviderClient by lazy {
+        LocationServices.getFusedLocationProviderClient(
+            requireContext()
+        )
+    }
+
+    private val locationUtils by lazy { LocationUtils(requireActivity()) }
+
+    private val requestLocationPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        when {
+            permissions.getOrDefault(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                false
+            ) -> {
+                setUpLocationSetting()
+            }
+            permissions.getOrDefault(
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                false
+            ) -> {
+                setUpLocationSetting()
+            }
+            else -> {
+                Toast.makeText(requireContext(), "Izin Lokasi Ditolak", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
+    }
+
+    private fun setUpLocationSetting() {
+        locationUtils.enableLocationService()
+    }
+
+    private fun checkLocationPermission() {
+        if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            requestLocationPermissionLauncher.launch(
+                arrayOf(
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ),
+            )
+        } else {
+            setUpLocationSetting()
+        }
+    }
+
     private val confirmationDialog by lazy {
         ConfirmationPenangananDialog.create(
             onPositiveButtonClickListener = { dialog, keteranganPenanganan, gambarPenanganan, _ ->
-                penangananViewModel.processAction(
-                    PenangananAction.StorePenangananLubang(
-                        selectedLubang.id,
-                        keteranganPenanganan,
-                        gambarPenanganan
+                fusedLocationProviderClient.lastLocation.addOnSuccessListener {
+                    penangananViewModel.processAction(
+                        PenangananAction.StorePenangananLubang(
+                            selectedLubang.id,
+                            keteranganPenanganan,
+                            gambarPenanganan,
+                            it.latitude,
+                            it.longitude
+                        )
                     )
-                )
+                }
                 dialog.dismiss()
             },
             onNegativeButtonClickListener = { dialog ->
@@ -113,6 +180,12 @@ class EntryPenangananFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        checkLocationPermission()
+        initUI()
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun initUI() {
         binding.apply {
 
             buttonBack.setOnClickListener {

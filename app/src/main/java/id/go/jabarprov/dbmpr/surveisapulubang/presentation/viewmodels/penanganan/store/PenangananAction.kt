@@ -11,5 +11,7 @@ sealed class PenangananAction : Action {
         val idLubang: Int,
         val keterangan: String,
         val gambarPenanganan: File,
+        val latitude: Double,
+        val longitude: Double,
     ) : PenangananAction()
 }

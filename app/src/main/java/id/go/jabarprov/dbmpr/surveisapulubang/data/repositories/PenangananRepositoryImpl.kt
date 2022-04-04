@@ -20,14 +20,18 @@ class PenangananRepositoryImpl @Inject constructor(private val penangananRemoteD
         idLubang: Int,
         tanggal: Calendar,
         keterangan: String,
-        gambarPenanganan: File
+        gambarPenanganan: File,
+        lat: Double,
+        long: Double
     ): Either<Failure, List<Lubang>> {
         return try {
             val response = penangananRemoteDataSource.storePenanganan(
                 idLubang,
                 tanggal,
                 keterangan,
-                gambarPenanganan
+                gambarPenanganan,
+                lat,
+                long
             )
             LubangDataMapper.convertListOfLubangDataResponseToListOfEntity(response).toSuccess()
         } catch (e: RemoteDataSourceException) {

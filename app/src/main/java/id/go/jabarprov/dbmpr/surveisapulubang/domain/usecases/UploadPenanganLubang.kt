@@ -16,7 +16,9 @@ class UploadPenangananLubang @Inject constructor(private val penangananRepositor
         val idLubang: Int,
         val tanggal: Calendar,
         val keterangan: String,
-        val gambarPenanganan: File
+        val gambarPenanganan: File,
+        val latitude: Double,
+        val longitude: Double,
     )
 
     override suspend fun run(params: Params): Either<Failure, List<Lubang>> {
@@ -24,7 +26,9 @@ class UploadPenangananLubang @Inject constructor(private val penangananRepositor
             params.idLubang,
             params.tanggal,
             params.keterangan,
-            params.gambarPenanganan
+            params.gambarPenanganan,
+            params.latitude,
+            params.longitude
         )
     }
 }
