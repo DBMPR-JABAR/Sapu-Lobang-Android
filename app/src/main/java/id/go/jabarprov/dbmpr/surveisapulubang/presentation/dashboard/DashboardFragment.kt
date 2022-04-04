@@ -105,7 +105,7 @@ class DashboardFragment : Fragment() {
                                         ),
                                         MenuDashboardItem(
                                             image = R.drawable.img_entry_penanganan,
-                                            description = "Entry Jumlah Lubang",
+                                            description = "Entry Penanganan Lubang",
                                             buttonText = "Entry Data",
                                             onClickAction = {
                                                 val action =
@@ -118,7 +118,9 @@ class DashboardFragment : Fragment() {
                                             description = "Rekap Hasil Survei",
                                             buttonText = "Lihat Data",
                                             onClickAction = {
-
+                                                val action =
+                                                    DashboardFragmentDirections.actionDashboardFragmentToRekapitulasiFragment()
+                                                findNavController().navigate(action)
                                             },
                                         )
                                     )
@@ -143,7 +145,9 @@ class DashboardFragment : Fragment() {
                                             description = "Rekap Hasil Survei",
                                             buttonText = "Lihat Data",
                                             onClickAction = {
-
+                                                val action =
+                                                    DashboardFragmentDirections.actionDashboardFragmentToRekapitulasiFragment()
+                                                findNavController().navigate(action)
                                             },
                                         )
                                     )
@@ -165,7 +169,7 @@ class DashboardFragment : Fragment() {
                                         ),
                                         MenuDashboardItem(
                                             image = R.drawable.img_entry_penanganan,
-                                            description = "Entry Jumlah Lubang",
+                                            description = "Entry Penanganan Lubang",
                                             buttonText = "Entry Data",
                                             onClickAction = {
                                                 val action =
@@ -178,7 +182,9 @@ class DashboardFragment : Fragment() {
                                             description = "Rekap Hasil Survei",
                                             buttonText = "Lihat Data",
                                             onClickAction = {
-
+                                                val action =
+                                                    DashboardFragmentDirections.actionDashboardFragmentToRekapitulasiFragment()
+                                                findNavController().navigate(action)
                                             },
                                         )
                                     )

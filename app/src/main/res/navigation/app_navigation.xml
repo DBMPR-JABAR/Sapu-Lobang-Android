@@ -55,6 +55,9 @@
             app:destination="@id/loginFragment"
             app:popUpTo="@id/dashboardFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_rekapitulasiFragment"
+            app:destination="@id/rekapitulasiFragment" />
     </fragment>
 
     <fragment
@@ -113,5 +116,10 @@
             android:name="idRuasJalan"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/rekapitulasiFragment"
+        android:name="id.go.jabarprov.dbmpr.surveisapulubang.presentation.rekapitulasi.RekapitulasiFragment"
+        android:label="fragment_rekapitulasi"
+        tools:layout="@layout/fragment_rekapitulasi" />
 
 </navigation>

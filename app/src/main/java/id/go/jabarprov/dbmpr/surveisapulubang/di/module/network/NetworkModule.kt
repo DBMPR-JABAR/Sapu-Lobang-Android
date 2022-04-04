@@ -5,10 +5,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import id.go.jabarprov.dbmpr.surveisapulubang.data.datasources.local.auth.AuthLocalDataSource
-import id.go.jabarprov.dbmpr.surveisapulubang.data.datasources.remote.service.AuthAPI
-import id.go.jabarprov.dbmpr.surveisapulubang.data.datasources.remote.service.PenangananAPI
-import id.go.jabarprov.dbmpr.surveisapulubang.data.datasources.remote.service.RencanaAPI
-import id.go.jabarprov.dbmpr.surveisapulubang.data.datasources.remote.service.SurveiLubangAPI
+import id.go.jabarprov.dbmpr.surveisapulubang.data.datasources.remote.service.*
 import id.go.jabarprov.dbmpr.surveisapulubang.di.module.qualifier.RetrofitAuthorized
 import id.go.jabarprov.dbmpr.surveisapulubang.di.module.qualifier.RetrofitUnauthorized
 import okhttp3.OkHttpClient
@@ -85,6 +82,11 @@ abstract class NetworkModule {
         @Provides
         fun providesRencanaAPIInstance(@RetrofitAuthorized retrofit: Retrofit): RencanaAPI {
             return retrofit.create(RencanaAPI::class.java)
+        }
+
+        @Provides
+        fun providesRekapAPIInstance(@RetrofitAuthorized retrofit: Retrofit): RekapAPI {
+            return retrofit.create(RekapAPI::class.java)
         }
     }
 }

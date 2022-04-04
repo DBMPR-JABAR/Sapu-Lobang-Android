@@ -10,18 +10,14 @@ import id.go.jabarprov.dbmpr.surveisapulubang.data.datasources.remote.auth.AuthR
 import id.go.jabarprov.dbmpr.surveisapulubang.data.datasources.remote.auth.AuthRemoteDataSourceImpl
 import id.go.jabarprov.dbmpr.surveisapulubang.data.datasources.remote.penanganan.PenangananRemoteDataSource
 import id.go.jabarprov.dbmpr.surveisapulubang.data.datasources.remote.penanganan.PenangananRemoteDataSourceImpl
+import id.go.jabarprov.dbmpr.surveisapulubang.data.datasources.remote.rekapitulasi.RekapitulasiRemoteDataSource
+import id.go.jabarprov.dbmpr.surveisapulubang.data.datasources.remote.rekapitulasi.RekapitulasiRemoteDataSourceImpl
 import id.go.jabarprov.dbmpr.surveisapulubang.data.datasources.remote.rencana.RencanaRemoteDataSource
 import id.go.jabarprov.dbmpr.surveisapulubang.data.datasources.remote.rencana.RencanaRemoteDataSourceImpl
 import id.go.jabarprov.dbmpr.surveisapulubang.data.datasources.remote.survei_lubang.SurveiLubangRemoteDataSource
 import id.go.jabarprov.dbmpr.surveisapulubang.data.datasources.remote.survei_lubang.SurveiLubangRemoteDataSourceImpl
-import id.go.jabarprov.dbmpr.surveisapulubang.data.repositories.AuthenticationRepositoryImpl
-import id.go.jabarprov.dbmpr.surveisapulubang.data.repositories.PenangananRepositoryImpl
-import id.go.jabarprov.dbmpr.surveisapulubang.data.repositories.RencanaRepositoryImpl
-import id.go.jabarprov.dbmpr.surveisapulubang.data.repositories.SurveiLubangRepositoryImpl
-import id.go.jabarprov.dbmpr.surveisapulubang.domain.repositories.AuthenticationRepository
-import id.go.jabarprov.dbmpr.surveisapulubang.domain.repositories.PenangananRepository
-import id.go.jabarprov.dbmpr.surveisapulubang.domain.repositories.RencanaRepository
-import id.go.jabarprov.dbmpr.surveisapulubang.domain.repositories.SurveiLubangRepository
+import id.go.jabarprov.dbmpr.surveisapulubang.data.repositories.*
+import id.go.jabarprov.dbmpr.surveisapulubang.domain.repositories.*
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -52,4 +48,10 @@ abstract class DataLayerModule {
 
     @Binds
     abstract fun bindPenangananRepository(penangananRepositoryImpl: PenangananRepositoryImpl): PenangananRepository
+
+    @Binds
+    abstract fun bindRekapitulasiRemoteDataSource(rekapitulasiRemoteDataSourceImpl: RekapitulasiRemoteDataSourceImpl): RekapitulasiRemoteDataSource
+
+    @Binds
+    abstract fun bindRekapitulasiRepository(rekapitulasiRepositoryImpl: RekapitulasiRepositoryImpl): RekapitulasiRepository
 }
