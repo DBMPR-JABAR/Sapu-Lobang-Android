@@ -99,7 +99,7 @@ class DashboardFragment : Fragment() {
                                             buttonText = "Entry Data",
                                             onClickAction = {
                                                 val action =
-                                                    DashboardFragmentDirections.actionDashboardFragmentToEntryLubangFragment()
+                                                    DashboardFragmentDirections.actionDashboardFragmentToEntryRencanaFragment()
                                                 findNavController().navigate(action)
                                             },
                                         ),
@@ -109,7 +109,7 @@ class DashboardFragment : Fragment() {
                                             buttonText = "Entry Data",
                                             onClickAction = {
                                                 val action =
-                                                    DashboardFragmentDirections.actionDashboardFragmentToEntryLubangFragment()
+                                                    DashboardFragmentDirections.actionDashboardFragmentToEntryPenangananFragment()
                                                 findNavController().navigate(action)
                                             },
                                         ),
@@ -136,7 +136,7 @@ class DashboardFragment : Fragment() {
                                             buttonText = "Entry Data",
                                             onClickAction = {
                                                 val action =
-                                                    DashboardFragmentDirections.actionDashboardFragmentToEntryLubangFragment()
+                                                    DashboardFragmentDirections.actionDashboardFragmentToEntryRencanaFragment()
                                                 findNavController().navigate(action)
                                             },
                                         ),
@@ -173,7 +173,7 @@ class DashboardFragment : Fragment() {
                                             buttonText = "Entry Data",
                                             onClickAction = {
                                                 val action =
-                                                    DashboardFragmentDirections.actionDashboardFragmentToEntryLubangFragment()
+                                                    DashboardFragmentDirections.actionDashboardFragmentToEntryPenangananFragment()
                                                 findNavController().navigate(action)
                                             },
                                         ),
