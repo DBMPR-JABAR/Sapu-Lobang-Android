@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
@@ -21,6 +22,8 @@ import id.go.jabarprov.dbmpr.surveisapulubang.utils.extensions.createPictureCach
 import java.io.File
 import kotlin.math.roundToInt
 
+private const val TAG = "ConfirmationPenangananD"
+
 class ConfirmationPenangananDialog private constructor() : DialogFragment() {
 
     lateinit var positiveClickListener: (DialogFragment, String, File, Uri) -> Unit
@@ -35,6 +38,7 @@ class ConfirmationPenangananDialog private constructor() : DialogFragment() {
 
     private val takePictureLauncher =
         registerForActivityResult(ActivityResultContracts.TakePicture()) { isSuccess ->
+            Log.d(TAG, "Foto: $photoUri")
             if (isSuccess) {
                 dialog?.window?.setLayout(
                     ViewGroup.LayoutParams.MATCH_PARENT,
@@ -46,6 +50,7 @@ class ConfirmationPenangananDialog private constructor() : DialogFragment() {
                         .roundToInt()
                 )
                 binding.apply {
+                    Log.d(TAG, "Foto: $photoUri")
                     imageViewPenanganan.isVisible = true
                     imageViewPenanganan.setImageURI(photoUri)
                 }

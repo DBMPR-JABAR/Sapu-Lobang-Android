@@ -23,6 +23,7 @@ import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.detail_sur
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.widgets.KonfirmasiDialog
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.widgets.LoadingDialog
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.CalendarUtils
+import id.go.jabarprov.dbmpr.surveisapulubang.utils.extensions.showToast
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.getSapuLubangImageUrl
 import kotlinx.coroutines.launch
 
@@ -64,6 +65,8 @@ class DetailSurveiFragment : Fragment() {
                             getSapuLubangImageUrl(it.urlGambar)
                         )
                     )
+                } else {
+                    showToast("Tidak ada foto")
                 }
             }
             .setOnDeleteButtonClickListener {

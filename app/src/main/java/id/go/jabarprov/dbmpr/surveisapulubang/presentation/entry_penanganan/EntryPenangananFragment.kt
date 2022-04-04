@@ -35,6 +35,7 @@ import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.user.AuthV
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.widgets.LoadingDialog
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.CalendarUtils
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.LocationUtils
+import id.go.jabarprov.dbmpr.surveisapulubang.utils.extensions.showToast
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.getSapuLubangImageUrl
 import kotlinx.coroutines.launch
 
@@ -107,27 +108,7 @@ class EntryPenangananFragment : Fragment() {
         }
     }
 
-    private val confirmationDialog by lazy {
-        ConfirmationPenangananDialog.create(
-            onPositiveButtonClickListener = { dialog, keteranganPenanganan, gambarPenanganan, _ ->
-                fusedLocationProviderClient.lastLocation.addOnSuccessListener {
-                    penangananViewModel.processAction(
-                        PenangananAction.StorePenangananLubang(
-                            selectedLubang.id,
-                            keteranganPenanganan,
-                            gambarPenanganan,
-                            it.latitude,
-                            it.longitude
-                        )
-                    )
-                }
-                dialog.dismiss()
-            },
-            onNegativeButtonClickListener = { dialog ->
-                dialog.dismiss()
-            }
-        )
-    }
+    private var confirmationDialog = createConfirmationDialog()
 
     private val spaceItemDecoration by lazy { SpaceItemDecoration(32) }
 
@@ -135,18 +116,31 @@ class EntryPenangananFragment : Fragment() {
         LubangAdapter(LubangAdapter.TYPE.PENANGANAN)
             .setOnItemClickListener { lubang ->
                 selectedLubang = lubang
+                confirmationDialog = createConfirmationDialog()
                 confirmationDialog.apply {
                     if (lubang.keterangan != null) {
                         setKeterangan(lubang.keterangan)
                     }
                 }.show(childFragmentManager, "Penanganan Dialog")
             }.setOnDetailItemClickListener { lubang ->
-                if (lubang.urlGambarPenanganan != null) {
-                    findNavController().navigate(
-                        AppNavigationDirections.actionGlobalPreviewPhotoFragment(
-                            getSapuLubangImageUrl(lubang.urlGambarPenanganan)
+                when {
+                    lubang.urlGambarPenanganan != null -> {
+                        findNavController().navigate(
+                            AppNavigationDirections.actionGlobalPreviewPhotoFragment(
+                                getSapuLubangImageUrl(lubang.urlGambarPenanganan)
+                            )
                         )
-                    )
+                    }
+                    lubang.urlGambar != null -> {
+                        findNavController().navigate(
+                            AppNavigationDirections.actionGlobalPreviewPhotoFragment(
+                                getSapuLubangImageUrl(lubang.urlGambar)
+                            )
+                        )
+                    }
+                    else -> {
+                        showToast("Tidak ada gambar")
+                    }
                 }
             }
     }
@@ -213,6 +207,28 @@ class EntryPenangananFragment : Fragment() {
         }
     }
 
+    private fun createConfirmationDialog(): ConfirmationPenangananDialog {
+        return ConfirmationPenangananDialog.create(
+            onPositiveButtonClickListener = { dialog, keteranganPenanganan, gambarPenanganan, _ ->
+                fusedLocationProviderClient.lastLocation.addOnSuccessListener {
+                    penangananViewModel.processAction(
+                        PenangananAction.StorePenangananLubang(
+                            selectedLubang.id,
+                            keteranganPenanganan,
+                            gambarPenanganan,
+                            it.latitude,
+                            it.longitude
+                        )
+                    )
+                }
+                dialog.dismiss()
+            },
+            onNegativeButtonClickListener = { dialog ->
+                dialog.dismiss()
+            }
+        )
+    }
+
     private fun observeAuthState() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -241,6 +257,7 @@ class EntryPenangananFragment : Fragment() {
                     if (it.isFailed) {
                         loadingDialog.dismiss()
                         Toast.makeText(requireContext(), it.errorMessage, Toast.LENGTH_SHORT).show()
+                        penangananViewModel.processAction(PenangananAction.ResetStatePenanganan)
                     }
 
                     if (it.isSuccess) {

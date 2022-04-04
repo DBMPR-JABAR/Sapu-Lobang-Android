@@ -14,4 +14,6 @@ sealed class PenangananAction : Action {
         val latitude: Double,
         val longitude: Double,
     ) : PenangananAction()
+
+    object ResetStatePenanganan : PenangananAction()
 }

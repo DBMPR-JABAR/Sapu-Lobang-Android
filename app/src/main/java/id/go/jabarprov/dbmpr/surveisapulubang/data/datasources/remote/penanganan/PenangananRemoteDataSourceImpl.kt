@@ -35,6 +35,9 @@ class PenangananRemoteDataSourceImpl @Inject constructor(private val penangananA
                 latitude = lat.toRequestBody(),
                 longitude = long.toRequestBody(),
             )
+            if (response.code() == 400) {
+                throw RemoteDataSourceException("Lokasi Lubang Tidak Sesuai")
+            }
             if (!response.isSuccessful) {
                 throw RemoteDataSourceException("Gagal Menyimpan Penanganan Lubang")
             }

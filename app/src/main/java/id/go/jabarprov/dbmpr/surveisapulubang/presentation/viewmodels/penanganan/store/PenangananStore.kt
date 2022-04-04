@@ -95,6 +95,14 @@ class PenangananStore @Inject constructor(
                         },
                     )
                 }
+                else -> {
+                    state.value = state.value.copy(
+                        isFailed = false,
+                        errorMessage = "",
+                        isSuccess = false,
+                        isLoading = false
+                    )
+                }
             }
         }
     }

@@ -27,6 +27,7 @@ import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.rencana.st
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.user.AuthViewModel
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.widgets.LoadingDialog
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.CalendarUtils
+import id.go.jabarprov.dbmpr.surveisapulubang.utils.extensions.showToast
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.getSapuLubangImageUrl
 import kotlinx.coroutines.launch
 
@@ -72,6 +73,8 @@ class EntryRencanaFragment : Fragment() {
                             getSapuLubangImageUrl(it.urlGambar)
                         )
                     )
+                } else {
+                    showToast("Tidak ada foto")
                 }
             }
     }
