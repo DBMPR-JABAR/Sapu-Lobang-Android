@@ -190,6 +190,43 @@ class DashboardFragment : Fragment() {
                                     )
                                 )
                             }
+                            Role.PENGAMAT -> {
+                                listMenuDashboardItem.clear()
+                                listMenuDashboardItem.addAll(
+                                    listOf(
+                                        MenuDashboardItem(
+                                            image = R.drawable.img_entry_lubang,
+                                            description = "Entry Jumlah Lubang",
+                                            buttonText = "Entry Data",
+                                            onClickAction = {
+                                                val action =
+                                                    DashboardFragmentDirections.actionDashboardFragmentToEntryLubangFragment()
+                                                findNavController().navigate(action)
+                                            },
+                                        ),
+                                        MenuDashboardItem(
+                                            image = R.drawable.img_entry_penanganan,
+                                            description = "Entry Penanganan Lubang",
+                                            buttonText = "Entry Data",
+                                            onClickAction = {
+                                                val action =
+                                                    DashboardFragmentDirections.actionDashboardFragmentToEntryPenangananFragment()
+                                                findNavController().navigate(action)
+                                            },
+                                        ),
+                                        MenuDashboardItem(
+                                            image = R.drawable.img_rekap,
+                                            description = "Rekap Hasil Survei",
+                                            buttonText = "Lihat Data",
+                                            onClickAction = {
+                                                val action =
+                                                    DashboardFragmentDirections.actionDashboardFragmentToRekapitulasiFragment()
+                                                findNavController().navigate(action)
+                                            },
+                                        )
+                                    )
+                                )
+                            }
                             Role.UNSUPPORTED -> {
                                 showToast("Role Tidak Dapat Digunakan")
                                 authViewModel.processAction(AuthAction.LogoutUserAction)

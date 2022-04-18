@@ -22,6 +22,7 @@ enum class Role {
     ADMINISTRATOR,
     KSUP,
     MANDOR,
+    PENGAMAT,
     UNSUPPORTED;
 
     fun convertToString(): String {
@@ -29,6 +30,7 @@ enum class Role {
             ADMINISTRATOR -> "Administrator"
             KSUP -> "Kepala Satuan Unit Pemeliharaan"
             MANDOR -> "Mandor"
+            PENGAMAT -> "Pengamat"
             UNSUPPORTED -> "Unsupported"
         }
     }
@@ -39,6 +41,7 @@ enum class Role {
                 "Administrator" -> ADMINISTRATOR
                 "Kepala Satuan Unit Pemeliharaan" -> KSUP
                 "Mandor" -> MANDOR
+                "Pengamat" -> PENGAMAT
                 else -> UNSUPPORTED
             }
         }
