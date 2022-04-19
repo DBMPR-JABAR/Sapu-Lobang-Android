@@ -43,4 +43,7 @@ interface SurveiLubangAPI {
 
     @GET("survei-lubang/delete/{id}")
     suspend fun deleteSurveiItem(@Path("id") idLubang: Int): Response<BaseResponse<Unit>>
+
+    @GET("survei-potensi-lubang/delete/{id}")
+    suspend fun deleteSurveiPotensiItem(@Path("id") idLubang: Int): Response<BaseResponse<Unit>>
 }

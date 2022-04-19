@@ -116,6 +116,27 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/text_view_label_panjang_lubang" />
 
+        <TextView
+            android:id="@+id/text_view_label_potensi_lubang"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Potensi Lubang :"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_view_content_panjang_lubang" />
+
+        <TextView
+            android:id="@+id/text_view_content_potensi_lubang"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="Iya"
+            android:textColor="@color/black"
+            app:layout_constraintBaseline_toBaselineOf="@id/text_view_label_potensi_lubang"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/text_view_label_potensi_lubang" />
+
         <Button
             android:id="@+id/button_detail"
             android:layout_width="0dp"
@@ -126,7 +147,7 @@
             app:layout_constraintEnd_toStartOf="@+id/button_proses"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/text_view_content_panjang_lubang" />
+            app:layout_constraintTop_toBottomOf="@id/text_view_content_potensi_lubang" />
 
         <Button
             android:id="@+id/button_proses"
@@ -139,7 +160,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/button_detail"
-            app:layout_constraintTop_toBottomOf="@id/text_view_content_panjang_lubang" />
+            app:layout_constraintTop_toBottomOf="@id/text_view_content_potensi_lubang" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

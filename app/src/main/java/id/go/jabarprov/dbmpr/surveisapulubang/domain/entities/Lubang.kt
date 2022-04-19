@@ -23,7 +23,8 @@ data class Lubang(
     val urlGambarPenanganan: String?,
     val lajur: Lajur?,
     val ukuran: Ukuran?,
-    val kedalaman: Kedalaman?
+    val kedalaman: Kedalaman?,
+    val potensi: Boolean
 )
 
 enum class KategoriLubang {

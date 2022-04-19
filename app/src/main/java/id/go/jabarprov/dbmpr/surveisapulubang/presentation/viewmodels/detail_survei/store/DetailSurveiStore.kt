@@ -2,13 +2,15 @@ package id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.detail_su
 
 import id.go.jabarprov.dbmpr.surveisapulubang.core.store.Store
 import id.go.jabarprov.dbmpr.surveisapulubang.domain.usecases.DeleteSurveiItem
+import id.go.jabarprov.dbmpr.surveisapulubang.domain.usecases.DeleteSurveiPotensiItem
 import id.go.jabarprov.dbmpr.surveisapulubang.domain.usecases.GetResultDetailSurvei
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class DetailSurveiStore @Inject constructor(
     private val getResultDetailSurvei: GetResultDetailSurvei,
-    private val deleteSurveiItem: DeleteSurveiItem
+    private val deleteSurveiItem: DeleteSurveiItem,
+    private val deleteSurveiPotensiItem: DeleteSurveiPotensiItem
 ) :
     Store<DetailSurveiAction, DetailSurveiState>(DetailSurveiState()) {
 
@@ -53,6 +55,34 @@ class DetailSurveiStore @Inject constructor(
                         isLoading = true
                     )
                     val result = deleteSurveiItem.run(action.idLubang)
+                    result.either(
+                        fnL = { failure ->
+                            state.value = state.value.copy(
+                                isFailed = true,
+                                errorMessage = failure.message,
+                                isSuccess = false,
+                                isLoading = false
+                            )
+                        },
+                        fnR = {
+                            state.value = state.value.copy(
+                                isFailed = false,
+                                errorMessage = "",
+                                isSuccess = true,
+                                isLoading = false,
+                                isDelete = true
+                            )
+                        },
+                    )
+                }
+                is DetailSurveiAction.DeletePotensiLubang -> {
+                    state.value = state.value.copy(
+                        isFailed = false,
+                        errorMessage = "",
+                        isSuccess = false,
+                        isLoading = true
+                    )
+                    val result = deleteSurveiPotensiItem.run(action.idLubang)
                     result.either(
                         fnL = { failure ->
                             state.value = state.value.copy(

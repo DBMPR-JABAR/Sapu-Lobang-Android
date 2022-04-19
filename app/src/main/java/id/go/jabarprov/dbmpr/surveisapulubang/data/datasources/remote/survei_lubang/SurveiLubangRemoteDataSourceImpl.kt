@@ -56,7 +56,11 @@ class SurveiLubangRemoteDataSourceImpl @Inject constructor(private val surveiLub
                 DetailSurveiRequest(CalendarUtils.formatCalendarToString(tanggal), idRuasJalan)
             val response = surveiLubangAPI.resultSurvei(request)
             if (response.isSuccessful) {
-                return response.body()?.data?.listLubang!! + response.body()?.data?.listPotensial!!
+                return (response.body()?.data?.listLubang?.map { it.copy(potensi_lubang = "false") })!! + (response.body()?.data?.listPotensial?.map {
+                    it.copy(
+                        potensi_lubang = "true"
+                    )
+                })!!
             } else {
                 Log.d(TAG, "startSurvei: Gagal Mengambil Data Hasil Survei")
                 throw RemoteDataSourceException("Gagal Mengambil Data Hasil Survei")
@@ -76,6 +80,25 @@ class SurveiLubangRemoteDataSourceImpl @Inject constructor(private val surveiLub
     override suspend fun deleteSurveiItem(idLubang: Int) {
         try {
             val response = surveiLubangAPI.deleteSurveiItem(idLubang)
+            if (!response.isSuccessful) {
+                Log.d(TAG, "startSurvei: Gagal Menghapus Item Survei")
+                throw RemoteDataSourceException("Gagal Menghapus Item Survei")
+            }
+        } catch (e: UnknownHostException) {
+            Log.d(TAG, "login: ERROR LOGIN $e")
+            throw RemoteDataSourceException("Tidak Dapat Menghubungi Server")
+        } catch (e: SocketTimeoutException) {
+            Log.d(TAG, "login: ERROR LOGIN $e")
+            throw RemoteDataSourceException("Tidak Dapat Menghubungi Server")
+        } catch (e: Exception) {
+            Log.d(TAG, "login: ERROR LOGIN $e")
+            throw RemoteDataSourceException("Terjadi Kesalahan Pada Sistem")
+        }
+    }
+
+    override suspend fun deleteSurveiPotensiItem(idLubang: Int) {
+        try {
+            val response = surveiLubangAPI.deleteSurveiPotensiItem(idLubang)
             if (!response.isSuccessful) {
                 Log.d(TAG, "startSurvei: Gagal Menghapus Item Survei")
                 throw RemoteDataSourceException("Gagal Menghapus Item Survei")

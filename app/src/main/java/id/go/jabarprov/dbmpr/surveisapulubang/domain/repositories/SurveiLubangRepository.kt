@@ -13,6 +13,8 @@ interface SurveiLubangRepository {
 
     suspend fun deleteSurveiItem(idLubang: Int): Either<Failure, Unit>
 
+    suspend fun deleteSurveiPotensiItem(idLubang: Int): Either<Failure, Unit>
+
     suspend fun tambahLubang(
         tanggal: Calendar,
         idRuasJalan: String,

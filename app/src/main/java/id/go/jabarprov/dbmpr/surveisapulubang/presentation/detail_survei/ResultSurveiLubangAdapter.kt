@@ -55,8 +55,11 @@ class ResultSurveiLubangAdapter :
 
                 textViewContentLatitude.text = lubang.latitude.toString()
                 textViewContentLongitude.text = lubang.longitude.toString()
-                textViewContentKategori.text = if (lubang.kategori == KategoriLubang.SINGLE) "Single" else "Group"
+                textViewContentKategori.text =
+                    if (lubang.kategori == KategoriLubang.SINGLE) "Single" else "Group"
                 textViewContentPanjangLubang.text = "${lubang.panjang} M"
+
+                textViewContentPotensiLubang.text = if (lubang.potensi) "Iya" else "Tidak"
 
                 buttonDetail.setOnClickListener {
                     detailAction?.invoke(lubang)

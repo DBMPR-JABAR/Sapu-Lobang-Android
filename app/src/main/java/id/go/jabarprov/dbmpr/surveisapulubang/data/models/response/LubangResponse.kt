@@ -28,5 +28,6 @@ data class LubangResponse(
     val uptd_id: Int?,
     val keterangan: String?,
     val lajur: String?,
-    val kategori_kedalaman: String?
+    val kategori_kedalaman: String?,
+    val potensi_lubang: String?
 )

@@ -51,6 +51,15 @@ class SurveiLubangRepositoryImpl @Inject constructor(private val surveiLubangRem
         }
     }
 
+    override suspend fun deleteSurveiPotensiItem(idLubang: Int): Either<Failure, Unit> {
+        return try {
+            surveiLubangRemoteDataSource.deleteSurveiPotensiItem(idLubang)
+            Unit.toSuccess()
+        } catch (e: RemoteDataSourceException) {
+            RemoteDataSourceFailure(e.message!!).toError()
+        }
+    }
+
     override suspend fun tambahLubang(
         tanggal: Calendar,
         idRuasJalan: String,

@@ -6,4 +6,5 @@ import java.util.*
 sealed class DetailSurveiAction : Action {
     data class LoadSurveiData(val idRuasJalan: String, val tanggal: Calendar) : DetailSurveiAction()
     data class DeleteLubang(val idLubang: Int) : DetailSurveiAction()
+    data class DeletePotensiLubang(val idLubang: Int) : DetailSurveiAction()
 }

@@ -15,6 +15,8 @@ interface SurveiLubangRemoteDataSource {
 
     suspend fun deleteSurveiItem(idLubang: Int)
 
+    suspend fun deleteSurveiPotensiItem(idLubang: Int)
+
     suspend fun tambahLubang(
         tanggal: Calendar,
         idRuasJalan: String,
