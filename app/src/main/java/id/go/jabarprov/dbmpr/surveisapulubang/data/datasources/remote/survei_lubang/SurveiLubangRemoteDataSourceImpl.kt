@@ -56,7 +56,7 @@ class SurveiLubangRemoteDataSourceImpl @Inject constructor(private val surveiLub
                 DetailSurveiRequest(CalendarUtils.formatCalendarToString(tanggal), idRuasJalan)
             val response = surveiLubangAPI.resultSurvei(request)
             if (response.isSuccessful) {
-                return response.body()?.data?.listLubang!!
+                return response.body()?.data?.listLubang!! + response.body()?.data?.listPotensial!!
             } else {
                 Log.d(TAG, "startSurvei: Gagal Mengambil Data Hasil Survei")
                 throw RemoteDataSourceException("Gagal Mengambil Data Hasil Survei")

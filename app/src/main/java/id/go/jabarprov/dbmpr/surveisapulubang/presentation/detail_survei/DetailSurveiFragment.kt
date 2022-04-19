@@ -105,6 +105,10 @@ class DetailSurveiFragment : Fragment() {
                 addItemDecoration(spaceItemDecoration)
                 setHasFixedSize(true)
             }
+
+            buttonBack.setOnClickListener {
+                findNavController().popBackStack()
+            }
         }
     }
 
