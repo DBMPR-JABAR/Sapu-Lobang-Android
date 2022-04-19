@@ -600,6 +600,63 @@
 
             <!--    End Radio Button Kedalaman Lubang    -->
 
+            <!--    Radio Button Potensi Lubang    -->
+
+            <TextView
+                android:id="@+id/text_view_label_potensi_lubang"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Potensi Menjadi Lubang"
+                android:textAppearance="?textAppearanceSubtitle1"
+                app:layout_constraintStart_toStartOf="@+id/text_view_label_ruas_jalan"
+                app:layout_constraintTop_toBottomOf="@+id/text_view_note_kedalaman_lubang"
+                tools:visibility="visible" />
+
+            <RadioGroup
+                android:id="@+id/radio_group_potensi_lubang"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/text_view_label_potensi_lubang">
+
+                <RadioButton
+                    android:id="@+id/radio_button_potensi_true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Berpotensi Lubang" />
+
+                <RadioButton
+                    android:id="@+id/radio_button_potensi_false"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:checked="true"
+                    android:text="Sudah Menjadi Lubang" />
+
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/text_view_note_potensi_lubang"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="16dp"
+                android:text="Catatan: Berpotensi Menjadi Lubang Merupakan Kerusakan Yang Belum Dapat Disebut Lubang Tetapi Memiliki Potensi Menjadi Lubang."
+                android:textAppearance="?textAppearanceSubtitle1"
+                android:textSize="11sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/radio_group_potensi_lubang"
+                tools:visibility="visible" />
+
+            <!--    End Radio Button Potensi Lubang    -->
+
             <!--  Keterangan Lubang  -->
 
             <TextView
@@ -610,7 +667,7 @@
                 android:text="Keterangan Lubang"
                 android:textAppearance="?textAppearanceSubtitle1"
                 app:layout_constraintStart_toStartOf="@+id/text_view_label_ruas_jalan"
-                app:layout_constraintTop_toBottomOf="@+id/text_view_note_kedalaman_lubang"
+                app:layout_constraintTop_toBottomOf="@+id/text_view_note_potensi_lubang"
                 tools:visibility="visible" />
 
             <com.google.android.material.textfield.TextInputLayout

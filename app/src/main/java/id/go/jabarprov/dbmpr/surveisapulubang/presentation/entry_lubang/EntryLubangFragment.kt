@@ -273,6 +273,14 @@ class EntryLubangFragment : Fragment() {
                 }
             }
 
+            radioGroupPotensiLubang.setOnCheckedChangeListener { _, checkedId ->
+                if (checkedId == R.id.radio_button_potensi_true) {
+                    surveiLubangViewModel.processAction(SurveiLubangAction.UpdatePotensiLubang(true))
+                } else {
+                    surveiLubangViewModel.processAction(SurveiLubangAction.UpdatePotensiLubang(false))
+                }
+            }
+
             buttonAmbilGambar.setOnClickListener {
                 if (ContextCompat.checkSelfPermission(
                         requireContext(),
@@ -360,6 +368,7 @@ class EntryLubangFragment : Fragment() {
             radioGroupLajur.clearCheck()
             radioGroupUkuranLubang.clearCheck()
             radioGroupKedalamanLubang.clearCheck()
+            radioGroupPotensiLubang.check(R.id.radio_button_potensi_false)
         }
     }
 
@@ -393,6 +402,9 @@ class EntryLubangFragment : Fragment() {
             textViewLabelKedalamanLubang.visibility = visibility
             radioGroupKedalamanLubang.visibility = visibility
             textViewNoteKedalamanLubang.visibility = visibility
+            textViewLabelPotensiLubang.visibility = visibility
+            radioGroupPotensiLubang.visibility = visibility
+            textViewNotePotensiLubang.visibility = visibility
 
             if (isVisible) {
                 setVisibilityKategoriLubang(surveiLubangViewModel.uiState.value.kategoriLubang)

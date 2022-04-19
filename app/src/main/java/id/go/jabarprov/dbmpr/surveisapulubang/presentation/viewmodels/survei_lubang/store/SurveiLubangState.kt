@@ -33,4 +33,5 @@ data class SurveiLubangState(
     val lajur: Lajur? = null,
     val ukuran: Ukuran? = null,
     val kedalaman: Kedalaman? = null,
+    val isPotential: Boolean = false
 ) : State

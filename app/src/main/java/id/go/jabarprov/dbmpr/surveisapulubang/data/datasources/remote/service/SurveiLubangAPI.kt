@@ -31,7 +31,8 @@ interface SurveiLubangAPI {
         @Part gambarLubang: MultipartBody.Part,
         @Part("description") keterangan: RequestBody?,
         @Part("lajur") lajur: RequestBody,
-        @Part("kategori_kedalaman") kategoriKedalaman: RequestBody
+        @Part("kategori_kedalaman") kategoriKedalaman: RequestBody,
+        @Part("potensi_lubang") isPotential: RequestBody
     ): Response<BaseResponse<SurveiLubangResponse>>
 
     @POST("survei-lubang/store/kurang")

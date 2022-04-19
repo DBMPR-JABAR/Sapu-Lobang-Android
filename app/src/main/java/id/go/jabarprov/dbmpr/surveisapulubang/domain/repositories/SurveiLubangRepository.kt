@@ -28,7 +28,8 @@ interface SurveiLubangRepository {
         keterangan: String?,
         lajur: Lajur,
         ukuran: Ukuran,
-        kedalaman: Kedalaman
+        kedalaman: Kedalaman,
+        isPotential: Boolean
     ): Either<Failure, SurveiLubang>
 
     suspend fun kurangLubang(

@@ -71,7 +71,8 @@ class SurveiLubangStore @Inject constructor(
                         keterangan = state.value.keteranganLubang,
                         lajur = state.value.lajur!!,
                         ukuran = state.value.ukuran!!,
-                        kedalaman = state.value.kedalaman!!
+                        kedalaman = state.value.kedalaman!!,
+                        isPotential = state.value.isPotential
                     )
                     val result = tambahLubang.run(param)
                     result.either(
@@ -96,6 +97,7 @@ class SurveiLubangStore @Inject constructor(
                                 keteranganLubang = null,
                                 panjangLubang = 0.0,
                                 jumlahLubangPerGroup = 0,
+                                isPotential = false,
                                 isResetting = true
                             )
                         }
@@ -220,6 +222,12 @@ class SurveiLubangStore @Inject constructor(
                 is SurveiLubangAction.UpdateUkuran -> {
                     state.value = state.value.copy(
                         ukuran = action.ukuran
+                    )
+                }
+
+                is SurveiLubangAction.UpdatePotensiLubang -> {
+                    state.value = state.value.copy(
+                        isPotential = action.isPotential
                     )
                 }
             }

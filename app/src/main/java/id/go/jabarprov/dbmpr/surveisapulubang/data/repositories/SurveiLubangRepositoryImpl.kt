@@ -66,7 +66,8 @@ class SurveiLubangRepositoryImpl @Inject constructor(private val surveiLubangRem
         keterangan: String?,
         lajur: Lajur,
         ukuran: Ukuran,
-        kedalaman: Kedalaman
+        kedalaman: Kedalaman,
+        isPotential: Boolean
     ): Either<Failure, SurveiLubang> {
         return try {
             val response =
@@ -85,7 +86,8 @@ class SurveiLubangRepositoryImpl @Inject constructor(private val surveiLubangRem
                     keterangan,
                     lajur,
                     ukuran,
-                    kedalaman
+                    kedalaman,
+                    isPotential
                 )
             SurveiLubangDataMapper.convertSurveiLubangDataResponseToEntity(response).toSuccess()
         } catch (e: RemoteDataSourceException) {

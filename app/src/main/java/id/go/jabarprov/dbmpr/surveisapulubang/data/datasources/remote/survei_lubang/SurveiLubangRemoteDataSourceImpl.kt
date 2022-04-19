@@ -107,7 +107,8 @@ class SurveiLubangRemoteDataSourceImpl @Inject constructor(private val surveiLub
         keterangan: String?,
         lajur: Lajur,
         ukuran: Ukuran,
-        kedalaman: Kedalaman
+        kedalaman: Kedalaman,
+        isPotential: Boolean
     ): SurveiLubangResponse {
         try {
             val response = surveiLubangAPI.tambahLubang(
@@ -124,7 +125,8 @@ class SurveiLubangRemoteDataSourceImpl @Inject constructor(private val surveiLub
                 gambarLubang = gambarLubang.toMultipart("image"),
                 keterangan = keterangan?.toRequestBody(),
                 lajur = lajur.toRequestBody(),
-                kategoriKedalaman = "${ukuran.convertToString()} - ${kedalaman.convertToString()}".toRequestBody()
+                kategoriKedalaman = "${ukuran.convertToString()} - ${kedalaman.convertToString()}".toRequestBody(),
+                isPotential = isPotential.toRequestBody()
             )
             if (response.isSuccessful) {
                 return response.body()?.data!!

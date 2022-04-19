@@ -47,4 +47,6 @@ sealed class SurveiLubangAction : Action {
     data class UpdateUkuran(val ukuran: Ukuran) : SurveiLubangAction()
 
     data class UpdateKedalaman(val kedalaman: Kedalaman) : SurveiLubangAction()
+
+    data class UpdatePotensiLubang(val isPotential: Boolean) : SurveiLubangAction()
 }
