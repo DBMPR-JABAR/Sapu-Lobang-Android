@@ -55,12 +55,6 @@ class EntryPenangananFragment : Fragment() {
 
     private val loadingDialog by lazy { LoadingDialog.create() }
 
-    private val fusedLocationProviderClient by lazy {
-        LocationServices.getFusedLocationProviderClient(
-            requireContext()
-        )
-    }
-
     private val locationUtils by lazy { LocationUtils(requireActivity()) }
 
     private val requestLocationPermissionLauncher = registerForActivityResult(

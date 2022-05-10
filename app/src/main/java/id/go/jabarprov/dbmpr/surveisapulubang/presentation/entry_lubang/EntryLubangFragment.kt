@@ -96,12 +96,6 @@ class EntryLubangFragment : Fragment() {
             }
         }
 
-    private val fusedLocationProviderClient by lazy {
-        LocationServices.getFusedLocationProviderClient(
-            requireContext()
-        )
-    }
-
     private val locationUtils by lazy { LocationUtils(requireActivity()) }
 
     private val loadingDialog by lazy { LoadingDialog.create() }
@@ -316,13 +310,19 @@ class EntryLubangFragment : Fragment() {
             }
 
             buttonTambahLubangSingle.setOnClickListener {
-                fusedLocationProviderClient.lastLocation.addOnSuccessListener {
-                    surveiLubangViewModel.processAction(
-                        SurveiLubangAction.TambahLubangAction(
-                            it.latitude,
-                            it.longitude,
+                lifecycleScope.launchWhenResumed {
+                    surveiLubangViewModel.processAction(SurveiLubangAction.GetLocation)
+                    val location = locationUtils.getCurrentLocation(CancellationTokenSource().token)
+                    if (location == null) {
+                        surveiLubangViewModel.processAction(SurveiLubangAction.GetLocationFailed("Gagal Mengambil Lokasi"))
+                    } else {
+                        surveiLubangViewModel.processAction(
+                            SurveiLubangAction.TambahLubangAction(
+                                location.latitude,
+                                location.longitude,
+                            )
                         )
-                    )
+                    }
                 }
             }
 
