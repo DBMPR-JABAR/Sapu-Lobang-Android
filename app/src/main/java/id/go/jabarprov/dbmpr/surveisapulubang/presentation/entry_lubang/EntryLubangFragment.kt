@@ -23,6 +23,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.material.datepicker.MaterialDatePicker
 import dagger.hilt.android.AndroidEntryPoint
 import id.go.jabarprov.dbmpr.surveisapulubang.R
@@ -126,7 +127,11 @@ class EntryLubangFragment : Fragment() {
     private lateinit var photoFile: File
 
     private fun setUpLocationSetting() {
-        locationUtils.enableLocationService()
+        if (!locationUtils.isLocationEnabled()) {
+            lifecycleScope.launchWhenResumed {
+                locationUtils.enableLocationService()
+            }
+        }
     }
 
     private fun checkLocationPermission() {
@@ -175,6 +180,10 @@ class EntryLubangFragment : Fragment() {
 
             buttonPilihTanggal.setOnClickListener {
                 timePicker.show(childFragmentManager, "Date Picker Dialog")
+            }
+
+            buttonCekLokasi.setOnClickListener {
+                findNavController().navigate(EntryLubangFragmentDirections.actionEntryLubangFragmentToMapFragment())
             }
 
             editTextRuasJalan.doOnTextChanged { text, _, _, _ ->
@@ -318,24 +327,36 @@ class EntryLubangFragment : Fragment() {
             }
 
             buttonKurangLubangSingle.setOnClickListener {
-                fusedLocationProviderClient.lastLocation.addOnSuccessListener {
-                    surveiLubangViewModel.processAction(
-                        SurveiLubangAction.KurangLubangAction(
-                            it.latitude,
-                            it.longitude,
+                lifecycleScope.launchWhenResumed {
+                    surveiLubangViewModel.processAction(SurveiLubangAction.GetLocation)
+                    val location = locationUtils.getCurrentLocation(CancellationTokenSource().token)
+                    if (location == null) {
+                        surveiLubangViewModel.processAction(SurveiLubangAction.GetLocationFailed("Gagal Mengambil Lokasi"))
+                    } else {
+                        surveiLubangViewModel.processAction(
+                            SurveiLubangAction.KurangLubangAction(
+                                location.latitude,
+                                location.longitude,
+                            )
                         )
-                    )
+                    }
                 }
             }
 
             buttonTambahLubangGroup.setOnClickListener {
-                fusedLocationProviderClient.lastLocation.addOnSuccessListener {
-                    surveiLubangViewModel.processAction(
-                        SurveiLubangAction.TambahLubangAction(
-                            it.latitude,
-                            it.longitude,
+                lifecycleScope.launchWhenResumed {
+                    surveiLubangViewModel.processAction(SurveiLubangAction.GetLocation)
+                    val location = locationUtils.getCurrentLocation(CancellationTokenSource().token)
+                    if (location == null) {
+                        surveiLubangViewModel.processAction(SurveiLubangAction.GetLocationFailed("Gagal Mengambil Lokasi"))
+                    } else {
+                        surveiLubangViewModel.processAction(
+                            SurveiLubangAction.TambahLubangAction(
+                                location.latitude,
+                                location.longitude,
+                            )
                         )
-                    )
+                    }
                 }
             }
 
@@ -376,6 +397,7 @@ class EntryLubangFragment : Fragment() {
         val visibility = if (isVisible) View.VISIBLE else View.GONE
         binding.apply {
             buttonStart.visibility = if (isVisible) View.GONE else View.VISIBLE
+            buttonCekLokasi.visibility = visibility
             textViewLabelKategori.visibility = visibility
             radioGroupKategori.visibility = visibility
             textViewLabelLokasi.visibility = visibility

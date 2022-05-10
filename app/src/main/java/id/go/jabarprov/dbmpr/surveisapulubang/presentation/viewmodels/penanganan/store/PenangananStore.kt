@@ -95,10 +95,29 @@ class PenangananStore @Inject constructor(
                         },
                     )
                 }
-                else -> {
+
+                PenangananAction.ResetStatePenanganan -> {
                     state.value = state.value.copy(
                         isFailed = false,
                         errorMessage = "",
+                        isSuccess = false,
+                        isLoading = false
+                    )
+                }
+
+                PenangananAction.GetLocation -> {
+                    state.value = state.value.copy(
+                        isFailed = false,
+                        errorMessage = "",
+                        isSuccess = false,
+                        isLoading = true
+                    )
+                }
+
+                is PenangananAction.GetLocationFailed -> {
+                    state.value = state.value.copy(
+                        isFailed = true,
+                        errorMessage = action.message,
                         isSuccess = false,
                         isLoading = false
                     )

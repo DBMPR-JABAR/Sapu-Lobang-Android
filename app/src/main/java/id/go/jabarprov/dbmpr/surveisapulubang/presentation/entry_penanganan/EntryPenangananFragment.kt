@@ -22,6 +22,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.material.datepicker.MaterialDatePicker
 import dagger.hilt.android.AndroidEntryPoint
 import id.go.jabarprov.dbmpr.surveisapulubang.AppNavigationDirections
@@ -31,6 +32,7 @@ import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.Lubang
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.adapter.LubangAdapter
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.penanganan.PenangananViewModel
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.penanganan.store.PenangananAction
+import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.survei_lubang.store.SurveiLubangAction
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.user.AuthViewModel
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.widgets.LoadingDialog
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.CalendarUtils
@@ -85,7 +87,11 @@ class EntryPenangananFragment : Fragment() {
     }
 
     private fun setUpLocationSetting() {
-        locationUtils.enableLocationService()
+        if (!locationUtils.isLocationEnabled()) {
+            lifecycleScope.launchWhenResumed {
+                locationUtils.enableLocationService()
+            }
+        }
     }
 
     private fun checkLocationPermission() {
@@ -210,16 +216,22 @@ class EntryPenangananFragment : Fragment() {
     private fun createConfirmationDialog(): ConfirmationPenangananDialog {
         return ConfirmationPenangananDialog.create(
             onPositiveButtonClickListener = { dialog, keteranganPenanganan, gambarPenanganan, _ ->
-                fusedLocationProviderClient.lastLocation.addOnSuccessListener {
-                    penangananViewModel.processAction(
-                        PenangananAction.StorePenangananLubang(
-                            selectedLubang.id,
-                            keteranganPenanganan,
-                            gambarPenanganan,
-                            it.latitude,
-                            it.longitude
+                lifecycleScope.launchWhenResumed {
+                    penangananViewModel.processAction(PenangananAction.GetLocation)
+                    val location = locationUtils.getCurrentLocation(CancellationTokenSource().token)
+                    if (location == null) {
+                        penangananViewModel.processAction(PenangananAction.GetLocationFailed("Gagal Mengambil Lokasi"))
+                    } else {
+                        penangananViewModel.processAction(
+                            PenangananAction.StorePenangananLubang(
+                                selectedLubang.id,
+                                keteranganPenanganan,
+                                gambarPenanganan,
+                                location.latitude,
+                                location.longitude
+                            )
                         )
-                    )
+                    }
                 }
                 dialog.dismiss()
             },

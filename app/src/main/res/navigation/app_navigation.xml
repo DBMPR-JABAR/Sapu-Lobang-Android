@@ -68,6 +68,9 @@
         <action
             android:id="@+id/action_entryLubangFragment_to_detailSurveiFragment"
             app:destination="@id/detailSurveiFragment" />
+        <action
+            android:id="@+id/action_entryLubangFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
     </fragment>
 
     <fragment
@@ -121,5 +124,10 @@
         android:name="id.go.jabarprov.dbmpr.surveisapulubang.presentation.rekapitulasi.RekapitulasiFragment"
         android:label="fragment_rekapitulasi"
         tools:layout="@layout/fragment_rekapitulasi" />
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="id.go.jabarprov.dbmpr.surveisapulubang.presentation.map.MapFragment"
+        android:label="fragment_map"
+        tools:layout="@layout/fragment_map" />
 
 </navigation>

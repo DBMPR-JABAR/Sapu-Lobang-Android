@@ -49,4 +49,8 @@ sealed class SurveiLubangAction : Action {
     data class UpdateKedalaman(val kedalaman: Kedalaman) : SurveiLubangAction()
 
     data class UpdatePotensiLubang(val isPotential: Boolean) : SurveiLubangAction()
+
+    object GetLocation : SurveiLubangAction()
+
+    data class GetLocationFailed(val message: String) : SurveiLubangAction()
 }

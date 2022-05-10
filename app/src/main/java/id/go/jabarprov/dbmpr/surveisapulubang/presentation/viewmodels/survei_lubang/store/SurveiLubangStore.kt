@@ -230,6 +230,23 @@ class SurveiLubangStore @Inject constructor(
                         isPotential = action.isPotential
                     )
                 }
+                is SurveiLubangAction.GetLocation -> {
+                    state.value = state.value.copy(
+                        isFailed = false,
+                        errorMessage = "",
+                        isSuccess = false,
+                        isLoading = true
+                    )
+                }
+
+                is SurveiLubangAction.GetLocationFailed -> {
+                    state.value = state.value.copy(
+                        isFailed = true,
+                        errorMessage = action.message,
+                        isSuccess = false,
+                        isLoading = false,
+                    )
+                }
             }
         }
     }
