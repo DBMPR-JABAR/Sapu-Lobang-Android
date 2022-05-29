@@ -4,6 +4,8 @@ plugins {
     id 'androidx.navigation.safeargs.kotlin'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
 }
 
 android {
@@ -59,20 +61,20 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'com.google.android.material:material:1.6.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
     // Fragment KTX
     implementation "androidx.fragment:fragment-ktx:1.4.1"
 
     // View Model
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0-beta01"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0-rc01"
 
     // Live Data
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.5.0-beta01"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.5.0-rc01"
 
     // Lifecycle Runtime
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.5.0-beta01"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.5.0-rc01"
 
     // Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:2.4.2"
@@ -104,6 +106,11 @@ dependencies {
 
     // ArcGIS
     implementation "com.esri.arcgisruntime:arcgis-android:100.14.0"
+
+    // Firebase
+    implementation platform('com.google.firebase:firebase-bom:30.1.0')
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-crashlytics'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

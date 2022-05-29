@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "563228355877",
+    "project_id": "sapu-lobang",
+    "storage_bucket": "sapu-lobang.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:563228355877:android:e027699a4a7b0a6a96becc",
+        "android_client_info": {
+          "package_name": "id.go.jabarprov.dbmpr.surveisapulubang"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "563228355877-62241h9chqftqo7svt96aksn23qu03bv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "id.go.jabarprov.dbmpr.surveisapulubang",
+            "certificate_hash": "7998b3b9dba280628617bd88c54f6fe305f2baa2"
+          }
+        },
+        {
+          "client_id": "563228355877-dbv14ra3sc72dms3p33ahm4qcpdvhn2h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyApMd4hfR20tYgphJ9nytKIT-LSE7-DEwI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "563228355877-dbv14ra3sc72dms3p33ahm4qcpdvhn2h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

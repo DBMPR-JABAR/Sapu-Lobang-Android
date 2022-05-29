@@ -1,7 +1,9 @@
 package id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.user.store
 
 import id.go.jabarprov.dbmpr.surveisapulubang.core.None
+import id.go.jabarprov.dbmpr.surveisapulubang.core.Resource
 import id.go.jabarprov.dbmpr.surveisapulubang.core.store.Store
+import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.User
 import id.go.jabarprov.dbmpr.surveisapulubang.domain.usecases.CheckAccessToken
 import id.go.jabarprov.dbmpr.surveisapulubang.domain.usecases.LoginUser
 import id.go.jabarprov.dbmpr.surveisapulubang.domain.usecases.LogoutUser
@@ -17,90 +19,70 @@ class AuthStore @Inject constructor(
     override fun reduce(action: AuthAction) {
         coroutineScope.launch {
             when (action) {
-                is AuthAction.LoginUserAction -> {
-                    state.value = state.value.copy(
-                        user = null,
-                        isSuccess = false,
-                        isFailed = false,
-                        isLoading = true,
-                        errorMessage = null,
-                    )
-                    val loginParam = LoginUser.Params(action.username, action.password)
-                    val result = loginUser.run(loginParam)
-                    result.either(
-                        fnL = { failure ->
-                            state.value = state.value.copy(
-                                user = null,
-                                isSuccess = false,
-                                isFailed = true,
-                                isLoading = false,
-                                errorMessage = failure.message
-                            )
-                        },
-                        fnR = { user ->
-                            state.value = state.value.copy(
-                                user = user,
-                                isSuccess = true,
-                                isFailed = false,
-                                isLoading = false,
-                                errorMessage = null
-                            )
-                        },
-                    )
-                }
-
-                AuthAction.LogoutUserAction -> {
-                    state.value = state.value.copy(
-                        isSuccess = false,
-                        isFailed = false,
-                        isLoading = true,
-                        errorMessage = null,
-                    )
-                    val result = logoutUser.run(None)
-                    result.either(
-                        fnL = { failure ->
-                            state.value = state.value.copy(
-                                isSuccess = false,
-                                isFailed = true,
-                                isLoading = false,
-                                errorMessage = failure.message
-                            )
-                        },
-                        fnR = {
-                            state.value = state.value.copy(
-                                user = null,
-                                isSuccess = true,
-                                isFailed = false,
-                                isLoading = false,
-                                errorMessage = null
-                            )
-                        },
-                    )
-                }
-
-                AuthAction.CheckAccessToken -> {
-                    val result = checkAccessToken.run(None)
-                    result.either(
-                        fnL = { failure ->
-                            state.value = state.value.copy(
-                                isSuccess = false,
-                                isFailed = true,
-                                isLoading = false,
-                                errorMessage = failure.message
-                            )
-                        },
-                        fnR = { user ->
-                            state.value = state.value.copy(
-                                user = user,
-                                isSuccess = true,
-                                isFailed = false,
-                                isLoading = false,
-                                errorMessage = null
-                            )
-                        },
-                    )
-                }
+                is AuthAction.LoginUserAction -> loginUser(action)
+                AuthAction.LogoutUserAction -> logoutUser()
+                AuthAction.CheckAccessToken -> checkAccessToken()
             }
         }
+    }
+
+    private suspend fun loginUser(action: AuthAction.LoginUserAction) {
+        setLoadingState()
+        val loginParam = LoginUser.Params(action.username, action.password)
+        val result = loginUser.run(loginParam)
+        result.either(
+            fnL = { failure ->
+                setErrorState(failure.message)
+            },
+            fnR = { user ->
+                setUserState(user)
+            },
+        )
+    }
+
+    private suspend fun logoutUser() {
+        setLoadingState()
+        val result = logoutUser.run(None)
+        result.either(
+            fnL = { failure ->
+                setErrorState(failure.message)
+            },
+            fnR = {
+                setInitialState()
+            },
+        )
+    }
+
+    private suspend fun checkAccessToken() {
+        val result = checkAccessToken.run(None)
+        result.either(
+            fnL = { failure ->
+                state.value = state.value.copy(checkTokenState = Resource.Failed(failure.message))
+            },
+            fnR = { user ->
+                state.value = state.value.copy(
+                    checkTokenState = Resource.Success(user),
+                    userState = Resource.Success(user)
+                )
+            },
+        )
+    }
+
+    private fun setInitialState() {
+        state.value = state.value.copy(
+            userState = Resource.Initial()
+        )
+    }
+
+    private fun setUserState(user: User) {
+        state.value = state.value.copy(userState = Resource.Success(user))
+    }
+
+    private fun setLoadingState() {
+        state.value = state.value.copy(userState = Resource.Loading())
+    }
+
+    private fun setErrorState(errorMessage: String) {
+        state.value = state.value.copy(userState = Resource.Failed(errorMessage))
     }
 }

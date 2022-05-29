@@ -20,8 +20,12 @@ class AuthRemoteDataSourceImpl @Inject constructor(private val authAPI: AuthAPI)
             if (response.isSuccessful) {
                 return response.body()?.data!!
             } else {
-                Log.d(TAG, "login: ERROR LOGIN")
-                throw RemoteDataSourceException("Tidak Dapat Login Atau User Tidak Ditemukkan")
+                Log.d(TAG, "login: ERROR LOGIN ${response.errorBody().toString()}")
+                if (response.code() == 400) {
+                    throw RemoteDataSourceException("Username/NIP/NIK atau password salah")
+                } else {
+                    throw RemoteDataSourceException("Tidak Dapat Login Pada Aplikasi")
+                }
             }
         } catch (e: UnknownHostException) {
             Log.d(TAG, "login: ERROR LOGIN $e")
@@ -29,9 +33,6 @@ class AuthRemoteDataSourceImpl @Inject constructor(private val authAPI: AuthAPI)
         } catch (e: SocketTimeoutException) {
             Log.d(TAG, "login: ERROR LOGIN $e")
             throw RemoteDataSourceException("Tidak Dapat Menghubungi Server")
-        } catch (e: Exception) {
-            Log.d(TAG, "login: ERROR LOGIN $e")
-            throw RemoteDataSourceException("Mohon Gunakan Akun Mandor")
         }
     }
 }

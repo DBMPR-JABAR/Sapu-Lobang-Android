@@ -11,7 +11,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
+import id.go.jabarprov.dbmpr.surveisapulubang.core.Resource
 import id.go.jabarprov.dbmpr.surveisapulubang.databinding.FragmentSplashScreenBinding
+import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.User
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.user.AuthViewModel
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.user.store.AuthAction
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.extensions.showToast
@@ -47,21 +49,26 @@ class SplashScreenFragment : Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 authViewModel.uiState.collect {
                     delay(1000)
-
-                    if (it.user != null) {
-                        val action =
-                            SplashScreenFragmentDirections.actionSplashScreenFragmentToDashboardFragment()
-                        findNavController().navigate(action)
-                    }
-
-                    if (it.isFailed) {
-                        showToast(it.errorMessage!!)
-                        val action =
-                            SplashScreenFragmentDirections.actionSplashScreenFragmentToLoginFragment()
-                        findNavController().navigate(action)
-                    }
+                    processCheckTokenState(it.checkTokenState)
                 }
             }
+        }
+    }
+
+    private fun processCheckTokenState(state: Resource<User>) {
+        when (state) {
+            is Resource.Failed -> {
+                showToast(state.errorMessage)
+                val action =
+                    SplashScreenFragmentDirections.actionSplashScreenFragmentToLoginFragment()
+                findNavController().navigate(action)
+            }
+            is Resource.Success -> {
+                val action =
+                    SplashScreenFragmentDirections.actionSplashScreenFragmentToDashboardFragment()
+                findNavController().navigate(action)
+            }
+            else -> Unit
         }
     }
 }
