@@ -1,14 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!--  Text Input Layout  -->
     <style name="Widget.SurveiSapuLubang.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
-        <item name="boxCornerRadiusTopStart">@dimen/small_radius</item>
-        <item name="boxCornerRadiusTopEnd">@dimen/small_radius</item>
-        <item name="boxCornerRadiusBottomStart">@dimen/small_radius</item>
-        <item name="boxCornerRadiusBottomEnd">@dimen/small_radius</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/medium_radius</item>
+        <item name="boxCornerRadiusTopStart">@dimen/medium_radius</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/medium_radius</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/medium_radius</item>
+        <item name="boxBackgroundColor">@color/gray</item>
+        <item name="boxStrokeColor">@color/gray</item>
+        <item name="hintEnabled">false</item>
         <item name="boxStrokeWidth">0dp</item>
         <item name="boxStrokeWidthFocused">0dp</item>
+        <item name="materialThemeOverlay">
+            @style/ThemeOverlay.SurveiSapuLubang.TextInputLayout.OutlinedBox
+        </item>
     </style>
+
+    <style name="Widget.SurveiSapuLubang.TextInputEditText.OutlinedBox" parent="Widget.MaterialComponents.TextInputEditText.OutlinedBox">
+        <item name="hintTextColor">@color/text_hint_color</item>
+        <item name="android:textColorHint">@color/text_hint_color</item>
+    </style>
+
+    <style name="ThemeOverlay.SurveiSapuLubang.TextInputLayout.OutlinedBox" parent="">
+        <item name="editTextStyle">@style/Widget.SurveiSapuLubang.TextInputEditText.OutlinedBox
+        </item>
+    </style>
+    <!--  End Text Input Layout  -->
+
+    <!--  Text Input Edit Text  -->
+    <style name="Widget.SurveiSapuLubang.TextInputEditText" parent="Widget.Material3.TextInputEditText.FilledBox">
+        <item name="android:textColorHint">@color/text_hint_color</item>
+    </style>
+    <!--  End Text Input Edit Text  -->
 
     <style name="Widget.SurveiSapuLubang.Button" parent="Widget.MaterialComponents.Button">
         <item name="android:paddingTop">10dp</item>

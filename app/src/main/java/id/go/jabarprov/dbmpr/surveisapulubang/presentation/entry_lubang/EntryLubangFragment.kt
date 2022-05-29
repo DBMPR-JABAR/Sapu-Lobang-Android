@@ -229,18 +229,28 @@ class EntryLubangFragment : Fragment() {
             }
 
             radioGroupLajur.setOnCheckedChangeListener { _, checkedId ->
-                if (checkedId == R.id.radio_button_kiri) {
-                    surveiLubangViewModel.processAction(
-                        SurveiLubangAction.UpdateLajur(
-                            Lajur.KIRI
+                when (checkedId) {
+                    R.id.radio_button_kiri -> {
+                        surveiLubangViewModel.processAction(
+                            SurveiLubangAction.UpdateLajur(
+                                Lajur.KIRI
+                            )
                         )
-                    )
-                } else {
-                    surveiLubangViewModel.processAction(
-                        SurveiLubangAction.UpdateLajur(
-                            Lajur.KANAN
+                    }
+                    R.id.radio_button_kanan -> {
+                        surveiLubangViewModel.processAction(
+                            SurveiLubangAction.UpdateLajur(
+                                Lajur.KANAN
+                            )
                         )
-                    )
+                    }
+                    else -> {
+                        surveiLubangViewModel.processAction(
+                            SurveiLubangAction.UpdateLajur(
+                                Lajur.AS
+                            )
+                        )
+                    }
                 }
             }
 

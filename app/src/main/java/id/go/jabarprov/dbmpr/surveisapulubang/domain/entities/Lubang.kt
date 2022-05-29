@@ -34,12 +34,14 @@ enum class KategoriLubang {
 
 enum class Lajur {
     KIRI,
+    AS,
     KANAN;
 
     fun convertToString(): String {
         return when (this) {
             KIRI -> "Kiri"
             KANAN -> "Kanan"
+            AS -> "As"
         }
     }
 
@@ -47,7 +49,8 @@ enum class Lajur {
         fun convertStringToLajur(lajur: String): Lajur {
             return when (lajur) {
                 "Kiri" -> KIRI
-                else -> KANAN
+                "Kanan" -> KANAN
+                else -> AS
             }
         }
     }

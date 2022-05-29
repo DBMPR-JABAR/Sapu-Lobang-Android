@@ -499,6 +499,13 @@
                     android:text="Kiri" />
 
                 <RadioButton
+                    android:id="@+id/radio_button_as"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="As" />
+
+                <RadioButton
                     android:id="@+id/radio_button_kanan"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
