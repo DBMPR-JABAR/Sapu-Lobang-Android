@@ -6,14 +6,6 @@
     tools:context=".presentation.detail_survei.DetailSurveiPotensiFragment">
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="LIST POTENSI"
-        android:textAppearance="?textAppearanceHeadline6"
-        android:visibility="visible" />
-
-    <TextView
         android:id="@+id/text_view_empty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

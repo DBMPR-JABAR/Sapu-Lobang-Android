@@ -56,15 +56,9 @@ class DetailSurveiLubangFragment : Fragment() {
             onNegative = { it.dismiss() },
             onPositive = {
                 detailSurveiViewModel.processAction(
-                    if (selectedSurveiItem.potensi) {
-                        DetailSurveiAction.DeletePotensiLubang(
-                            selectedSurveiItem.id
-                        )
-                    } else {
-                        DetailSurveiAction.DeleteLubang(
-                            selectedSurveiItem.id
-                        )
-                    }
+                    DetailSurveiAction.DeleteLubang(
+                        selectedSurveiItem.id
+                    )
                 )
                 it.dismiss()
             }
