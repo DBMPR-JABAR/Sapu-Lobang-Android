@@ -381,6 +381,18 @@ class EntryLubangFragment : Fragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (surveiLubangViewModel.uiState.value.idRuasJalan.isNotBlank()) {
+            surveiLubangViewModel.processAction(
+                SurveiLubangAction.StartSurveiAction(
+                    surveiLubangViewModel.uiState.value.tanggal,
+                    surveiLubangViewModel.uiState.value.idRuasJalan
+                )
+            )
+        }
+    }
+
     private fun takePicture() {
         photoFile = requireContext().createPictureCacheFile()
         photoUri = FileProvider.getUriForFile(

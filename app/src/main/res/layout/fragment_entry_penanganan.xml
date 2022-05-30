@@ -131,7 +131,8 @@
                 android:id="@+id/edit_text_ruas_jalan"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Pilih Ruas Jalan" />
+                android:hint="Pilih Ruas Jalan"
+                android:padding="16dp" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
