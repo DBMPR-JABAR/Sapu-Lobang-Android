@@ -5,7 +5,7 @@ import android.util.Log
 private const val TAG = "GLOBAL_FUNCTIONS"
 
 fun getSapuLubangImageUrl(fileName: String): String {
-    return "https://tj.temanjabar.net/storage/survei_lubang/${fileName}"
+    return "https://tj.temanjabar.net/map-dashboard/intervention-mage/${fileName}"
 }
 
 fun runSafety(action: () -> Unit) {

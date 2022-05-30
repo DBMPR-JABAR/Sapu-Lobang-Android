@@ -1,6 +1,6 @@
 package id.go.jabarprov.dbmpr.surveisapulubang.data.datasources.remote.survei_lubang
 
-import id.go.jabarprov.dbmpr.surveisapulubang.data.models.response.LubangResponse
+import id.go.jabarprov.dbmpr.surveisapulubang.data.models.response.ResultSurveiResponse
 import id.go.jabarprov.dbmpr.surveisapulubang.data.models.response.SurveiLubangResponse
 import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.Kedalaman
 import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.Lajur
@@ -11,7 +11,7 @@ import java.util.*
 interface SurveiLubangRemoteDataSource {
     suspend fun startSurvei(tanggal: Calendar, idRuasJalan: String): SurveiLubangResponse
 
-    suspend fun resultSurvei(tanggal: Calendar, idRuasJalan: String): List<LubangResponse>
+    suspend fun resultSurvei(tanggal: Calendar, idRuasJalan: String): ResultSurveiResponse
 
     suspend fun deleteSurveiItem(idLubang: Int)
 

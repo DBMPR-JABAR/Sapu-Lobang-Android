@@ -8,6 +8,7 @@
         <entry key="..\:/Project/BPMR/Survei Sapu Lubang/app/src/main/res/drawable/bg_error_container_rounded_corner.xml" value="0.3135" />
         <entry key="..\:/Project/BPMR/Survei Sapu Lubang/app/src/main/res/drawable/bg_gray_container_rounded_corner.xml" value="0.3635" />
         <entry key="..\:/Project/BPMR/Survei Sapu Lubang/app/src/main/res/drawable/bg_solid_gray_container_rounded_corner.xml" value="0.3635" />
+        <entry key="..\:/Project/BPMR/Survei Sapu Lubang/app/src/main/res/drawable/bg_solid_white_container_rounded_corner.xml" value="0.1935" />
         <entry key="..\:/Project/BPMR/Survei Sapu Lubang/app/src/main/res/drawable/bg_warning_container_rounded_corner.xml" value="0.3135" />
         <entry key="..\:/Project/BPMR/Survei Sapu Lubang/app/src/main/res/font/alata.xml" value="0.3927083333333333" />
         <entry key="..\:/Project/BPMR/Survei Sapu Lubang/app/src/main/res/layout/activity_main.xml" value="0.33" />
@@ -20,6 +21,8 @@
         <entry key="..\:/Project/BPMR/Survei Sapu Lubang/app/src/main/res/layout/fragment_entry_lubang.xml" value="0.33" />
         <entry key="..\:/Project/BPMR/Survei Sapu Lubang/app/src/main/res/layout/fragment_entry_penanganan.xml" value="0.3625" />
         <entry key="..\:/Project/BPMR/Survei Sapu Lubang/app/src/main/res/layout/fragment_entry_rencana.xml" value="0.3625" />
+        <entry key="..\:/Project/BPMR/Survei Sapu Lubang/app/src/main/res/layout/fragment_list_lubang.xml" value="0.3625" />
+        <entry key="..\:/Project/BPMR/Survei Sapu Lubang/app/src/main/res/layout/fragment_list_potensi.xml" value="0.3484375" />
         <entry key="..\:/Project/BPMR/Survei Sapu Lubang/app/src/main/res/layout/fragment_login.xml" value="0.3625" />
         <entry key="..\:/Project/BPMR/Survei Sapu Lubang/app/src/main/res/layout/fragment_map.xml" value="0.3625" />
         <entry key="..\:/Project/BPMR/Survei Sapu Lubang/app/src/main/res/layout/fragment_rekapitulasi.xml" value="0.3484375" />

@@ -6,7 +6,7 @@ import id.go.jabarprov.dbmpr.surveisapulubang.data.datasources.remote.service.Su
 import id.go.jabarprov.dbmpr.surveisapulubang.data.models.request.DetailSurveiRequest
 import id.go.jabarprov.dbmpr.surveisapulubang.data.models.request.StartSurveiLubangRequest
 import id.go.jabarprov.dbmpr.surveisapulubang.data.models.request.SurveiLubangRequest
-import id.go.jabarprov.dbmpr.surveisapulubang.data.models.response.LubangResponse
+import id.go.jabarprov.dbmpr.surveisapulubang.data.models.response.ResultSurveiResponse
 import id.go.jabarprov.dbmpr.surveisapulubang.data.models.response.SurveiLubangResponse
 import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.Kedalaman
 import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.Lajur
@@ -50,29 +50,25 @@ class SurveiLubangRemoteDataSourceImpl @Inject constructor(private val surveiLub
     override suspend fun resultSurvei(
         tanggal: Calendar,
         idRuasJalan: String
-    ): List<LubangResponse> {
+    ): ResultSurveiResponse {
         try {
             val request =
                 DetailSurveiRequest(CalendarUtils.formatCalendarToString(tanggal), idRuasJalan)
             val response = surveiLubangAPI.resultSurvei(request)
             if (response.isSuccessful) {
-                return (response.body()?.data?.listLubang?.map { it.copy(potensi_lubang = "false") })!! + (response.body()?.data?.listPotensial?.map {
-                    it.copy(
-                        potensi_lubang = "true"
-                    )
-                })!!
+                return response.body()?.data!!
             } else {
-                Log.d(TAG, "startSurvei: Gagal Mengambil Data Hasil Survei")
+                Log.e(TAG, "ERROR RESULT SURVEI")
                 throw RemoteDataSourceException("Gagal Mengambil Data Hasil Survei")
             }
         } catch (e: UnknownHostException) {
-            Log.d(TAG, "login: ERROR LOGIN $e")
+            Log.e(TAG, "ERROR RESULT SURVEI", e)
             throw RemoteDataSourceException("Tidak Dapat Menghubungi Server")
         } catch (e: SocketTimeoutException) {
-            Log.d(TAG, "login: ERROR LOGIN $e")
+            Log.e(TAG, "ERROR RESULT SURVEI", e)
             throw RemoteDataSourceException("Tidak Dapat Menghubungi Server")
         } catch (e: Exception) {
-            Log.d(TAG, "login: ERROR LOGIN $e")
+            Log.e(TAG, "ERROR RESULT SURVEI", e)
             throw RemoteDataSourceException("Terjadi Kesalahan Pada Sistem")
         }
     }

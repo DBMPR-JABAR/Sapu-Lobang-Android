@@ -35,9 +35,9 @@ abstract class LubangDataMapper {
                     lubang.kategori_kedalaman.split(" - ")[0]
                 ) else null,
                 kedalaman = if (!lubang.kategori_kedalaman.isNullOrBlank()) Kedalaman.convertStringToUkuran(
-                    lubang.kategori_kedalaman.split(" - ")[0]
+                    lubang.kategori_kedalaman.split(" - ")[1]
                 ) else null,
-                potensi = lubang.potensi_lubang == "true"
+                potensi = (lubang.potensi_lubang == "true") || (lubang.potensi_lubang == "1")
             )
         }
 

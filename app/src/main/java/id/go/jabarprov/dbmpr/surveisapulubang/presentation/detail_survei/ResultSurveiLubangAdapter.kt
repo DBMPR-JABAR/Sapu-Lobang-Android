@@ -5,9 +5,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
+import coil.transform.RoundedCornersTransformation
+import id.go.jabarprov.dbmpr.surveisapulubang.R
 import id.go.jabarprov.dbmpr.surveisapulubang.databinding.LayoutItemLubangResultSurveiBinding
 import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.KategoriLubang
 import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.Lubang
+import id.go.jabarprov.dbmpr.surveisapulubang.utils.getSapuLubangImageUrl
 
 class ResultSurveiLubangAdapter :
     ListAdapter<Lubang, ResultSurveiLubangAdapter.ResultSurveiItemLubangViewHolder>(
@@ -44,6 +48,22 @@ class ResultSurveiLubangAdapter :
             deleteAction: ((Lubang) -> Unit)?
         ) {
             binding.apply {
+
+                if (lubang.urlGambar.isNullOrBlank()) {
+                    imageView.load(R.drawable.bg_solid_white_container_rounded_corner)
+                } else {
+                    imageView.load(getSapuLubangImageUrl(lubang.urlGambar)) {
+                        transformations(RoundedCornersTransformation(8f))
+                        placeholder(R.drawable.bg_solid_white_container_rounded_corner)
+                        error(R.drawable.bg_solid_white_container_rounded_corner)
+                        build()
+                    }
+                }
+
+                textViewContentId.text = lubang.id.toString()
+
+                textViewContentMandor.text = "-"
+
                 textViewContentLokasi.text =
                     if (!lubang.kodeLokasi.isNullOrBlank()) {
                         "KM.${lubang.kodeLokasi}. ${lubang.lokasiKm}+${
@@ -53,19 +73,20 @@ class ResultSurveiLubangAdapter :
                         "${lubang.lokasiKm}+${lubang.lokasiM.toString().padStart(3, '0')}"
                     }
 
-                textViewContentLatitude.text = lubang.latitude.toString()
-                textViewContentLongitude.text = lubang.longitude.toString()
                 textViewContentKategori.text =
                     if (lubang.kategori == KategoriLubang.SINGLE) "Single" else "Group"
+
+                textViewContentUkuran.text =
+                    "${lubang.ukuran?.convertToString()} - ${lubang.kedalaman?.convertToString()}"
+
                 textViewContentPanjangLubang.text = "${lubang.panjang} M"
 
-                textViewContentPotensiLubang.text = if (lubang.potensi) "Iya" else "Tidak"
 
                 buttonDetail.setOnClickListener {
                     detailAction?.invoke(lubang)
                 }
 
-                buttonProses.setOnClickListener {
+                buttonDelete.setOnClickListener {
                     deleteAction?.invoke(lubang)
                 }
             }

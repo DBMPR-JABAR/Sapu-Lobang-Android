@@ -4,7 +4,7 @@ import id.go.jabarprov.dbmpr.surveisapulubang.common.data.remote.models.BaseResp
 import id.go.jabarprov.dbmpr.surveisapulubang.data.models.request.DetailSurveiRequest
 import id.go.jabarprov.dbmpr.surveisapulubang.data.models.request.StartSurveiLubangRequest
 import id.go.jabarprov.dbmpr.surveisapulubang.data.models.request.SurveiLubangRequest
-import id.go.jabarprov.dbmpr.surveisapulubang.data.models.response.DetailSurveiResponse
+import id.go.jabarprov.dbmpr.surveisapulubang.data.models.response.ResultSurveiResponse
 import id.go.jabarprov.dbmpr.surveisapulubang.data.models.response.SurveiLubangResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -39,7 +39,7 @@ interface SurveiLubangAPI {
     suspend fun kurangLubang(@Body body: SurveiLubangRequest): Response<BaseResponse<SurveiLubangResponse>>
 
     @POST("survei-lubang/result")
-    suspend fun resultSurvei(@Body body: DetailSurveiRequest): Response<BaseResponse<DetailSurveiResponse>>
+    suspend fun resultSurvei(@Body body: DetailSurveiRequest): Response<BaseResponse<ResultSurveiResponse>>
 
     @GET("survei-lubang/delete/{id}")
     suspend fun deleteSurveiItem(@Path("id") idLubang: Int): Response<BaseResponse<Unit>>

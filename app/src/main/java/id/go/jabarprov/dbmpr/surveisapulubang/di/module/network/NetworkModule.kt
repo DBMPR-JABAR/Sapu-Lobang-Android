@@ -22,7 +22,7 @@ abstract class NetworkModule {
         @RetrofitUnauthorized
         fun providesRetrofitUnauthorizedInstance(): Retrofit {
             return Retrofit.Builder()
-                .baseUrl("https://tj.temanjabar.net/api/")
+                .baseUrl(BASE_URL.DEV)
                 .client(
                     OkHttpClient.Builder()
                         .readTimeout(60, TimeUnit.SECONDS)
@@ -41,7 +41,7 @@ abstract class NetworkModule {
         @RetrofitAuthorized
         fun providesRetrofitAuthorizedInstance(authLocalDataSource: AuthLocalDataSource): Retrofit {
             return Retrofit.Builder()
-                .baseUrl("https://tj.temanjabar.net/api/")
+                .baseUrl(BASE_URL.DEV)
                 .client(
                     OkHttpClient.Builder()
                         .readTimeout(60, TimeUnit.SECONDS)
@@ -89,4 +89,9 @@ abstract class NetworkModule {
             return retrofit.create(RekapAPI::class.java)
         }
     }
+}
+
+internal object BASE_URL {
+    const val DEV = "http://10.0.2.2/temanjabar/public/api/"
+    const val PROD = "https://tj.temanjabar.net/api/"
 }

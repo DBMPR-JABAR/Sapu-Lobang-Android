@@ -9,7 +9,7 @@ import java.util.*
 interface SurveiLubangRepository {
     suspend fun startSurvei(tanggal: Calendar, idRuasJalan: String): Either<Failure, SurveiLubang>
 
-    suspend fun resultSurvei(tanggal: Calendar, idRuasJalan: String): Either<Failure, List<Lubang>>
+    suspend fun resultSurvei(tanggal: Calendar, idRuasJalan: String): Either<Failure, ResultSurvei>
 
     suspend fun deleteSurveiItem(idLubang: Int): Either<Failure, Unit>
 

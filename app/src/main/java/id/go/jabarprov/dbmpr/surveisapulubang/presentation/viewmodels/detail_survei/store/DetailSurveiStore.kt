@@ -1,14 +1,16 @@
 package id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.detail_survei.store
 
+import id.go.jabarprov.dbmpr.surveisapulubang.core.None
+import id.go.jabarprov.dbmpr.surveisapulubang.core.Resource
 import id.go.jabarprov.dbmpr.surveisapulubang.core.store.Store
 import id.go.jabarprov.dbmpr.surveisapulubang.domain.usecases.DeleteSurveiItem
 import id.go.jabarprov.dbmpr.surveisapulubang.domain.usecases.DeleteSurveiPotensiItem
-import id.go.jabarprov.dbmpr.surveisapulubang.domain.usecases.GetResultDetailSurvei
+import id.go.jabarprov.dbmpr.surveisapulubang.domain.usecases.GetResultSurvei
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class DetailSurveiStore @Inject constructor(
-    private val getResultDetailSurvei: GetResultDetailSurvei,
+    private val getResultSurvei: GetResultSurvei,
     private val deleteSurveiItem: DeleteSurveiItem,
     private val deleteSurveiPotensiItem: DeleteSurveiPotensiItem
 ) :
@@ -17,94 +19,70 @@ class DetailSurveiStore @Inject constructor(
     override fun reduce(action: DetailSurveiAction) {
         coroutineScope.launch {
             when (action) {
-                is DetailSurveiAction.LoadSurveiData -> {
-                    state.value = state.value.copy(
-                        isFailed = false,
-                        errorMessage = "",
-                        isSuccess = false,
-                        isLoading = true,
-                        isDelete = false,
-                    )
-                    val params = GetResultDetailSurvei.Params(action.tanggal, action.idRuasJalan)
-                    val result = getResultDetailSurvei.run(params)
-                    result.either(
-                        fnL = { failure ->
-                            state.value = state.value.copy(
-                                isFailed = true,
-                                errorMessage = failure.message,
-                                isSuccess = false,
-                                isLoading = false,
-                            )
-                        },
-                        fnR = { listLubang ->
-                            state.value = state.value.copy(
-                                isFailed = false,
-                                errorMessage = "",
-                                isSuccess = true,
-                                isLoading = false,
-                                listLubang = listLubang
-                            )
-                        },
-                    )
-                }
-                is DetailSurveiAction.DeleteLubang -> {
-                    state.value = state.value.copy(
-                        isFailed = false,
-                        errorMessage = "",
-                        isSuccess = false,
-                        isLoading = true
-                    )
-                    val result = deleteSurveiItem.run(action.idLubang)
-                    result.either(
-                        fnL = { failure ->
-                            state.value = state.value.copy(
-                                isFailed = true,
-                                errorMessage = failure.message,
-                                isSuccess = false,
-                                isLoading = false
-                            )
-                        },
-                        fnR = {
-                            state.value = state.value.copy(
-                                isFailed = false,
-                                errorMessage = "",
-                                isSuccess = true,
-                                isLoading = false,
-                                isDelete = true
-                            )
-                        },
-                    )
-                }
-                is DetailSurveiAction.DeletePotensiLubang -> {
-                    state.value = state.value.copy(
-                        isFailed = false,
-                        errorMessage = "",
-                        isSuccess = false,
-                        isLoading = true
-                    )
-                    val result = deleteSurveiPotensiItem.run(action.idLubang)
-                    result.either(
-                        fnL = { failure ->
-                            state.value = state.value.copy(
-                                isFailed = true,
-                                errorMessage = failure.message,
-                                isSuccess = false,
-                                isLoading = false
-                            )
-                        },
-                        fnR = {
-                            state.value = state.value.copy(
-                                isFailed = false,
-                                errorMessage = "",
-                                isSuccess = true,
-                                isLoading = false,
-                                isDelete = true
-                            )
-                        },
-                    )
-                }
+                is DetailSurveiAction.LoadSurveiData -> loadSurvei(action)
+                is DetailSurveiAction.DeleteLubang -> deleteLubang(action)
+                is DetailSurveiAction.DeletePotensiLubang -> deletePotensiLubang(action)
             }
         }
+    }
+
+    private suspend fun loadSurvei(action: DetailSurveiAction.LoadSurveiData) {
+        state.value = state.value.copy(
+            resultSurveiState = Resource.Loading(),
+            deleteItemState = Resource.Initial()
+        )
+        val params = GetResultSurvei.Params(action.tanggal, action.idRuasJalan)
+        val result = getResultSurvei.run(params)
+        result.either(
+            fnL = { failure ->
+                state.value = state.value.copy(
+                    resultSurveiState = Resource.Failed(failure.message)
+                )
+            },
+            fnR = { resultLubang ->
+                state.value = state.value.copy(
+                    resultSurveiState = Resource.Success(resultLubang)
+                )
+            },
+        )
+    }
+
+    private suspend fun deleteLubang(action: DetailSurveiAction.DeleteLubang) {
+        state.value = state.value.copy(
+            deleteItemState = Resource.Loading()
+        )
+        val result = deleteSurveiItem.run(action.idLubang)
+        result.either(
+            fnL = { failure ->
+                state.value = state.value.copy(
+                    deleteItemState = Resource.Failed(failure.message)
+                )
+            },
+            fnR = {
+                state.value = state.value.copy(
+                    deleteItemState = Resource.Success(None)
+                )
+            },
+        )
+    }
+
+    private suspend fun deletePotensiLubang(action: DetailSurveiAction.DeletePotensiLubang) {
+        state.value = state.value.copy(
+            deleteItemState = Resource.Loading()
+        )
+        val result = deleteSurveiPotensiItem.run(action.idLubang)
+        result.either(
+            fnL = { failure ->
+                state.value = state.value.copy(
+                    deleteItemState = Resource.Failed(failure.message)
+                )
+            },
+            fnR = {
+                state.value = state.value.copy(
+                    deleteItemState = Resource.Success(None)
+                )
+            },
+        )
     }
 
 }

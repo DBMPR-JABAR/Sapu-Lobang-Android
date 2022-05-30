@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -12,19 +11,18 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
-import id.go.jabarprov.dbmpr.surveisapulubang.AppNavigationDirections
-import id.go.jabarprov.dbmpr.surveisapulubang.common.presentation.widget.SpaceItemDecoration
+import id.go.jabarprov.dbmpr.surveisapulubang.R
+import id.go.jabarprov.dbmpr.surveisapulubang.core.None
+import id.go.jabarprov.dbmpr.surveisapulubang.core.Resource
 import id.go.jabarprov.dbmpr.surveisapulubang.databinding.FragmentDetailSurveiBinding
-import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.Lubang
+import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.ResultSurvei
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.detail_survei.DetailSurveiViewModel
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.detail_survei.store.DetailSurveiAction
-import id.go.jabarprov.dbmpr.surveisapulubang.presentation.widgets.KonfirmasiDialog
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.widgets.LoadingDialog
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.CalendarUtils
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.extensions.showToast
-import id.go.jabarprov.dbmpr.surveisapulubang.utils.getSapuLubangImageUrl
 import kotlinx.coroutines.launch
 
 private const val TAG = "DetailSurveiFragment"
@@ -38,50 +36,10 @@ class DetailSurveiFragment : Fragment() {
 
     private val loadingDialog by lazy { LoadingDialog.create() }
 
-    private val konfirmasiDialog by lazy {
-        KonfirmasiDialog.create(
-            title = "Konfirmasi Penghapusan",
-            description = "Apakah anda yakin untuk menghapus lubang ini?",
-            onNegative = { it.dismiss() },
-            onPositive = {
-                detailSurveiViewModel.processAction(
-                    if (selectedSurveiItem.potensi) {
-                        DetailSurveiAction.DeletePotensiLubang(
-                            selectedSurveiItem.id
-                        )
-                    } else {
-                        DetailSurveiAction.DeleteLubang(
-                            selectedSurveiItem.id
-                        )
-                    }
-                )
-                it.dismiss()
-            }
-        )
-    }
+    private val detailSurveiListLubangFragment by lazy { DetailSurveiLubangFragment() }
+    private val detailSurveiListPotensiFragment by lazy { DetailSurveiPotensiFragment() }
 
-    private lateinit var selectedSurveiItem: Lubang
-
-    private val resultSurveiAdapter by lazy {
-        ResultSurveiLubangAdapter()
-            .setOnDetailButtonClickListener {
-                if (it.urlGambar != null) {
-                    findNavController().navigate(
-                        AppNavigationDirections.actionGlobalPreviewPhotoFragment(
-                            getSapuLubangImageUrl(it.urlGambar)
-                        )
-                    )
-                } else {
-                    showToast("Tidak ada foto")
-                }
-            }
-            .setOnDeleteButtonClickListener {
-                selectedSurveiItem = it
-                konfirmasiDialog.show(childFragmentManager, "Konfirmasi Dialog")
-            }
-    }
-
-    private val spaceItemDecoration by lazy { SpaceItemDecoration(32) }
+    private var currentFragment: Fragment = detailSurveiListLubangFragment
 
     private val args: DetailSurveiFragmentArgs by navArgs()
 
@@ -94,9 +52,10 @@ class DetailSurveiFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        loadDataSurvei()
         initUI()
+        initChildFragment()
         observeDetailSurveiViewModel()
+        loadDataSurvei()
     }
 
     private fun initUI() {
@@ -105,17 +64,44 @@ class DetailSurveiFragment : Fragment() {
                 loadDataSurvei()
             }
 
-            recyclerViewListLubang.apply {
-                adapter = resultSurveiAdapter
-                layoutManager = LinearLayoutManager(requireContext())
-                addItemDecoration(spaceItemDecoration)
-                setHasFixedSize(true)
-            }
+            tabLayoutCategory.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+                override fun onTabSelected(tab: TabLayout.Tab?) {
+                    when (tab?.position) {
+                        0 -> {
+                            navigateFragment(detailSurveiListLubangFragment)
+                        }
+                        1 -> {
+                            navigateFragment(detailSurveiListPotensiFragment)
+                        }
+                    }
+                }
+
+                override fun onTabUnselected(tab: TabLayout.Tab?) = Unit
+
+                override fun onTabReselected(tab: TabLayout.Tab?) = Unit
+            })
 
             buttonBack.setOnClickListener {
                 findNavController().popBackStack()
             }
         }
+    }
+
+    private fun initChildFragment() {
+        childFragmentManager.beginTransaction()
+            .add(R.id.frame_layout_fragment_container, detailSurveiListPotensiFragment)
+            .hide(detailSurveiListPotensiFragment)
+            .add(R.id.frame_layout_fragment_container, detailSurveiListLubangFragment)
+            .commit()
+    }
+
+    private fun navigateFragment(fragment: Fragment) {
+        childFragmentManager.beginTransaction()
+            .hide(currentFragment).apply {
+                currentFragment = fragment
+            }
+            .show(fragment)
+            .commit()
     }
 
     private fun loadDataSurvei() {
@@ -131,44 +117,46 @@ class DetailSurveiFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 detailSurveiViewModel.uiState.collect {
-                    if (it.isLoading) {
-                        loadingDialog.show(childFragmentManager, "Loading Dialog")
-                    }
-
-                    if (it.isSuccess) {
-                        loadingDialog.dismiss()
-                        binding.swipeRefeshLayoutHasilSurvei.isRefreshing = false
-                        if (it.listLubang.isNullOrEmpty()) {
-                            binding.apply {
-                                recyclerViewListLubang.isVisible = false
-                                textViewError.isVisible = false
-                                textViewEmpty.isVisible = true
-                            }
-                        } else {
-                            binding.apply {
-                                recyclerViewListLubang.isVisible = true
-                                textViewError.isVisible = false
-                                textViewEmpty.isVisible = false
-                                resultSurveiAdapter.submitList(it.listLubang)
-                            }
-                        }
-                    }
-
-                    if (it.isFailed) {
-                        binding.swipeRefeshLayoutHasilSurvei.isRefreshing = false
-                        binding.apply {
-                            recyclerViewListLubang.isVisible = false
-                            textViewEmpty.isVisible = false
-                            textViewError.text = it.errorMessage
-                            textViewError.isVisible = true
-                        }
-                        loadingDialog.dismiss()
-                    }
-
-                    if (it.isDelete) {
-                        loadDataSurvei()
-                    }
+                    processLoadSurveiState(it.resultSurveiState)
+                    processDeleteItemState(it.deleteItemState)
                 }
+            }
+        }
+    }
+
+    private fun processLoadSurveiState(state: Resource<ResultSurvei>) {
+        when (state) {
+            is Resource.Failed -> {
+                binding.swipeRefeshLayoutHasilSurvei.isRefreshing = false
+                loadingDialog.dismiss()
+            }
+            is Resource.Initial -> Unit
+            is Resource.Loading -> {
+                loadingDialog.show(childFragmentManager, "Loading Dialog")
+            }
+            is Resource.Success -> {
+                loadingDialog.dismiss()
+                binding.apply {
+                    swipeRefeshLayoutHasilSurvei.isRefreshing = false
+                    textViewRuasJalan.text = state.data.ruas.namaRuas
+                }
+            }
+        }
+    }
+
+    private fun processDeleteItemState(state: Resource<None>) {
+        when (state) {
+            is Resource.Failed -> {
+                loadingDialog.dismiss()
+                showToast(state.errorMessage)
+            }
+            is Resource.Initial -> Unit
+            is Resource.Loading -> {
+                loadingDialog.show(childFragmentManager, "Loading Dialog")
+            }
+            is Resource.Success -> {
+                loadingDialog.dismiss()
+                loadDataSurvei()
             }
         }
     }
