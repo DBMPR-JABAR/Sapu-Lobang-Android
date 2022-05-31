@@ -69,97 +69,260 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Jumlah Lubang"
+            android:text="Kerusakan"
             android:textAppearance="?textAppearanceSubtitle1" />
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:background="@drawable/bg_error_container_rounded_corner"
-            android:gravity="center"
-            android:orientation="vertical">
+            android:padding="16dp">
 
             <TextView
-                android:id="@+id/text_view_content_jumlah_lubang"
+                android:id="@+id/text_view_title_lubang"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0"
-                android:textAppearance="?textAppearanceHeadline3"
-                android:textColor="@color/black" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
                 android:text="Lubang"
-                android:textAppearance="?textAppearanceSubtitle1" />
+                android:textAppearance="?textAppearanceSubtitle1"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        </LinearLayout>
+            <TextView
+                android:id="@+id/text_view_label_total_lubang"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Total :"
+                android:textAppearance="?textAppearanceBody2"
+                android:textColor="@color/white"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_view_title_lubang" />
+
+            <TextView
+                android:id="@+id/text_view_content_total_lubang"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="191"
+                android:textAppearance="?textAppearanceBody2"
+                android:textColor="@color/white"
+                app:layout_constraintStart_toEndOf="@id/text_view_label_total_lubang"
+                app:layout_constraintTop_toTopOf="@id/text_view_label_total_lubang" />
+
+            <TextView
+                android:id="@+id/text_view_label_panjang_lubang"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Panjang :"
+                android:textAppearance="?textAppearanceBody2"
+                android:textColor="@color/white"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_view_content_total_lubang" />
+
+            <TextView
+                android:id="@+id/text_view_content_panjang_lubang"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="1 km"
+                android:textAppearance="?textAppearanceBody2"
+                android:textColor="@color/white"
+                app:layout_constraintStart_toEndOf="@id/text_view_label_panjang_lubang"
+                app:layout_constraintTop_toTopOf="@id/text_view_label_panjang_lubang" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_kerusakan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.5" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="0dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/guideline_kerusakan"
+                app:layout_constraintStart_toStartOf="@id/guideline_kerusakan"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/text_view_title_potensi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="Potensi Lubang"
+                android:textAppearance="?textAppearanceSubtitle1"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                app:layout_constraintStart_toEndOf="@id/guideline_kerusakan"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/text_view_label_total_potensi_lubang"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="Total :"
+                android:textAppearance="?textAppearanceBody2"
+                android:textColor="@color/white"
+                app:layout_constraintStart_toEndOf="@id/guideline_kerusakan"
+                app:layout_constraintTop_toBottomOf="@id/text_view_title_lubang" />
+
+            <TextView
+                android:id="@+id/text_view_content_total_potensi_lubang"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="191"
+                android:textAppearance="?textAppearanceBody2"
+                android:textColor="@color/white"
+                app:layout_constraintStart_toEndOf="@id/text_view_label_total_potensi_lubang"
+                app:layout_constraintTop_toTopOf="@id/text_view_label_total_lubang" />
+
+            <TextView
+                android:id="@+id/text_view_label_panjang_potensi_lubang"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="Panjang :"
+                android:textAppearance="?textAppearanceBody2"
+                android:textColor="@color/white"
+                app:layout_constraintStart_toEndOf="@id/guideline_kerusakan"
+                app:layout_constraintTop_toBottomOf="@id/text_view_content_total_lubang" />
+
+            <TextView
+                android:id="@+id/text_view_content_panjang_potensi_lubang"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="1 km"
+                android:textAppearance="?textAppearanceBody2"
+                android:textColor="@color/white"
+                app:layout_constraintStart_toEndOf="@id/text_view_label_panjang_potensi_lubang"
+                app:layout_constraintTop_toTopOf="@id/text_view_label_panjang_lubang" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Jumlah Rencana Penanganan Lubang"
+            android:text="Perencanaan"
             android:textAppearance="?textAppearanceSubtitle1" />
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:background="@drawable/bg_warning_container_rounded_corner"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="16dp">
 
             <TextView
-                android:id="@+id/text_view_content_jumlah_rencana"
+                android:id="@+id/text_view_label_total_perencanaan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0"
-                android:textAppearance="?textAppearanceHeadline3"
-                android:textColor="@color/black" />
+                android:text="Total Perencanaan :"
+                android:textAppearance="?textAppearanceBody2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:id="@+id/text_view_content_total_perencanaan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:text="Lubang"
-                android:textAppearance="?textAppearanceSubtitle1" />
+                android:layout_marginStart="8dp"
+                android:text="50"
+                android:textAppearance="?textAppearanceBody2"
+                app:layout_constraintStart_toEndOf="@id/text_view_label_total_perencanaan"
+                app:layout_constraintTop_toTopOf="@id/text_view_label_total_perencanaan" />
 
-        </LinearLayout>
+            <TextView
+                android:id="@+id/text_view_label_total_panjang_perencanaan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Total Panjang Perencanaan :"
+                android:textAppearance="?textAppearanceBody2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_view_content_total_perencanaan" />
+
+            <TextView
+                android:id="@+id/text_view_content_total_panjang_perencanaan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="0.5 km"
+                android:textAppearance="?textAppearanceBody2"
+                app:layout_constraintStart_toEndOf="@id/text_view_label_total_panjang_perencanaan"
+                app:layout_constraintTop_toTopOf="@id/text_view_label_total_panjang_perencanaan" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Jumlah Lubang Selesai Ditangani"
+            android:text="Selesai Ditangani"
             android:textAppearance="?textAppearanceSubtitle1" />
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:background="@drawable/bg_active_container_rounded_corner"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="16dp">
 
             <TextView
-                android:id="@+id/text_view_content_jumlah_penanganan"
+                android:id="@+id/text_view_label_total_ditangani"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0"
-                android:textAppearance="?textAppearanceHeadline3"
-                android:textColor="@color/black" />
+                android:text="Total Ditangani :"
+                android:textAppearance="?textAppearanceBody2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:id="@+id/text_view_content_total_ditangani"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:text="Lubang"
-                android:textAppearance="?textAppearanceSubtitle1" />
+                android:layout_marginStart="8dp"
+                android:text="50"
+                android:textAppearance="?textAppearanceBody2"
+                app:layout_constraintStart_toEndOf="@id/text_view_label_total_ditangani"
+                app:layout_constraintTop_toTopOf="@id/text_view_label_total_ditangani" />
 
-        </LinearLayout>
+            <TextView
+                android:id="@+id/text_view_label_total_panjang_ditangani"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Total Panjang Ditangani :"
+                android:textAppearance="?textAppearanceBody2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_view_content_total_ditangani" />
+
+            <TextView
+                android:id="@+id/text_view_content_total_panjang_ditangani"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="0.5 km"
+                android:textAppearance="?textAppearanceBody2"
+                app:layout_constraintStart_toEndOf="@id/text_view_label_total_panjang_ditangani"
+                app:layout_constraintTop_toTopOf="@id/text_view_label_total_panjang_ditangani" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
 

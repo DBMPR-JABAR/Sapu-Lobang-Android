@@ -1,6 +1,7 @@
 package id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.rekapitulasi.store
 
 import id.go.jabarprov.dbmpr.surveisapulubang.core.None
+import id.go.jabarprov.dbmpr.surveisapulubang.core.Resource
 import id.go.jabarprov.dbmpr.surveisapulubang.core.store.Store
 import id.go.jabarprov.dbmpr.surveisapulubang.domain.usecases.GetRekapitulasi
 import kotlinx.coroutines.launch
@@ -11,35 +12,27 @@ class RekapitulasiStore @Inject constructor(private val getRekapitulasi: GetReka
     override fun reduce(action: RekapitulasiAction) {
         coroutineScope.launch {
             when (action) {
-                RekapitulasiAction.GetRekapitulasi -> {
-                    state.value = state.value.copy(
-                        isFailed = false,
-                        errorMessage = "",
-                        isSuccess = false,
-                        isLoading = true
-                    )
-                    val result = getRekapitulasi.run(None)
-                    result.either(
-                        fnL = { failure ->
-                            state.value = state.value.copy(
-                                isFailed = true,
-                                errorMessage = failure.message,
-                                isSuccess = false,
-                                isLoading = false
-                            )
-                        },
-                        fnR = { rekap ->
-                            state.value = state.value.copy(
-                                isFailed = false,
-                                errorMessage = "",
-                                isSuccess = true,
-                                isLoading = false,
-                                rekapitulasi = rekap
-                            )
-                        },
-                    )
-                }
+                RekapitulasiAction.GetRekapitulasi -> getRekapitulasi()
             }
         }
+    }
+
+    private suspend fun getRekapitulasi() {
+        state.value = state.value.copy(
+            rekapState = Resource.Loading()
+        )
+        val result = getRekapitulasi.run(None)
+        result.either(
+            fnL = { failure ->
+                state.value = state.value.copy(
+                    rekapState = Resource.Failed(failure.message)
+                )
+            },
+            fnR = { rekap ->
+                state.value = state.value.copy(
+                    rekapState = Resource.Success(rekap)
+                )
+            },
+        )
     }
 }

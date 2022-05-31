@@ -125,12 +125,12 @@ class EntryRencanaFragment : Fragment() {
                 timePicker.show(childFragmentManager, "Time Picker Dialog")
             }
 
-            recyclerViewListLubang.apply {
-                adapter = lubangAdapter
-                layoutManager = LinearLayoutManager(requireContext())
-                addItemDecoration(spaceItemDecoration)
-                setHasFixedSize(true)
-            }
+//            recyclerViewListLubang.apply {
+//                adapter = lubangAdapter
+//                layoutManager = LinearLayoutManager(requireContext())
+//                addItemDecoration(spaceItemDecoration)
+//                setHasFixedSize(true)
+//            }
 
             buttonLoadData.setOnClickListener {
                 rencanaViewModel.processAction(RencanaAction.LoadData)
@@ -169,15 +169,15 @@ class EntryRencanaFragment : Fragment() {
                     }
 
                     if (it.isSuccess) {
-                        loadingDialog.dismiss()
-                        if (it.listLubang.isNotEmpty()) {
-                            binding.recyclerViewListLubang.visibility = View.VISIBLE
-                            binding.textViewEmpty.visibility = View.GONE
-                            lubangAdapter.submitList(it.listLubang)
-                        } else {
-                            binding.recyclerViewListLubang.visibility = View.GONE
-                            binding.textViewEmpty.visibility = View.VISIBLE
-                        }
+//                        loadingDialog.dismiss()
+//                        if (it.listLubang.isNotEmpty()) {
+//                            binding.recyclerViewListLubang.visibility = View.VISIBLE
+//                            binding.textViewEmpty.visibility = View.GONE
+//                            lubangAdapter.submitList(it.listLubang)
+//                        } else {
+//                            binding.recyclerViewListLubang.visibility = View.GONE
+//                            binding.textViewEmpty.visibility = View.VISIBLE
+//                        }
                     }
 
                     binding.apply {

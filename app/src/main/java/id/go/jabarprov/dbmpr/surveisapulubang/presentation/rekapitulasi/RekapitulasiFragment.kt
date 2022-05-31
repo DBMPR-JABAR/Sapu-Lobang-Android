@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -12,12 +11,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
+import id.go.jabarprov.dbmpr.surveisapulubang.core.Resource
 import id.go.jabarprov.dbmpr.surveisapulubang.databinding.FragmentRekapitulasiBinding
 import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.Rekapitulasi
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.rekapitulasi.RekapitulasiViewModel
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.rekapitulasi.store.RekapitulasiAction
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.widgets.LoadingDialog
-import id.go.jabarprov.dbmpr.surveisapulubang.utils.runSafety
+import id.go.jabarprov.dbmpr.surveisapulubang.utils.extensions.showToast
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -57,9 +57,14 @@ class RekapitulasiFragment : Fragment() {
 
     private fun updateRekapitulasiUI(rekapitulasi: Rekapitulasi) {
         binding.apply {
-            textViewContentJumlahLubang.text = rekapitulasi.totalDataSurvei.toString()
-            textViewContentJumlahRencana.text = rekapitulasi.totalPerencanaan.toString()
-            textViewContentJumlahPenanganan.text = rekapitulasi.totalPenanganan.toString()
+            textViewContentTotalLubang.text = rekapitulasi.jumlah.sisa.toString()
+            textViewContentPanjangLubang.text = "${rekapitulasi.panjang.sisa} KM"
+            textViewContentTotalPotensiLubang.text = rekapitulasi.jumlah.potensi.toString()
+            textViewContentPanjangPotensiLubang.text = "${rekapitulasi.panjang.potensi} KM"
+            textViewContentTotalPerencanaan.text = rekapitulasi.jumlah.perencanaan.toString()
+            textViewContentTotalPanjangPerencanaan.text = "${rekapitulasi.panjang.perencanaan} KM"
+            textViewContentTotalDitangani.text = rekapitulasi.jumlah.penanganan.toString()
+            textViewContentTotalPanjangDitangani.text = "${rekapitulasi.panjang.penanganan} KM"
         }
     }
 
@@ -67,24 +72,25 @@ class RekapitulasiFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 rekapitulasiViewModel.uiState.collect {
-                    if (it.isLoading) {
-                        loadingDialog.show(childFragmentManager, "Loading Dialog")
-                    }
-
-                    if (it.isFailed) {
-                        Toast.makeText(requireContext(), it.errorMessage, Toast.LENGTH_SHORT).show()
-                        runSafety {
-                            loadingDialog.dismiss()
-                        }
-                    }
-
-                    if (it.isSuccess && it.rekapitulasi != null) {
-                        runSafety {
-                            loadingDialog.dismiss()
-                        }
-                        updateRekapitulasiUI(it.rekapitulasi)
-                    }
+                    processRekapState(it.rekapState)
                 }
+            }
+        }
+    }
+
+    private fun processRekapState(rekapState: Resource<Rekapitulasi>) {
+        when (rekapState) {
+            is Resource.Failed -> {
+                loadingDialog.dismiss()
+                showToast(rekapState.errorMessage)
+            }
+            is Resource.Initial -> Unit
+            is Resource.Loading -> {
+                loadingDialog.show(childFragmentManager, "Loading Dialog")
+            }
+            is Resource.Success -> {
+                loadingDialog.dismiss()
+                updateRekapitulasiUI(rekapState.data)
             }
         }
     }
