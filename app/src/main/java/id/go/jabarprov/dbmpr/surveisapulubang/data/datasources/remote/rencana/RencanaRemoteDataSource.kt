@@ -5,5 +5,11 @@ import java.util.*
 
 interface RencanaRemoteDataSource {
     suspend fun getListLubang(tanggal: Calendar, idRuasJalan: String): List<LubangResponse>
-    suspend fun storeRencana(idLubang: Int, tanggal: Calendar, keterangan: String): List<LubangResponse>
+    suspend fun storeRencana(
+        idLubang: Int,
+        tanggal: Calendar,
+        keterangan: String
+    ): List<LubangResponse>
+
+    suspend fun rejectLubang(idLubang: Int)
 }

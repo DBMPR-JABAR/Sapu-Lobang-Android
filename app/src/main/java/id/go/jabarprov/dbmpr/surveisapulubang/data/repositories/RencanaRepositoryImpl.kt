@@ -39,4 +39,13 @@ class RencanaRepositoryImpl @Inject constructor(private val rencanaRemoteDataSou
             RemoteDataSourceFailure(e.message!!).toError()
         }
     }
+
+    override suspend fun rejectLubang(idLubang: Int): Either<Failure, Unit> {
+        return try {
+            rencanaRemoteDataSource.rejectLubang(idLubang)
+            Unit.toSuccess()
+        } catch (e: RemoteDataSourceException) {
+            RemoteDataSourceFailure(e.message!!).toError()
+        }
+    }
 }

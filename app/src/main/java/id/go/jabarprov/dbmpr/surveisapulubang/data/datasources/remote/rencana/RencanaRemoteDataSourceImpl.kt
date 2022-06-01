@@ -22,7 +22,10 @@ class RencanaRemoteDataSourceImpl @Inject constructor(private val rencanaAPI: Re
     ): List<LubangResponse> {
         try {
             val request =
-                ListLubangPerencanaanRequest(idRuasJalan, CalendarUtils.formatCalendarToString(tanggal))
+                ListLubangPerencanaanRequest(
+                    idRuasJalan,
+                    CalendarUtils.formatCalendarToString(tanggal)
+                )
             val response = rencanaAPI.getListLubang(request)
             if (!response.isSuccessful) {
                 throw RemoteDataSourceException("Gagal Mengambil List Lubang Hasil Survei Penanganan Lubang")
@@ -55,6 +58,24 @@ class RencanaRemoteDataSourceImpl @Inject constructor(private val rencanaAPI: Re
                 throw RemoteDataSourceException("Gagal Menyimpan Rencana Penanganan Lubang")
             }
             return response.body()?.listLubang!! + response.body()?.listScheduledLubang!!
+        } catch (e: UnknownHostException) {
+            Log.d(TAG, "login: ERROR LOGIN $e")
+            throw RemoteDataSourceException("Tidak Dapat Menghubungi Server")
+        } catch (e: SocketTimeoutException) {
+            Log.d(TAG, "login: ERROR LOGIN $e")
+            throw RemoteDataSourceException("Tidak Dapat Menghubungi Server")
+        } catch (e: Exception) {
+            Log.d(TAG, "login: ERROR LOGIN $e")
+            throw RemoteDataSourceException("Terjadi Kesalahan Pada Sistem")
+        }
+    }
+
+    override suspend fun rejectLubang(idLubang: Int) {
+        try {
+            val response = rencanaAPI.rejectLubang(idLubang)
+            if (!response.isSuccessful) {
+                throw RemoteDataSourceException("Gagal Menyimpan Rencana Penanganan Lubang")
+            }
         } catch (e: UnknownHostException) {
             Log.d(TAG, "login: ERROR LOGIN $e")
             throw RemoteDataSourceException("Tidak Dapat Menghubungi Server")

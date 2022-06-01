@@ -4,6 +4,7 @@ import java.util.*
 
 data class Lubang(
     val id: Int,
+    val namaMandor: String,
     val tanggalSurvei: Calendar,
     val tanggalPerencanaan: Calendar?,
     val tanggalPenanganan: Calendar?,

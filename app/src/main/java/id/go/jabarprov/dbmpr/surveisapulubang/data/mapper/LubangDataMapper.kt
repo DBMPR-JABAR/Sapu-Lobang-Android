@@ -9,6 +9,7 @@ abstract class LubangDataMapper {
         fun convertLubangDataResponseToEntity(lubang: LubangResponse): Lubang {
             return Lubang(
                 id = lubang.id,
+                namaMandor = lubang.user_create?.name ?: "-",
                 tanggalSurvei = CalendarUtils.formatStringToCalendar(lubang.tanggal),
                 tanggalPerencanaan = if (!lubang.tanggal_rencana_penanganan.isNullOrEmpty()) CalendarUtils.formatStringToCalendar(
                     lubang.tanggal_rencana_penanganan

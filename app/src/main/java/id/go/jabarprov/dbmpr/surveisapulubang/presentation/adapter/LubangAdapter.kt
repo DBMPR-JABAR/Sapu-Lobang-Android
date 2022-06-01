@@ -119,25 +119,49 @@ class LubangAdapter(private val type: TYPE) :
                         buttonDetail.isVisible = true
                         buttonProses.isVisible = false
                         buttonDelete.isVisible = false
+
+                        textViewContentMandor.text = lubang.namaMandor
                     }
                     TYPE.SURVEI -> {
                         buttonDetail.isVisible = true
                         buttonProses.isVisible = false
                         buttonDelete.isVisible = true
+
+                        textViewLabelMandor.isVisible = false
+                        textViewContentMandor.isVisible = false
                     }
                     TYPE.RENCANA -> {
                         buttonDetail.isVisible = true
                         buttonProses.isVisible = true
-                        buttonDelete.isVisible = false
 
-                        buttonProses.text = "Jadwalkan"
+                        textViewContentMandor.text = lubang.namaMandor
+
+                        if (lubang.status == null) {
+                            buttonDelete.isVisible = true
+                            buttonDelete.text = "Tolak"
+
+                            buttonProses.text = "Jadwalkan"
+                            buttonProses.isEnabled = true
+                        } else {
+                            buttonDelete.isVisible = false
+                            buttonProses.text = "Sudah Dijadwalkan"
+                            buttonProses.isEnabled = false
+                        }
                     }
                     TYPE.PENANGANAN -> {
                         buttonDetail.isVisible = true
                         buttonProses.isVisible = true
                         buttonDelete.isVisible = false
 
-                        buttonProses.text = "Tangani"
+                        textViewContentMandor.text = lubang.namaMandor
+
+                        if (lubang.status == "Perencanaan") {
+                            buttonProses.text = "Tangani"
+                            buttonProses.isEnabled = true
+                        } else {
+                            buttonProses.text = "Sudah Ditangani"
+                            buttonProses.isEnabled = false
+                        }
                     }
                 }
             }

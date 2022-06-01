@@ -1,6 +1,5 @@
 package id.go.jabarprov.dbmpr.surveisapulubang.domain.repositories
 
-import id.go.jabarprov.dbmpr.surveisapulubang.core.None
 import id.go.jabarprov.dbmpr.surveisapulubang.core.either.Either
 import id.go.jabarprov.dbmpr.surveisapulubang.core.failures.Failure
 import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.Lubang
@@ -17,4 +16,6 @@ interface RencanaRepository {
         tanggal: Calendar,
         keterangan: String
     ): Either<Failure, List<Lubang>>
+
+    suspend fun rejectLubang(idLubang: Int): Either<Failure, Unit>
 }
