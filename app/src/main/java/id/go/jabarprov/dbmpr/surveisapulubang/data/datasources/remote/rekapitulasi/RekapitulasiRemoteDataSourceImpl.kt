@@ -99,7 +99,7 @@ class RekapitulasiRemoteDataSourceImpl @Inject constructor(private val rekapAPI:
 
     override suspend fun getRekapitulasiPenanganan(): List<LubangResponse> {
         try {
-            val response = rekapAPI.getRekapitulasiLubang()
+            val response = rekapAPI.getRekapitulasiPenanganan()
             if (response.isSuccessful) {
                 return response.body()?.data!!
             } else {

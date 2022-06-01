@@ -76,7 +76,9 @@ class LubangAdapter(private val type: TYPE) :
                 if (lubang.urlGambar.isNullOrBlank()) {
                     imageView.load(R.drawable.bg_solid_white_container_rounded_corner)
                 } else {
-                    imageView.load(getSapuLubangImageUrl(lubang.urlGambar)) {
+                    val imageUrl =
+                        if (type == TYPE.PENANGANAN) lubang.urlGambarPenanganan else lubang.urlGambar
+                    imageView.load(getSapuLubangImageUrl(imageUrl ?: "")) {
                         transformations(RoundedCornersTransformation(8f))
                         placeholder(R.drawable.bg_solid_white_container_rounded_corner)
                         error(R.drawable.bg_solid_white_container_rounded_corner)

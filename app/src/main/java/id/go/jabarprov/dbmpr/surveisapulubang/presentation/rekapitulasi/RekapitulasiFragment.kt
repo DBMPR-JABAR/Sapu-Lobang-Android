@@ -63,6 +63,12 @@ class RekapitulasiFragment : Fragment() {
                 findNavController().navigate(action)
             }
 
+            constraintLayoutRekapPenanganan.setOnClickListener {
+                val action =
+                    RekapitulasiFragmentDirections.actionRekapitulasiFragmentToRekapPenangananFragment()
+                findNavController().navigate(action)
+            }
+
             textViewContentTotalLubang.text = rekapitulasi.jumlah.sisa.toString()
             textViewContentPanjangLubang.text = "${rekapitulasi.panjang.sisa} KM"
             textViewContentTotalPotensiLubang.text = rekapitulasi.jumlah.potensi.toString()
