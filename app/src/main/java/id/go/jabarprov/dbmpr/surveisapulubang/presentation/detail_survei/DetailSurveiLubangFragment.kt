@@ -18,6 +18,7 @@ import id.go.jabarprov.dbmpr.surveisapulubang.core.Resource
 import id.go.jabarprov.dbmpr.surveisapulubang.databinding.FragmentListLubangBinding
 import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.Lubang
 import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.ResultSurvei
+import id.go.jabarprov.dbmpr.surveisapulubang.presentation.adapter.LubangAdapter
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.detail_survei.DetailSurveiViewModel
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.detail_survei.store.DetailSurveiAction
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.widgets.KonfirmasiDialog
@@ -31,8 +32,8 @@ class DetailSurveiLubangFragment : Fragment() {
     private val detailSurveiViewModel: DetailSurveiViewModel by viewModels({ requireParentFragment() })
 
     private val resultSurveiListLubangAdapter by lazy {
-        ResultSurveiLubangAdapter()
-            .setOnDetailButtonClickListener {
+        LubangAdapter(LubangAdapter.TYPE.SURVEI)
+            .setOnDetailClickListener {
                 if (it.urlGambar != null) {
                     findNavController().navigate(
                         AppNavigationDirections.actionGlobalPreviewPhotoFragment(
@@ -43,7 +44,7 @@ class DetailSurveiLubangFragment : Fragment() {
                     showToast("Tidak ada foto")
                 }
             }
-            .setOnDeleteButtonClickListener {
+            .setOnDeleteClickListener {
                 selectedSurveiItem = it
                 konfirmasiDialog.show(childFragmentManager, "Konfirmasi Dialog")
             }

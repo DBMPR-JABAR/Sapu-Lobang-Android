@@ -53,7 +53,7 @@ class DetailSurveiFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initUI()
-        initChildFragment()
+        if (childFragmentManager.fragments.isEmpty()) initChildFragment()
         observeDetailSurveiViewModel()
         loadDataSurvei()
     }
