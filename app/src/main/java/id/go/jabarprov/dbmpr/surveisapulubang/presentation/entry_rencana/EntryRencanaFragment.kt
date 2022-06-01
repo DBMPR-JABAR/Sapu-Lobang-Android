@@ -14,7 +14,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.datepicker.MaterialDatePicker
 import dagger.hilt.android.AndroidEntryPoint
 import id.go.jabarprov.dbmpr.surveisapulubang.AppNavigationDirections
@@ -64,10 +63,10 @@ class EntryRencanaFragment : Fragment() {
 
     private val lubangAdapter by lazy {
         LubangAdapter(LubangAdapter.TYPE.RENCANA)
-            .setOnItemClickListener {
+            .setOnProsesClickListener {
                 selectedLubang = it
                 rencanaDialog.show(childFragmentManager, "Rencana Dialog")
-            }.setOnDetailItemClickListener {
+            }.setOnDetailClickListener {
                 if (it.urlGambar != null) {
                     findNavController().navigate(
                         AppNavigationDirections.actionGlobalPreviewPhotoFragment(

@@ -73,6 +73,7 @@
             android:textAppearance="?textAppearanceSubtitle1" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraint_layout_rekap_kerusakan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -218,6 +219,7 @@
             android:textAppearance="?textAppearanceSubtitle1" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraint_layout_rekap_perencanaan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -275,6 +277,7 @@
             android:textAppearance="?textAppearanceSubtitle1" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraint_layout_rekap_penanganan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"

@@ -123,11 +123,20 @@
         android:id="@+id/rekapitulasiFragment"
         android:name="id.go.jabarprov.dbmpr.surveisapulubang.presentation.rekapitulasi.RekapitulasiFragment"
         android:label="fragment_rekapitulasi"
-        tools:layout="@layout/fragment_rekapitulasi" />
+        tools:layout="@layout/fragment_rekapitulasi" >
+        <action
+            android:id="@+id/action_rekapitulasiFragment_to_rekapKerusakanFragment"
+            app:destination="@id/rekapKerusakanFragment" />
+    </fragment>
     <fragment
         android:id="@+id/mapFragment"
         android:name="id.go.jabarprov.dbmpr.surveisapulubang.presentation.map.MapFragment"
         android:label="fragment_map"
         tools:layout="@layout/fragment_map" />
+    <fragment
+        android:id="@+id/rekapKerusakanFragment"
+        android:name="id.go.jabarprov.dbmpr.surveisapulubang.presentation.rekapitulasi.kerusakan.RekapKerusakanFragment"
+        android:label="fragment_rekap_kerusakan"
+        tools:layout="@layout/fragment_rekap_kerusakan" />
 
 </navigation>

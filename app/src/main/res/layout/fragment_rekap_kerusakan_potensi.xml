@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipe_refesh_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/text_view_empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="Tidak ada data potensi saat ini"
+            android:textAppearance="?textAppearanceHeadline6"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/text_view_error"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textAppearance="?textAppearanceHeadline6"
+            android:visibility="gone"
+            tools:text="Terjadi kesalahan pada sistem" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_list_potensi"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

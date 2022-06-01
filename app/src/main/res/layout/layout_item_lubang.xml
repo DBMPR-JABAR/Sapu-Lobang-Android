@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:elevation="8dp"
@@ -12,14 +13,69 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <ImageView
+            android:id="@+id/image_view"
+            android:layout_width="116dp"
+            android:layout_height="0dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toTopOf="@id/button_delete"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+        <TextView
+            android:id="@+id/text_view_label_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="ID :"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toEndOf="@+id/image_view"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/text_view_content_id"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:textColor="@color/black"
+            app:layout_constraintBaseline_toBaselineOf="@+id/text_view_label_id"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/text_view_label_id"
+            tools:text="1" />
+
+        <TextView
+            android:id="@+id/text_view_label_mandor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Mandor :"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toEndOf="@+id/image_view"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_content_id" />
+
+        <TextView
+            android:id="@+id/text_view_content_mandor"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:textColor="@color/black"
+            app:layout_constraintBaseline_toBaselineOf="@+id/text_view_label_mandor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/text_view_label_mandor"
+            tools:text="Asep Barangkal" />
+
         <TextView
             android:id="@+id/text_view_label_lokasi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
             android:text="Lokasi :"
             android:textColor="@color/black"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toEndOf="@+id/image_view"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_content_mandor" />
 
         <TextView
             android:id="@+id/text_view_content_lokasi"
@@ -33,56 +89,15 @@
             app:layout_constraintStart_toEndOf="@id/text_view_label_lokasi" />
 
         <TextView
-            android:id="@+id/text_view_label_latitude"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Latitude :"
-            android:textColor="@color/black"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/text_view_content_lokasi" />
-
-        <TextView
-            android:id="@+id/text_view_content_latitude"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:text="1.0000"
-            android:textColor="@color/black"
-            app:layout_constraintBaseline_toBaselineOf="@id/text_view_label_latitude"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/text_view_label_latitude" />
-
-        <TextView
-            android:id="@+id/text_view_label_longitude"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Longitude :"
-            android:textColor="@color/black"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/text_view_content_latitude" />
-
-        <TextView
-            android:id="@+id/text_view_content_longitude"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:text="1.0000"
-            android:textColor="@color/black"
-            app:layout_constraintBaseline_toBaselineOf="@id/text_view_label_longitude"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/text_view_label_longitude" />
-
-        <TextView
             android:id="@+id/text_view_label_kategori"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:text="Kategori :"
             android:textColor="@color/black"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/text_view_content_longitude" />
+            app:layout_constraintStart_toEndOf="@+id/image_view"
+            app:layout_constraintTop_toBottomOf="@id/text_view_content_lokasi" />
 
         <TextView
             android:id="@+id/text_view_content_kategori"
@@ -96,14 +111,37 @@
             app:layout_constraintStart_toEndOf="@id/text_view_label_kategori" />
 
         <TextView
+            android:id="@+id/text_view_label_ukuran"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Ukuran :"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toEndOf="@+id/image_view"
+            app:layout_constraintTop_toBottomOf="@id/text_view_content_kategori" />
+
+        <TextView
+            android:id="@+id/text_view_content_ukuran"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:textColor="@color/black"
+            app:layout_constraintBaseline_toBaselineOf="@id/text_view_label_ukuran"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/text_view_label_ukuran"
+            tools:text="Kecil - Dangkal" />
+
+        <TextView
             android:id="@+id/text_view_label_panjang_lubang"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:text="Panjang :"
             android:textColor="@color/black"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/text_view_content_kategori" />
+            app:layout_constraintStart_toEndOf="@+id/image_view"
+            app:layout_constraintTop_toBottomOf="@id/text_view_content_ukuran" />
 
         <TextView
             android:id="@+id/text_view_content_panjang_lubang"
@@ -123,22 +161,38 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="4dp"
             android:text="Lihat Foto"
-            app:layout_constraintEnd_toStartOf="@+id/button_proses"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintEnd_toStartOf="@+id/button_delete"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/text_view_content_panjang_lubang" />
 
         <Button
+            android:id="@+id/button_delete"
+            style="@style/Widget.SurveiSapuLubang.Button.Red"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="16dp"
+            android:text="Hapus"
+            android:visibility="gone"
+            app:layout_constraintEnd_toStartOf="@id/button_proses"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/button_detail"
+            app:layout_constraintTop_toBottomOf="@id/text_view_content_panjang_lubang" />
+
+        <Button
             android:id="@+id/button_proses"
+            style="@style/Widget.SurveiSapuLubang.Button.Green"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:layout_marginTop="16dp"
             android:text="Proses"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/button_detail"
+            app:layout_constraintStart_toEndOf="@+id/button_delete"
             app:layout_constraintTop_toBottomOf="@id/text_view_content_panjang_lubang" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

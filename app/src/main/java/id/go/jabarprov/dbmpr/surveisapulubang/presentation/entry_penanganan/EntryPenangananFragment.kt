@@ -21,7 +21,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.material.datepicker.MaterialDatePicker
 import dagger.hilt.android.AndroidEntryPoint
@@ -33,7 +32,6 @@ import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.Lubang
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.adapter.LubangAdapter
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.penanganan.PenangananViewModel
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.penanganan.store.PenangananAction
-import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.survei_lubang.store.SurveiLubangAction
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.user.AuthViewModel
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.widgets.LoadingDialog
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.CalendarUtils
@@ -115,7 +113,7 @@ class EntryPenangananFragment : Fragment() {
 
     private val lubangAdapter by lazy {
         LubangAdapter(LubangAdapter.TYPE.PENANGANAN)
-            .setOnItemClickListener { lubang ->
+            .setOnProsesClickListener { lubang ->
                 selectedLubang = lubang
                 confirmationDialog = createConfirmationDialog()
                 confirmationDialog.apply {
@@ -123,7 +121,7 @@ class EntryPenangananFragment : Fragment() {
                         setKeterangan(lubang.keterangan)
                     }
                 }.show(childFragmentManager, "Penanganan Dialog")
-            }.setOnDetailItemClickListener { lubang ->
+            }.setOnDetailClickListener { lubang ->
                 when {
                     lubang.urlGambarPenanganan != null -> {
                         findNavController().navigate(
