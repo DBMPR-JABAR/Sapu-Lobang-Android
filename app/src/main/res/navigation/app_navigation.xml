@@ -130,6 +130,9 @@
         <action
             android:id="@+id/action_rekapitulasiFragment_to_rekapPenangananFragment"
             app:destination="@id/rekapPenangananFragment" />
+        <action
+            android:id="@+id/action_rekapitulasiFragment_to_rekapPerencanaanFragment"
+            app:destination="@id/rekapPerencanaanFragment" />
     </fragment>
     <fragment
         android:id="@+id/mapFragment"
@@ -146,5 +149,10 @@
         android:name="id.go.jabarprov.dbmpr.surveisapulubang.presentation.rekapitulasi.penanganan.RekapPenangananFragment"
         android:label="fragment_rekap_penanganan"
         tools:layout="@layout/fragment_rekap_penanganan" />
+    <fragment
+        android:id="@+id/rekapPerencanaanFragment"
+        android:name="id.go.jabarprov.dbmpr.surveisapulubang.presentation.rekapitulasi.perencanaan.RekapPerencanaanFragment"
+        android:label="fragment_rekap_perencanaan"
+        tools:layout="@layout/fragment_rekap_perencanaan" />
 
 </navigation>

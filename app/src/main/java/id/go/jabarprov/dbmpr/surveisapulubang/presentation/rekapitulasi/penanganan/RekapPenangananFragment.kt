@@ -69,6 +69,10 @@ class RekapPenangananFragment : Fragment() {
 
     private fun initUI() {
         binding.apply {
+            buttonBack.setOnClickListener {
+                findNavController().popBackStack()
+            }
+
             swipeRefeshLayout.setOnRefreshListener {
                 loadPenanganan()
             }

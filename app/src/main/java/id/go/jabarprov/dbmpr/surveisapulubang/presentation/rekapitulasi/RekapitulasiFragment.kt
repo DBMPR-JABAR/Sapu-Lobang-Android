@@ -63,6 +63,12 @@ class RekapitulasiFragment : Fragment() {
                 findNavController().navigate(action)
             }
 
+            constraintLayoutRekapPerencanaan.setOnClickListener {
+                val action =
+                    RekapitulasiFragmentDirections.actionRekapitulasiFragmentToRekapPerencanaanFragment()
+                findNavController().navigate(action)
+            }
+
             constraintLayoutRekapPenanganan.setOnClickListener {
                 val action =
                     RekapitulasiFragmentDirections.actionRekapitulasiFragmentToRekapPenangananFragment()
