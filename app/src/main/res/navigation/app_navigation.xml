@@ -46,7 +46,7 @@
             app:destination="@id/entryLubangFragment" />
         <action
             android:id="@+id/action_dashboardFragment_to_entryPenangananFragment"
-            app:destination="@id/entryPenangananFragment" />
+            app:destination="@id/penanganan_navigation" />
         <action
             android:id="@+id/action_dashboardFragment_to_entryRencanaFragment"
             app:destination="@id/rencana_navigation" />
@@ -72,12 +72,6 @@
             android:id="@+id/action_entryLubangFragment_to_mapFragment"
             app:destination="@id/mapFragment" />
     </fragment>
-
-    <fragment
-        android:id="@+id/entryPenangananFragment"
-        android:name="id.go.jabarprov.dbmpr.surveisapulubang.presentation.entry_penanganan.EntryPenangananFragment"
-        android:label="fragment_entry_penanganan"
-        tools:layout="@layout/fragment_entry_penanganan" />
 
     <fragment
         android:id="@+id/previewPhotoFragment"
@@ -166,6 +160,23 @@
             android:name="id.go.jabarprov.dbmpr.surveisapulubang.presentation.entry_rencana.EntryRencanaListLubangFragment"
             android:label="fragment_entry_rencana_list_lubang"
             tools:layout="@layout/fragment_entry_rencana_list_lubang" />
+    </navigation>
+    <navigation android:id="@+id/penanganan_navigation"
+        app:startDestination="@id/entryPenangananFragment">
+        <fragment
+            android:id="@+id/entryPenangananFragment"
+            android:name="id.go.jabarprov.dbmpr.surveisapulubang.presentation.entry_penanganan.EntryPenangananFragment"
+            android:label="fragment_entry_penanganan"
+            tools:layout="@layout/fragment_entry_penanganan">
+            <action
+                android:id="@+id/action_entryPenangananFragment_to_entryPenangananListLubangFragment"
+                app:destination="@id/entryPenangananListLubangFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/entryPenangananListLubangFragment"
+            android:name="id.go.jabarprov.dbmpr.surveisapulubang.presentation.entry_penanganan.EntryPenangananListLubangFragment"
+            android:label="fragment_entry_penanganan_list_lubang"
+            tools:layout="@layout/fragment_entry_penanganan_list_lubang" />
     </navigation>
 
 </navigation>

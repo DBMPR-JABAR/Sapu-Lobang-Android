@@ -130,7 +130,7 @@ class EntryRencanaListLubangFragment : Fragment() {
     }
 
     private fun loadLubangPerencanaan() {
-        rencanaViewModel.processAction(RencanaAction.LoadData)
+        rencanaViewModel.processAction(RencanaAction.GetListLubang)
     }
 
     private fun observeRencanaState() {

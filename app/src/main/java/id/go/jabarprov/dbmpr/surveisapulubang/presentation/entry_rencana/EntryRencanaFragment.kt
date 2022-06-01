@@ -16,18 +16,12 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.datepicker.MaterialDatePicker
 import dagger.hilt.android.AndroidEntryPoint
-import id.go.jabarprov.dbmpr.surveisapulubang.AppNavigationDirections
 import id.go.jabarprov.dbmpr.surveisapulubang.R
-import id.go.jabarprov.dbmpr.surveisapulubang.common.presentation.widget.SpaceItemDecoration
 import id.go.jabarprov.dbmpr.surveisapulubang.core.Resource
 import id.go.jabarprov.dbmpr.surveisapulubang.databinding.FragmentEntryRencanaBinding
-import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.Lubang
-import id.go.jabarprov.dbmpr.surveisapulubang.presentation.adapter.LubangAdapter
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.rencana.RencanaViewModel
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.rencana.store.RencanaAction
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.user.AuthViewModel
-import id.go.jabarprov.dbmpr.surveisapulubang.utils.extensions.showToast
-import id.go.jabarprov.dbmpr.surveisapulubang.utils.getSapuLubangImageUrl
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint

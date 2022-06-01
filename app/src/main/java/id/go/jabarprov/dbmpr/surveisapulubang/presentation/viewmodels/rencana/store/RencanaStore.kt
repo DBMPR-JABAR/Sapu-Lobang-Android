@@ -20,7 +20,7 @@ class RencanaStore @Inject constructor(
             when (action) {
                 is RencanaAction.UpdateRuasJalan -> updateRuasJalan(action)
                 is RencanaAction.UpdateTanggal -> updateTanggal(action)
-                RencanaAction.LoadData -> loadLubangPerencanaan()
+                RencanaAction.GetListLubang -> loadLubangPerencanaan()
                 is RencanaAction.UploadRencanaLubang -> uploadRencanaLubang(action)
                 is RencanaAction.RejectLubang -> rejectLubang(action)
             }
