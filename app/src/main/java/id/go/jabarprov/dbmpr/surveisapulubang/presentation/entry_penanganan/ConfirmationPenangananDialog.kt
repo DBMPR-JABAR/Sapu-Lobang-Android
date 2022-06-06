@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
@@ -19,10 +18,9 @@ import androidx.fragment.app.DialogFragment
 import id.go.jabarprov.dbmpr.surveisapulubang.databinding.LayoutDialogKonfirmasiPenangananBinding
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.FILE_PROVIDER_AUTHORITY
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.extensions.createPictureCacheFile
+import id.go.jabarprov.dbmpr.surveisapulubang.utils.extensions.showToast
 import java.io.File
 import kotlin.math.roundToInt
-
-private const val TAG = "ConfirmationPenangananD"
 
 class ConfirmationPenangananDialog private constructor() : DialogFragment() {
 
@@ -38,23 +36,25 @@ class ConfirmationPenangananDialog private constructor() : DialogFragment() {
 
     private val takePictureLauncher =
         registerForActivityResult(ActivityResultContracts.TakePicture()) { isSuccess ->
-            Log.d(TAG, "Foto: $photoUri")
             if (isSuccess) {
-                dialog?.window?.setLayout(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    TypedValue.applyDimension(
-                        TypedValue.COMPLEX_UNIT_DIP,
-                        500f,
-                        resources.displayMetrics
+                if (photoUri != null && photoFile != null) {
+                    dialog?.window?.setLayout(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        TypedValue.applyDimension(
+                            TypedValue.COMPLEX_UNIT_DIP,
+                            500f,
+                            resources.displayMetrics
+                        )
+                            .roundToInt()
                     )
-                        .roundToInt()
-                )
-                binding.apply {
-                    Log.d(TAG, "Foto: $photoUri")
-                    imageViewPenanganan.isVisible = true
-                    imageViewPenanganan.setImageURI(photoUri)
+                    binding.apply {
+                        imageViewPenanganan.isVisible = true
+                        imageViewPenanganan.setImageURI(photoUri)
+                    }
+                    checkButtonIsEnable()
+                } else {
+                    showErrorTakePictureToast()
                 }
-                checkButtonIsEnable()
             } else {
                 photoFile = null
                 photoUri = null
@@ -126,12 +126,22 @@ class ConfirmationPenangananDialog private constructor() : DialogFragment() {
 
     private fun takePicture() {
         photoFile = requireContext().createPictureCacheFile()
+        if (photoFile == null) {
+            return showErrorTakePictureToast()
+        }
         photoUri = FileProvider.getUriForFile(
             requireContext(),
             FILE_PROVIDER_AUTHORITY,
             photoFile!!
         )
+        if (photoUri == null) {
+            return showErrorTakePictureToast()
+        }
         takePictureLauncher.launch(photoUri)
+    }
+
+    private fun showErrorTakePictureToast() {
+        showToast("Gagal mengambil gambar")
     }
 
     override fun onStart() {

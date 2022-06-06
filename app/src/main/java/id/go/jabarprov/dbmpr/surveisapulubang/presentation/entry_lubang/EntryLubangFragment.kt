@@ -55,6 +55,7 @@ import id.go.jabarprov.dbmpr.surveisapulubang.utils.FILE_PROVIDER_AUTHORITY
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.LocationUtils
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.extensions.createPictureCacheFile
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.extensions.getValueOrElse
+import id.go.jabarprov.dbmpr.surveisapulubang.utils.extensions.showToast
 import kotlinx.coroutines.launch
 import java.io.File
 
@@ -94,12 +95,16 @@ class EntryLubangFragment : Fragment() {
 
     private val takePictureLauncher =
         registerForActivityResult(ActivityResultContracts.TakePicture()) { isSuccess ->
-            if (isSuccess) surveiLubangViewModel.processAction(
-                SurveiLubangAction.UpdateFotoLubang(
-                    photoUri,
-                    photoFile
+            if (isSuccess && photoFile != null && photoUri != null) {
+                surveiLubangViewModel.processAction(
+                    SurveiLubangAction.UpdateFotoLubang(
+                        photoUri!!,
+                        photoFile!!
+                    )
                 )
-            )
+            } else {
+                showErrorTakePictureToast()
+            }
         }
 
     private val requestCameraPermissionLauncher =
@@ -134,9 +139,9 @@ class EntryLubangFragment : Fragment() {
             }
     }
 
-    private lateinit var photoUri: Uri
+    private var photoUri: Uri? = null
 
-    private lateinit var photoFile: File
+    private var photoFile: File? = null
 
     private fun setUpLocationSetting() {
         if (!locationUtils.isLocationEnabled()) {
@@ -453,7 +458,8 @@ class EntryLubangFragment : Fragment() {
                 if (!locationUtils.isLocationEnabled()) {
                     locationUtils.enableLocationService()
                 }
-                binding.mapViewArcgis.locationDisplay.autoPanMode = LocationDisplay.AutoPanMode.RECENTER
+                binding.mapViewArcgis.locationDisplay.autoPanMode =
+                    LocationDisplay.AutoPanMode.RECENTER
                 binding.mapViewArcgis.locationDisplay.startAsync()
                 Log.d(TAG, "initLocation: RESUME LOCATION")
             }
@@ -492,12 +498,22 @@ class EntryLubangFragment : Fragment() {
 
     private fun takePicture() {
         photoFile = requireContext().createPictureCacheFile()
+        if (photoFile == null) {
+            return showErrorTakePictureToast()
+        }
         photoUri = FileProvider.getUriForFile(
             requireContext(),
             FILE_PROVIDER_AUTHORITY,
-            photoFile
+            photoFile!!
         )
+        if (photoUri == null) {
+            return showErrorTakePictureToast()
+        }
         takePictureLauncher.launch(photoUri)
+    }
+
+    private fun showErrorTakePictureToast() {
+        showToast("Gagal mengambil gambar")
     }
 
     private fun clearInputLubang() {
