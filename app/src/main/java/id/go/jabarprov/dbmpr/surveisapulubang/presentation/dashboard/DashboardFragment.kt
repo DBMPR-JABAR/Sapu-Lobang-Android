@@ -82,7 +82,7 @@ class DashboardFragment : Fragment() {
                 findNavController().navigate(goToLoginFragment)
             }
             is Resource.Loading -> {
-                loadingDialog.show(childFragmentManager, "Loading Dialog")
+                loadingDialog.show(childFragmentManager)
             }
             is Resource.Success -> {
                 processUserRole(state.data.internalRole)

@@ -113,9 +113,7 @@ class RekapKerusakanLubangFragment : Fragment() {
             }
             is Resource.Initial -> Unit
             is Resource.Loading -> {
-                if (!loadingDialog.isVisible && !loadingDialog.isAdded) {
-                    loadingDialog.show(childFragmentManager, "Loading Lubang Dialog")
-                }
+                loadingDialog.show(childFragmentManager)
             }
             is Resource.Success -> {
                 loadingDialog.dismiss()

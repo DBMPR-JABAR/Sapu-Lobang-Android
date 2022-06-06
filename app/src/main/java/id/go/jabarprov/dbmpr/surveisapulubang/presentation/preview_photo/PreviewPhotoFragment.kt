@@ -33,7 +33,7 @@ class PreviewPhotoFragment : Fragment() {
                 imageViewLubang.load(args.imageUrl) {
                     listener(
                         onStart = {
-                            loadingDialog.show(childFragmentManager, "Loading Dialog")
+                            loadingDialog.show(childFragmentManager)
                         },
                         onSuccess = { _, _ ->
                             loadingDialog.dismiss()

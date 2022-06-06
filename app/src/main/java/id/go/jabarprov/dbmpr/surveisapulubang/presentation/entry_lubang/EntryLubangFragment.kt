@@ -599,7 +599,7 @@ class EntryLubangFragment : Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 surveiLubangViewModel.uiState.collect {
                     if (it.isLoading) {
-                        loadingDialog.show(childFragmentManager, "Loading Dialog")
+                        loadingDialog.show(childFragmentManager)
                     }
 
                     if (it.isSuccess) {

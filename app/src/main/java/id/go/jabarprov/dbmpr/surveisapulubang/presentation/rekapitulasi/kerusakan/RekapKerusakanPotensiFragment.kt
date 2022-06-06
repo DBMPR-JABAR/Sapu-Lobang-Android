@@ -112,9 +112,7 @@ class RekapKerusakanPotensiFragment : Fragment() {
             }
             is Resource.Initial -> Unit
             is Resource.Loading -> {
-                if (!loadingDialog.isVisible && !loadingDialog.isAdded) {
-                    loadingDialog.show(childFragmentManager, "Loading Potensi Dialog")
-                }
+                loadingDialog.show(childFragmentManager)
             }
             is Resource.Success -> {
                 loadingDialog.dismiss()

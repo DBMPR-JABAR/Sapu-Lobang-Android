@@ -160,9 +160,7 @@ class EntryRencanaListLubangFragment : Fragment() {
             }
             is Resource.Initial -> Unit
             is Resource.Loading -> {
-                if (!loadingDialog.isVisible && !loadingDialog.isAdded) {
-                    loadingDialog.show(childFragmentManager, "Loading Penanganan Dialog")
-                }
+                loadingDialog.show(childFragmentManager)
             }
             is Resource.Success -> {
                 loadingDialog.dismiss()
@@ -191,7 +189,7 @@ class EntryRencanaListLubangFragment : Fragment() {
             }
             is Resource.Initial -> Unit
             is Resource.Loading -> {
-                loadingDialog.show(childFragmentManager, "Loadin Dialog")
+                loadingDialog.show(childFragmentManager)
             }
             is Resource.Success -> {
                 loadingDialog.dismiss()

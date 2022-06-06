@@ -231,9 +231,7 @@ class EntryPenangananListLubangFragment : Fragment() {
             }
             is Resource.Initial -> Unit
             is Resource.Loading -> {
-                if (!loadingDialog.isVisible && !loadingDialog.isAdded) {
-                    loadingDialog.show(childFragmentManager, "Loading Penanganan Dialog")
-                }
+                loadingDialog.show(childFragmentManager)
             }
             is Resource.Success -> {
                 loadingDialog.dismiss()
@@ -262,7 +260,7 @@ class EntryPenangananListLubangFragment : Fragment() {
             }
             is Resource.Initial -> Unit
             is Resource.Loading -> {
-                loadingDialog.show(childFragmentManager, "Loading Dialog")
+                loadingDialog.show(childFragmentManager)
             }
             is Resource.Success -> {
                 loadingDialog.dismiss()
@@ -278,7 +276,7 @@ class EntryPenangananListLubangFragment : Fragment() {
                 showToast(state.errorMessage)
             }
             is Resource.Loading -> {
-                loadingDialog.show(childFragmentManager, "Loading Dialog")
+                loadingDialog.show(childFragmentManager)
             }
             else -> Unit
         }

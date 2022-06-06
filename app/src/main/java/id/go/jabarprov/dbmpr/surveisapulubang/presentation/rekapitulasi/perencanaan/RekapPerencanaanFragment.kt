@@ -115,9 +115,7 @@ class RekapPerencanaanFragment : Fragment() {
             }
             is Resource.Initial -> Unit
             is Resource.Loading -> {
-                if (!loadingDialog.isVisible && !loadingDialog.isAdded) {
-                    loadingDialog.show(childFragmentManager, "Loading Penanganan Dialog")
-                }
+                loadingDialog.show(childFragmentManager)
             }
             is Resource.Success -> {
                 loadingDialog.dismiss()

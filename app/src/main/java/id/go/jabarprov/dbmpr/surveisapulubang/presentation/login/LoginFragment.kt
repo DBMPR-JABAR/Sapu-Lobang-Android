@@ -61,25 +61,6 @@ class LoginFragment : Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 authViewModel.uiState.collect {
                     processUserState(it.userState)
-//                    if (it.isLoading) {
-//                        loadingDialog.show(childFragmentManager, "Loading Dialog")
-//                    }
-//
-//                    if (it.isFailed) {
-//                        Toast.makeText(requireContext(), it.errorMessage, Toast.LENGTH_SHORT).show()
-//                        runSafety {
-//                            loadingDialog.dismiss()
-//                        }
-//                    }
-//
-//                    if (it.isSuccess && it.user != null) {
-//                        runSafety {
-//                            loadingDialog.dismiss()
-//                        }
-//                        val goToDashboardAction =
-//                            LoginFragmentDirections.actionLoginFragmentToDashboardFragment()
-//                        findNavController().navigate(goToDashboardAction)
-//                    }
                 }
             }
         }
@@ -93,7 +74,7 @@ class LoginFragment : Fragment() {
             }
             is Resource.Initial -> Unit
             is Resource.Loading -> {
-                loadingDialog.show(childFragmentManager, "Loading Dialog")
+                loadingDialog.show(childFragmentManager)
             }
             is Resource.Success -> {
                 loadingDialog.dismiss()
