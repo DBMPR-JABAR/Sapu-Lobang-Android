@@ -322,22 +322,31 @@
 
             <!-- Button Cek Lokasi -->
 
+            <com.esri.arcgisruntime.mapping.view.MapView
+                android:id="@+id/map_view_arcgis"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintTop_toBottomOf="@id/text_field_lokasi_m" />
+
             <Button
                 android:id="@+id/button_cek_lokasi"
                 style="@style/Widget.SurveiSapuLubang.Button.Green"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
                 android:text="Cek Lokasi Saat Ini"
                 android:textSize="12sp"
                 app:icon="@drawable/ic_location"
                 app:iconGravity="textEnd"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="16dp"
                 app:iconSize="16dp"
-                app:layout_constraintTop_toBottomOf="@+id/text_field_kode_lokasi"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/map_view_arcgis" />
 
             <!-- End Button Lokasi -->
 

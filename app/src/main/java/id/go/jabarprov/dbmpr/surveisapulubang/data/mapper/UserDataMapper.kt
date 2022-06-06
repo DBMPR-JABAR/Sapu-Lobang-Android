@@ -22,7 +22,13 @@ abstract class UserDataMapper {
                 idSup = userResponse.supId,
                 uptd = userResponse.internalRole.uptd,
                 idUptd = userResponse.uptdId,
-                ruasJalan = RuasDataMapper.convertListOfRuasDataResponseToListOfEntity(userResponse.ruas),
+                ruasJalan = if (!userResponse.ruas.isNullOrEmpty()) {
+                    RuasDataMapper.convertListOfRuasDataResponseToListOfEntity(
+                        userResponse.ruas
+                    )
+                } else {
+                    listOf()
+                },
                 token = loginResponse.token.accessToken,
                 tokenExpiredDate = Calendar.getInstance().addSeconds(loginResponse.token.expiresIn)
             )

@@ -22,6 +22,7 @@ import id.go.jabarprov.dbmpr.surveisapulubang.databinding.FragmentEntryRencanaBi
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.rencana.RencanaViewModel
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.rencana.store.RencanaAction
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.user.AuthViewModel
+import id.go.jabarprov.dbmpr.surveisapulubang.utils.CalendarUtils
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -104,7 +105,11 @@ class EntryRencanaFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 rencanaViewModel.uiState.collect {
-                    binding.buttonLoadData.isVisible = it.ruasJalan.isNotBlank()
+                    binding.apply {
+                        textViewContentTanggal.text =
+                            CalendarUtils.formatCalendarToString(it.tanggal)
+                        buttonLoadData.isVisible = it.ruasJalan.isNotBlank()
+                    }
                 }
             }
         }

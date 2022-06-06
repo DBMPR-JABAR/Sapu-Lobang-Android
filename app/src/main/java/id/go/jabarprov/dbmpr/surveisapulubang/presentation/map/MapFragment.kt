@@ -78,12 +78,12 @@ class MapFragment : Fragment() {
         )
 
         // Simple renderer for override style in feature layer
-        val lineSymbol = SimpleLineSymbol(SimpleLineSymbol.Style.SOLID, Color.rgb(0, 0, 255), 2f)
+        val lineSymbol = SimpleLineSymbol(SimpleLineSymbol.Style.SOLID, Color.rgb(0, 0, 255), 5f)
         val simpleRenderer = SimpleRenderer(lineSymbol)
 
         val wfsFeatureTable = WfsFeatureTable(
             "https://geo.temanjabar.net/geoserver/wfs?service=wfs&version=2.0.0&request=GetCapabilities",
-            "temanjabar:0_rj_prov",
+            "temanjabar:0_rj_prov_v",
         )
 
         wfsFeatureTable.featureRequestMode = ServiceFeatureTable.FeatureRequestMode.MANUAL_CACHE

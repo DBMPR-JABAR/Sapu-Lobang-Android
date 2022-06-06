@@ -3,8 +3,10 @@ package id.go.jabarprov.dbmpr.surveisapulubang.presentation.entry_lubang
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,6 +24,18 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import com.esri.arcgisruntime.data.QueryParameters
+import com.esri.arcgisruntime.data.ServiceFeatureTable
+import com.esri.arcgisruntime.geometry.Envelope
+import com.esri.arcgisruntime.layers.FeatureLayer
+import com.esri.arcgisruntime.mapping.ArcGISMap
+import com.esri.arcgisruntime.mapping.BasemapStyle
+import com.esri.arcgisruntime.mapping.Viewpoint
+import com.esri.arcgisruntime.mapping.view.LocationDisplay
+import com.esri.arcgisruntime.mapping.view.MapView
+import com.esri.arcgisruntime.ogc.wfs.WfsFeatureTable
+import com.esri.arcgisruntime.symbology.SimpleLineSymbol
+import com.esri.arcgisruntime.symbology.SimpleRenderer
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.material.datepicker.MaterialDatePicker
 import dagger.hilt.android.AndroidEntryPoint
@@ -62,12 +76,14 @@ class EntryLubangFragment : Fragment() {
                 false
             ) -> {
                 setUpLocationSetting()
+                initLocation()
             }
             permissions.getOrDefault(
                 Manifest.permission.ACCESS_COARSE_LOCATION,
                 false
             ) -> {
                 setUpLocationSetting()
+                initLocation()
             }
             else -> {
                 Toast.makeText(requireContext(), "Izin Lokasi Ditolak", Toast.LENGTH_SHORT)
@@ -97,6 +113,8 @@ class EntryLubangFragment : Fragment() {
         }
 
     private val locationUtils by lazy { LocationUtils(requireActivity()) }
+
+    private val locationDisplay by lazy { binding.mapViewArcgis.locationDisplay }
 
     private val loadingDialog by lazy { LoadingDialog.create() }
 
@@ -145,6 +163,7 @@ class EntryLubangFragment : Fragment() {
             )
         } else {
             setUpLocationSetting()
+            initLocation()
         }
     }
 
@@ -153,8 +172,6 @@ class EntryLubangFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentEntryLubangBinding.inflate(inflater, container, false)
-        observeAuthState()
-        observeSurveiLubangState()
         return binding.root
     }
 
@@ -166,6 +183,10 @@ class EntryLubangFragment : Fragment() {
     @SuppressLint("MissingPermission")
     private fun initUI() {
         setVisibilityFormEntry(false)
+        setUpArcGISMap()
+        loadRuasJalan()
+        observeAuthState()
+        observeSurveiLubangState()
 
         binding.apply {
             buttonBack.setOnClickListener {
@@ -381,6 +402,70 @@ class EntryLubangFragment : Fragment() {
         }
     }
 
+    private fun setUpArcGISMap() {
+        binding.mapViewArcgis.apply {
+            map = ArcGISMap(BasemapStyle.ARCGIS_NAVIGATION)
+            interactionOptions = MapView.InteractionOptions(this).apply {
+                isPanEnabled = false
+                isRotateEnabled = false
+                isZoomEnabled = false
+            }
+            setViewpoint(
+                Viewpoint(-6.921359549350742, 107.61111502699526, 72000.0)
+            )
+        }
+    }
+
+    private fun loadRuasJalan() {
+        // Simple renderer for override style in feature layer
+        val lineSymbol = SimpleLineSymbol(SimpleLineSymbol.Style.SOLID, Color.rgb(0, 0, 255), 5f)
+        val simpleRenderer = SimpleRenderer(lineSymbol)
+
+        val wfsFeatureTable = WfsFeatureTable(
+            "https://geo.temanjabar.net/geoserver/wfs?service=wfs&version=2.0.0&request=GetCapabilities",
+            "temanjabar:0_rj_prov_v",
+        )
+
+        wfsFeatureTable.featureRequestMode = ServiceFeatureTable.FeatureRequestMode.MANUAL_CACHE
+
+        val featureLayer = FeatureLayer(wfsFeatureTable)
+        featureLayer.renderer = simpleRenderer
+
+        featureLayer.addDoneLoadingListener {
+            Log.d(TAG, "setUpArcGISMap: ${featureLayer.loadStatus}")
+            if (featureLayer.loadError != null) {
+                Log.d(TAG, "setUpArcGISMap: ERROR ${featureLayer.loadError.cause}")
+            }
+        }
+
+        binding.mapViewArcgis.map.operationalLayers.add(featureLayer)
+
+        binding.mapViewArcgis.addNavigationChangedListener {
+            if (!it.isNavigating) {
+                popoulateFromServer(wfsFeatureTable, binding.mapViewArcgis.visibleArea.extent)
+            }
+        }
+    }
+
+    private fun initLocation() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                if (!locationUtils.isLocationEnabled()) {
+                    locationUtils.enableLocationService()
+                }
+                binding.mapViewArcgis.locationDisplay.autoPanMode = LocationDisplay.AutoPanMode.RECENTER
+                binding.mapViewArcgis.locationDisplay.startAsync()
+                Log.d(TAG, "initLocation: RESUME LOCATION")
+            }
+        }
+    }
+
+    private fun popoulateFromServer(wfsFeatureTable: WfsFeatureTable, extent: Envelope) {
+        val visibleExtentQuery = QueryParameters()
+        visibleExtentQuery.geometry = extent
+        wfsFeatureTable.populateFromServiceAsync(visibleExtentQuery, false, null)
+    }
+
     override fun onResume() {
         super.onResume()
         if (surveiLubangViewModel.uiState.value.idRuasJalan.isNotBlank()) {
@@ -391,6 +476,18 @@ class EntryLubangFragment : Fragment() {
                 )
             )
         }
+        binding.mapViewArcgis.resume()
+    }
+
+    override fun onPause() {
+        binding.mapViewArcgis.pause()
+        super.onPause()
+    }
+
+    override fun onDestroy() {
+        binding.mapViewArcgis.dispose()
+        super.onDestroy()
+
     }
 
     private fun takePicture() {
@@ -420,6 +517,7 @@ class EntryLubangFragment : Fragment() {
         binding.apply {
             buttonStart.visibility = if (isVisible) View.GONE else View.VISIBLE
             buttonCekLokasi.visibility = visibility
+            mapViewArcgis.visibility = visibility
             textViewLabelKategori.visibility = visibility
             radioGroupKategori.visibility = visibility
             textViewLabelLokasi.visibility = visibility

@@ -22,6 +22,7 @@ import id.go.jabarprov.dbmpr.surveisapulubang.databinding.FragmentEntryPenangana
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.penanganan.PenangananViewModel
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.penanganan.store.PenangananAction
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.user.AuthViewModel
+import id.go.jabarprov.dbmpr.surveisapulubang.utils.CalendarUtils
 import kotlinx.coroutines.launch
 
 private const val TAG = "EntryPenangananFragment"
@@ -62,6 +63,7 @@ class EntryPenangananFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initUI()
         observeAuthState()
+        observePenangananState()
     }
 
     @SuppressLint("MissingPermission")
@@ -98,6 +100,19 @@ class EntryPenangananFragment : Fragment() {
                             android.R.layout.simple_list_item_1,
                             it.userState.data.ruasJalan.map { ruasJalan -> "${ruasJalan.namaRuas} - ${ruasJalan.id}" })
                         binding.editTextRuasJalan.setAdapter(adapter)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun observePenangananState() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                penangananViewModel.uiState.collect {
+                    binding.apply {
+                        textViewContentTanggal.text =
+                            CalendarUtils.formatCalendarToString(it.tanggal)
                     }
                 }
             }

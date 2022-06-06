@@ -22,7 +22,7 @@ abstract class NetworkModule {
         @RetrofitUnauthorized
         fun providesRetrofitUnauthorizedInstance(): Retrofit {
             return Retrofit.Builder()
-                .baseUrl(BASE_URL.DEV)
+                .baseUrl(BASE_URL.PROD)
                 .client(
                     OkHttpClient.Builder()
                         .readTimeout(60, TimeUnit.SECONDS)
@@ -41,7 +41,7 @@ abstract class NetworkModule {
         @RetrofitAuthorized
         fun providesRetrofitAuthorizedInstance(authLocalDataSource: AuthLocalDataSource): Retrofit {
             return Retrofit.Builder()
-                .baseUrl(BASE_URL.DEV)
+                .baseUrl(BASE_URL.PROD)
                 .client(
                     OkHttpClient.Builder()
                         .readTimeout(60, TimeUnit.SECONDS)

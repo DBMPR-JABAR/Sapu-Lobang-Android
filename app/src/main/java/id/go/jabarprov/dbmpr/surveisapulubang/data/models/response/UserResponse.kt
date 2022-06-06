@@ -14,7 +14,7 @@ data class UserResponse(
     @SerializedName("uptd_id") val uptdId: Int,
     val blokir: String,
     @SerializedName("is_delete") val isDeleted: String?,
-    val ruas: List<RuasResponse>,
+    val ruas: List<RuasResponse>?,
     @SerializedName("encrypted_id") val encryptedId: String,
     @SerializedName("internal_role") val internalRole: RoleResponse
 )
