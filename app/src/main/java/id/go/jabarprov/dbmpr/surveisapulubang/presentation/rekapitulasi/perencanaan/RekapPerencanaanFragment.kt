@@ -34,10 +34,10 @@ class RekapPerencanaanFragment : Fragment() {
     private val lubangAdapter by lazy {
         LubangAdapter(LubangAdapter.TYPE.DEFAULT)
             .setOnDetailClickListener {
-                if (it.urlGambarPenanganan != null && it.urlGambarPenanganan.isNotBlank()) {
+                if (it.urlGambar != null) {
                     findNavController().navigate(
                         AppNavigationDirections.actionGlobalPreviewPhotoFragment(
-                            getSapuLubangImageUrl(it.urlGambarPenanganan)
+                            getSapuLubangImageUrl(it.urlGambar)
                         )
                     )
                 } else {
