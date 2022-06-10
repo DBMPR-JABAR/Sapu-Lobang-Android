@@ -12,6 +12,7 @@ import id.go.jabarprov.dbmpr.surveisapulubang.databinding.LayoutItemLubangBindin
 import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.KategoriLubang
 import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.Lubang
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.diff_utils.LubangItemDiffUtils
+import id.go.jabarprov.dbmpr.surveisapulubang.utils.CalendarUtils
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.getSapuLubangImageUrl
 
 class LubangAdapter(private val type: TYPE) :
@@ -73,6 +74,17 @@ class LubangAdapter(private val type: TYPE) :
         ) {
             binding.apply {
 
+                if (lubang.kategori == KategoriLubang.GROUP) {
+                    textViewLabelJumlah.isVisible = true
+                    textViewContentJumlah.apply {
+                        isVisible = true
+                        text = lubang.jumlah.toString()
+                    }
+                } else {
+                    textViewLabelJumlah.isVisible = false
+                    textViewContentJumlah.isVisible = false
+                }
+
                 if (lubang.urlGambar.isNullOrBlank()) {
                     imageView.load(R.drawable.bg_solid_white_container_rounded_corner)
                 } else {
@@ -82,7 +94,7 @@ class LubangAdapter(private val type: TYPE) :
                         } else {
                             lubang.urlGambar
                         }
-                    imageView.load(getSapuLubangImageUrl(imageUrl ?: "")) {
+                    imageView.load(getSapuLubangImageUrl(imageUrl)) {
                         transformations(RoundedCornersTransformation(8f))
                         placeholder(R.drawable.bg_solid_white_container_rounded_corner)
                         error(R.drawable.bg_solid_white_container_rounded_corner)
@@ -90,6 +102,7 @@ class LubangAdapter(private val type: TYPE) :
                     }
                 }
 
+                textViewContentRuas.text = lubang.ruasJalan
                 textViewContentId.text = lubang.id.toString()
                 textViewContentMandor.text = "-"
                 textViewContentLokasi.text =
@@ -124,6 +137,8 @@ class LubangAdapter(private val type: TYPE) :
                         buttonProses.isVisible = false
                         buttonDelete.isVisible = false
 
+                        textViewContentTanggal.text =
+                            CalendarUtils.formatCalendarToString(lubang.tanggalSurvei)
                         textViewContentMandor.text = lubang.namaMandor
                     }
                     TYPE.SURVEI -> {
@@ -131,6 +146,8 @@ class LubangAdapter(private val type: TYPE) :
                         buttonProses.isVisible = false
                         buttonDelete.isVisible = true
 
+                        textViewContentTanggal.text =
+                            CalendarUtils.formatCalendarToString(lubang.tanggalSurvei)
                         textViewLabelMandor.isVisible = false
                         textViewContentMandor.isVisible = false
                     }
@@ -141,12 +158,19 @@ class LubangAdapter(private val type: TYPE) :
                         textViewContentMandor.text = lubang.namaMandor
 
                         if (lubang.status == null) {
+                            textViewContentTanggal.text =
+                                CalendarUtils.formatCalendarToString(lubang.tanggalSurvei)
                             buttonDelete.isVisible = true
                             buttonDelete.text = "Tolak"
 
                             buttonProses.text = "Jadwalkan"
                             buttonProses.isEnabled = true
                         } else {
+                            textViewContentTanggal.text = lubang.tanggalPerencanaan?.let {
+                                CalendarUtils.formatCalendarToString(
+                                    it
+                                )
+                            }
                             buttonDelete.isVisible = false
                             buttonProses.text = "Sudah Dijadwalkan"
                             buttonProses.isEnabled = false
@@ -160,9 +184,19 @@ class LubangAdapter(private val type: TYPE) :
                         textViewContentMandor.text = lubang.namaMandor
 
                         if (lubang.status == "Perencanaan") {
+                            textViewContentTanggal.text = lubang.tanggalPerencanaan?.let {
+                                CalendarUtils.formatCalendarToString(
+                                    it
+                                )
+                            }
                             buttonProses.text = "Tangani"
                             buttonProses.isEnabled = true
                         } else {
+                            textViewContentTanggal.text = lubang.tanggalPenanganan?.let {
+                                CalendarUtils.formatCalendarToString(
+                                    it
+                                )
+                            }
                             buttonProses.text = "Sudah Ditangani"
                             buttonProses.isEnabled = false
                         }

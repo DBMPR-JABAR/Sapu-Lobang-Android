@@ -107,6 +107,7 @@
             android:name="idRuasJalan"
             app:argType="string" />
     </fragment>
+
     <fragment
         android:id="@+id/rekapitulasiFragment"
         android:name="id.go.jabarprov.dbmpr.surveisapulubang.presentation.rekapitulasi.RekapitulasiFragment"
@@ -122,6 +123,7 @@
             android:id="@+id/action_rekapitulasiFragment_to_rekapPerencanaanFragment"
             app:destination="@id/rekapPerencanaanFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/mapFragment"
         android:name="id.go.jabarprov.dbmpr.surveisapulubang.presentation.map.MapFragment"
@@ -161,7 +163,9 @@
             android:label="fragment_entry_rencana_list_lubang"
             tools:layout="@layout/fragment_entry_rencana_list_lubang" />
     </navigation>
-    <navigation android:id="@+id/penanganan_navigation"
+
+    <navigation
+        android:id="@+id/penanganan_navigation"
         app:startDestination="@id/entryPenangananFragment">
         <fragment
             android:id="@+id/entryPenangananFragment"

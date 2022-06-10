@@ -30,5 +30,6 @@ data class LubangResponse(
     val lajur: String?,
     val kategori_kedalaman: String?,
     val potensi_lubang: String?,
-    val user_create: UserResponse?
+    val user_create: UserResponse?,
+    val ruas: RuasResponse?
 )

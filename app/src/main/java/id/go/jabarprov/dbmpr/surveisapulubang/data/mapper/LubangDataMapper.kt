@@ -38,7 +38,8 @@ abstract class LubangDataMapper {
                 kedalaman = if (!lubang.kategori_kedalaman.isNullOrBlank()) Kedalaman.convertStringToUkuran(
                     lubang.kategori_kedalaman.split(" - ")[1]
                 ) else null,
-                potensi = (lubang.potensi_lubang == "true") || (lubang.potensi_lubang == "1")
+                potensi = (lubang.potensi_lubang == "true") || (lubang.potensi_lubang == "1"),
+                ruasJalan = lubang.ruas?.namaRuasJalan ?: "-"
             )
         }
 
