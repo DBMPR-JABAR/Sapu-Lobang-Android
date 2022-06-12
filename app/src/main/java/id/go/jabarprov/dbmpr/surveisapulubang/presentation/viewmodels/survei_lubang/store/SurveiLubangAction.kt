@@ -13,7 +13,11 @@ sealed class SurveiLubangAction : Action {
     data class StartSurveiAction(val tanggal: Calendar, val idRuasJalan: String) :
         SurveiLubangAction()
 
-    data class TambahLubangAction(val lat: Double, val long: Double) :
+    data class TambahLubangAction(
+        val lat: Double,
+        val long: Double,
+        val onProgressUpdate: ((Double) -> Unit)? = null
+    ) :
         SurveiLubangAction()
 
     data class KurangLubangAction(val lat: Double, val long: Double) :
@@ -40,7 +44,11 @@ sealed class SurveiLubangAction : Action {
 
     data class UpdateKeterangan(val keterangan: String) : SurveiLubangAction()
 
-    object InputLubangResetted : SurveiLubangAction()
+    object ResetStartState : SurveiLubangAction()
+
+    object ResetTambahState : SurveiLubangAction()
+
+    object ResetKurangState : SurveiLubangAction()
 
     data class UpdateLajur(val lajur: Lajur) : SurveiLubangAction()
 

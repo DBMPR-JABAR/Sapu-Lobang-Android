@@ -12,7 +12,7 @@ import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.Kedalaman
 import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.Lajur
 import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.Ukuran
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.CalendarUtils
-import id.go.jabarprov.dbmpr.surveisapulubang.utils.extensions.toMultipart
+import id.go.jabarprov.dbmpr.surveisapulubang.utils.extensions.toPercentageMultipart
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.extensions.toRequestBody
 import java.io.File
 import java.net.SocketTimeoutException
@@ -127,7 +127,8 @@ class SurveiLubangRemoteDataSourceImpl @Inject constructor(private val surveiLub
         lajur: Lajur,
         ukuran: Ukuran,
         kedalaman: Kedalaman,
-        isPotential: Boolean
+        isPotential: Boolean,
+        onProgressUpdate: ((Double) -> Unit)?
     ): SurveiLubangResponse {
         try {
             val response = surveiLubangAPI.tambahLubang(
@@ -141,7 +142,7 @@ class SurveiLubangRemoteDataSourceImpl @Inject constructor(private val surveiLub
                 lokasiKm = lokasiKm.toRequestBody(),
                 lokasiM = lokasiM.toRequestBody(),
                 kategoriLubang = kategoriLubang.toRequestBody(),
-                gambarLubang = gambarLubang.toMultipart("image"),
+                gambarLubang = gambarLubang.toPercentageMultipart("image", onProgressUpdate),
                 keterangan = keterangan?.toRequestBody(),
                 lajur = lajur.toRequestBody(),
                 kategoriKedalaman = "${ukuran.convertToString()} - ${kedalaman.convertToString()}".toRequestBody(),

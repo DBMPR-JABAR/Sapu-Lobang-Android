@@ -10,10 +10,10 @@ abstract class CalendarUtils {
             return format.format(calendar.timeInMillis)
         }
 
-        fun formatStringToCalendar(string: String): Calendar {
+        fun formatStringToCalendar(string: String?): Calendar {
             val format = SimpleDateFormat("yyyy-MM-dd", Locale("en", "US"))
             return Calendar.getInstance().apply {
-                time = format.parse(string) ?: Date()
+                time = string?.let { format.parse(it) } ?: Date()
             }
         }
 

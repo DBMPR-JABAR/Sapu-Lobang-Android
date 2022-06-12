@@ -42,14 +42,12 @@ import dagger.hilt.android.AndroidEntryPoint
 import id.go.jabarprov.dbmpr.surveisapulubang.R
 import id.go.jabarprov.dbmpr.surveisapulubang.core.Resource
 import id.go.jabarprov.dbmpr.surveisapulubang.databinding.FragmentEntryLubangBinding
-import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.KategoriLubang
-import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.Kedalaman
-import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.Lajur
-import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.Ukuran
+import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.*
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.survei_lubang.SurveiLubangViewModel
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.survei_lubang.store.SurveiLubangAction
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.user.AuthViewModel
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.widgets.LoadingDialog
+import id.go.jabarprov.dbmpr.surveisapulubang.presentation.widgets.PercentageLoadingDialog
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.CalendarUtils
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.FILE_PROVIDER_AUTHORITY
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.LocationUtils
@@ -119,7 +117,7 @@ class EntryLubangFragment : Fragment() {
 
     private val locationUtils by lazy { LocationUtils(requireActivity()) }
 
-    private val locationDisplay by lazy { binding.mapViewArcgis.locationDisplay }
+    private val percentageLoadingDialog by lazy { PercentageLoadingDialog.create() }
 
     private val loadingDialog by lazy { LoadingDialog.create() }
 
@@ -356,7 +354,9 @@ class EntryLubangFragment : Fragment() {
                             SurveiLubangAction.TambahLubangAction(
                                 location.latitude,
                                 location.longitude,
-                            )
+                            ) {
+                                percentageLoadingDialog.updateProgress(it)
+                            }
                         )
                     }
                 }
@@ -390,7 +390,9 @@ class EntryLubangFragment : Fragment() {
                             SurveiLubangAction.TambahLubangAction(
                                 location.latitude,
                                 location.longitude,
-                            )
+                            ) {
+                                percentageLoadingDialog.updateProgress(it)
+                            }
                         )
                     }
                 }
@@ -436,13 +438,6 @@ class EntryLubangFragment : Fragment() {
         val featureLayer = FeatureLayer(wfsFeatureTable)
         featureLayer.renderer = simpleRenderer
 
-        featureLayer.addDoneLoadingListener {
-            Log.d(TAG, "setUpArcGISMap: ${featureLayer.loadStatus}")
-            if (featureLayer.loadError != null) {
-                Log.d(TAG, "setUpArcGISMap: ERROR ${featureLayer.loadError.cause}")
-            }
-        }
-
         binding.mapViewArcgis.map.operationalLayers.add(featureLayer)
 
         binding.mapViewArcgis.addNavigationChangedListener {
@@ -461,7 +456,6 @@ class EntryLubangFragment : Fragment() {
                 binding.mapViewArcgis.locationDisplay.autoPanMode =
                     LocationDisplay.AutoPanMode.RECENTER
                 binding.mapViewArcgis.locationDisplay.startAsync()
-                Log.d(TAG, "initLocation: RESUME LOCATION")
             }
         }
     }
@@ -570,7 +564,7 @@ class EntryLubangFragment : Fragment() {
                 textViewJumlahLubangSingle.visibility = visibility
                 textViewLabelLubangSingle.visibility = visibility
                 buttonTambahLubangSingle.visibility = visibility
-                buttonKurangLubangSingle.visibility = visibility
+//                buttonKurangLubangSingle.visibility = visibility
 
                 editTextJumlahLubangGroup.visibility = visibility
                 buttonTambahLubangGroup.visibility = visibility
@@ -587,7 +581,7 @@ class EntryLubangFragment : Fragment() {
             textViewJumlahLubangSingle.visibility = singleLubangVisibility
             textViewLabelLubangSingle.visibility = singleLubangVisibility
             buttonTambahLubangSingle.visibility = singleLubangVisibility
-            buttonKurangLubangSingle.visibility = singleLubangVisibility
+//            buttonKurangLubangSingle.visibility = singleLubangVisibility
 
             editTextJumlahLubangGroup.visibility = groupLubangVisibility
             buttonTambahLubangGroup.visibility = groupLubangVisibility
@@ -614,23 +608,9 @@ class EntryLubangFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 surveiLubangViewModel.uiState.collect {
-                    if (it.isLoading) {
-                        loadingDialog.show(childFragmentManager)
-                    }
-
-                    if (it.isSuccess) {
-                        loadingDialog.dismiss()
-                    }
-
-                    if (it.isFailed) {
-                        Toast.makeText(requireContext(), it.errorMessage, Toast.LENGTH_SHORT).show()
-                        loadingDialog.dismiss()
-                    }
-
-                    if (it.isResetting) {
-                        clearInputLubang()
-                        surveiLubangViewModel.processAction(SurveiLubangAction.InputLubangResetted)
-                    }
+                    processStartSurveiState(it.startSurveiLubang)
+                    processTambahLubangState(it.tambahLubang)
+                    processKurangLubangState(it.kurangLubang)
 
                     setVisibilityFormEntry(it.isStarted)
 
@@ -643,10 +623,6 @@ class EntryLubangFragment : Fragment() {
                         textFieldRuasJalan.isEnabled = !it.isStarted
                         buttonPilihTanggal.isVisible = !it.isStarted
                         buttonStart.isVisible = !it.isStarted
-
-                        textViewJumlahLubangSingle.text = it.jumlahLubangTotal.toString()
-
-                        editTextTotalPanjangLubang.setText(it.panjangLubangTotal.toString())
 
                         imageViewLubang.setImageURI(it.gambarLubangUri)
                         imageViewLubang.isVisible = it.gambarLubangUri != null
@@ -667,9 +643,82 @@ class EntryLubangFragment : Fragment() {
                             it.isStarted && it.kodeLokasi.isNotBlank() && it.lokasiKm.isNotBlank() && it.lokasiM.isNotBlank() && it.panjangLubang > 0 && it.gambarLubangUri != null && it.jumlahLubangPerGroup > 0 && it.lajur != null && it.ukuran != null && it.kedalaman != null
 
                         buttonKurangLubangSingle.isEnabled =
-                            it.isStarted && it.kodeLokasi.isNotBlank() && it.lokasiKm.isNotBlank() && it.lokasiM.isNotBlank() && it.panjangLubangTotal > 0 && it.jumlahLubangTotal > 0
+                            it.isStarted
+                                    && it.kodeLokasi.isNotBlank()
+                                    && it.lokasiKm.isNotBlank()
+                                    && it.lokasiM.isNotBlank()
+                                    && editTextTotalPanjangLubang.text.toString()
+                                .getValueOrElse("0.0").toDouble() > 0
+                                    && textViewJumlahLubangSingle.text.toString()
+                                .getValueOrElse("0.0").toDouble() > 0
                     }
 
+                }
+            }
+        }
+    }
+
+    private fun processStartSurveiState(state: Resource<SurveiLubang>) {
+        when (state) {
+            is Resource.Failed -> {
+                loadingDialog.dismiss()
+                showToast(state.errorMessage)
+            }
+            is Resource.Initial -> Unit
+            is Resource.Loading -> {
+                loadingDialog.show(childFragmentManager)
+            }
+            is Resource.Success -> {
+                loadingDialog.dismiss()
+                binding.apply {
+                    textViewJumlahLubangSingle.text = state.data.jumlahTotal.toString()
+                    editTextTotalPanjangLubang.setText(state.data.panjangTotal.toString())
+                    surveiLubangViewModel.processAction(SurveiLubangAction.ResetStartState)
+                }
+            }
+        }
+    }
+
+    private fun processTambahLubangState(state: Resource<SurveiLubang>) {
+        when (state) {
+            is Resource.Failed -> {
+                percentageLoadingDialog.dismiss()
+                showToast(state.errorMessage)
+            }
+            is Resource.Initial -> Unit
+            is Resource.Loading -> {
+                percentageLoadingDialog.show(childFragmentManager)
+            }
+            is Resource.Success -> {
+                percentageLoadingDialog.dismiss()
+                binding.apply {
+                    Log.d(TAG, "TOTAL LUBANG: ${state.data.jumlahTotal}")
+                    Log.d(TAG, "PANJANG LUBANG: ${state.data.panjangTotal}")
+                    textViewJumlahLubangSingle.text = state.data.jumlahTotal.toString()
+                    editTextTotalPanjangLubang.setText(state.data.panjangTotal.toString())
+                }
+                clearInputLubang()
+                surveiLubangViewModel.processAction(SurveiLubangAction.ResetTambahState)
+            }
+        }
+    }
+
+    private fun processKurangLubangState(state: Resource<SurveiLubang>) {
+        when (state) {
+            is Resource.Failed -> {
+                loadingDialog.dismiss()
+                showToast(state.errorMessage)
+            }
+            is Resource.Initial -> Unit
+            is Resource.Loading -> {
+                loadingDialog.show(childFragmentManager)
+            }
+            is Resource.Success -> {
+                loadingDialog.dismiss()
+                binding.apply {
+                    textViewJumlahLubangSingle.text = state.data.jumlahTotal.toString()
+                    editTextTotalPanjangLubang.setText(state.data.panjangTotal.toString())
+                    surveiLubangViewModel.processAction(SurveiLubangAction.ResetKurangState)
                 }
             }
         }

@@ -835,10 +835,7 @@
                 style="@style/Widget.SurveiSapuLubang.Button.Green"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
+                android:layout_margin="16dp"
                 android:text="Tambah"
                 app:layout_constraintBottom_toTopOf="@id/button_lihat_hasil_survei"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -857,12 +854,12 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="16dp"
                 android:text="Kurang"
+                android:visibility="gone"
                 app:layout_constraintBottom_toTopOf="@id/button_lihat_hasil_survei"
                 app:layout_constraintEnd_toStartOf="@+id/button_tambah_lubang_single"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/text_view_label_lubang_single"
-                tools:visibility="visible" />
+                app:layout_constraintTop_toBottomOf="@id/text_view_label_lubang_single" />
 
             <!--    End Layout Tambah Lubang Single    -->
 

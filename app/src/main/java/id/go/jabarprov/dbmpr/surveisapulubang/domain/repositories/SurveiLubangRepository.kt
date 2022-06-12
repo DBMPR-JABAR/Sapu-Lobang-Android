@@ -31,7 +31,8 @@ interface SurveiLubangRepository {
         lajur: Lajur,
         ukuran: Ukuran,
         kedalaman: Kedalaman,
-        isPotential: Boolean
+        isPotential: Boolean,
+        onProgressUpdate: ((Double) -> Unit)? = null
     ): Either<Failure, SurveiLubang>
 
     suspend fun kurangLubang(

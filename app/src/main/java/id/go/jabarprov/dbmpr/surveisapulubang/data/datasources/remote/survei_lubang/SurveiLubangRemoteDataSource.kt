@@ -33,7 +33,8 @@ interface SurveiLubangRemoteDataSource {
         lajur: Lajur,
         ukuran: Ukuran,
         kedalaman: Kedalaman,
-        isPotential: Boolean
+        isPotential: Boolean,
+        onProgressUpdate: ((Double) -> Unit)? = null
     ): SurveiLubangResponse
 
     suspend fun kurangLubang(
