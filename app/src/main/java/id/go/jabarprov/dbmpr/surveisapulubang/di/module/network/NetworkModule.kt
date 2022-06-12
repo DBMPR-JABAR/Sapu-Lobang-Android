@@ -92,6 +92,6 @@ abstract class NetworkModule {
 }
 
 internal object BASE_URL {
-    const val DEV = "http://10.0.2.2/temanjabar/public/api/"
+    const val DEV = "http://192.168.1.8/temanjabar/public/api/"
     const val PROD = "https://tj.temanjabar.net/api/"
 }

@@ -14,6 +14,7 @@ interface PenangananRepository {
         gambarPenanganan: File,
         lat: Double,
         long: Double,
+        onProgressUpdate: ((Double) -> Unit)? = null
     ): Either<Failure, List<Lubang>>
 
     suspend fun getListLubang(

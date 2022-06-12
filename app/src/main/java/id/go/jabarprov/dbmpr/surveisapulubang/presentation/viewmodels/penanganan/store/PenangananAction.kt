@@ -13,6 +13,7 @@ sealed class PenangananAction : Action {
         val gambarPenanganan: File,
         val latitude: Double,
         val longitude: Double,
+        val onProgressUpdate: ((Double) -> Unit)? = null
     ) : PenangananAction()
     object GetLocation : PenangananAction()
     data class GetLocationFailed(val message: String) : PenangananAction()

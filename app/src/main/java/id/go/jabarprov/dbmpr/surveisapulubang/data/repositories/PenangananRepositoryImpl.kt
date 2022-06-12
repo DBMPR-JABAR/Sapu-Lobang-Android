@@ -22,7 +22,8 @@ class PenangananRepositoryImpl @Inject constructor(private val penangananRemoteD
         keterangan: String,
         gambarPenanganan: File,
         lat: Double,
-        long: Double
+        long: Double,
+        onProgressUpdate: ((Double) -> Unit)?
     ): Either<Failure, List<Lubang>> {
         return try {
             val response = penangananRemoteDataSource.storePenanganan(
@@ -31,7 +32,8 @@ class PenangananRepositoryImpl @Inject constructor(private val penangananRemoteD
                 keterangan,
                 gambarPenanganan,
                 lat,
-                long
+                long,
+                onProgressUpdate
             )
             LubangDataMapper.convertListOfLubangDataResponseToListOfEntity(response).toSuccess()
         } catch (e: RemoteDataSourceException) {

@@ -75,7 +75,8 @@ class PenangananStore @Inject constructor(
                 action.keterangan,
                 action.gambarPenanganan,
                 action.latitude,
-                action.longitude
+                action.longitude,
+                action.onProgressUpdate
             )
         val result = uploadPenangananLubang.run(param)
         result.either(

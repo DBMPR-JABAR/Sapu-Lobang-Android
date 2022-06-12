@@ -6,7 +6,7 @@ import id.go.jabarprov.dbmpr.surveisapulubang.data.datasources.remote.service.Pe
 import id.go.jabarprov.dbmpr.surveisapulubang.data.models.request.ListLubangPenangananRequest
 import id.go.jabarprov.dbmpr.surveisapulubang.data.models.response.LubangResponse
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.CalendarUtils
-import id.go.jabarprov.dbmpr.surveisapulubang.utils.extensions.toMultipart
+import id.go.jabarprov.dbmpr.surveisapulubang.utils.extensions.toPercentageMultipart
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.extensions.toRequestBody
 import java.io.File
 import java.net.SocketTimeoutException
@@ -24,14 +24,18 @@ class PenangananRemoteDataSourceImpl @Inject constructor(private val penangananA
         keterangan: String,
         gambarPenanganan: File,
         lat: Double,
-        long: Double
+        long: Double,
+        onProgressUpdate: ((Double) -> Unit)?
     ): List<LubangResponse> {
         try {
             val response = penangananAPI.storePenanganan(
                 idLubang = idLubang,
                 tanggal = CalendarUtils.formatCalendarToString(tanggal),
                 keterangan = keterangan.toRequestBody(),
-                gambarPenanganan = gambarPenanganan.toMultipart("image_penanganan"),
+                gambarPenanganan = gambarPenanganan.toPercentageMultipart(
+                    "image_penanganan",
+                    onProgressUpdate
+                ),
                 latitude = lat.toRequestBody(),
                 longitude = long.toRequestBody(),
             )

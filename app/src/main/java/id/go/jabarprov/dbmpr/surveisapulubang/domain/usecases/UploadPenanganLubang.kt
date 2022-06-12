@@ -19,6 +19,7 @@ class UploadPenangananLubang @Inject constructor(private val penangananRepositor
         val gambarPenanganan: File,
         val latitude: Double,
         val longitude: Double,
+        val onProgressUpdate: ((Double) -> Unit)? = null
     )
 
     override suspend fun run(params: Params): Either<Failure, List<Lubang>> {
@@ -28,7 +29,8 @@ class UploadPenangananLubang @Inject constructor(private val penangananRepositor
             params.keterangan,
             params.gambarPenanganan,
             params.latitude,
-            params.longitude
+            params.longitude,
+            params.onProgressUpdate
         )
     }
 }

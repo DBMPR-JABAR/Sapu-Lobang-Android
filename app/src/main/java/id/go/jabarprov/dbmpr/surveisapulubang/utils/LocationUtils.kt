@@ -6,8 +6,10 @@ import android.content.Context
 import android.content.IntentSender
 import android.location.Location
 import android.location.LocationManager
+import android.os.Looper
 import android.widget.Toast
 import com.google.android.gms.common.api.ResolvableApiException
+import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.LocationSettingsRequest
@@ -63,6 +65,18 @@ class LocationUtils(private val context: Activity) {
     @SuppressLint("MissingPermission")
     suspend fun getLastLocation(): Location? {
         return fusedLocationClient.lastLocation.await()
+    }
+
+    fun addLocationListener(callback: LocationCallback) {
+        fusedLocationClient.requestLocationUpdates(
+            locationRequest,
+            callback,
+            Looper.getMainLooper()
+        )
+    }
+
+    fun removeLocationListener(callback: LocationCallback) {
+        fusedLocationClient.removeLocationUpdates(callback)
     }
 
     companion object {

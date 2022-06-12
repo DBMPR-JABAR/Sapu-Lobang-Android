@@ -2,6 +2,7 @@ package id.go.jabarprov.dbmpr.surveisapulubang.presentation.entry_penanganan
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,7 +18,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.gms.tasks.CancellationTokenSource
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationResult
 import dagger.hilt.android.AndroidEntryPoint
 import id.go.jabarprov.dbmpr.surveisapulubang.AppNavigationDirections
 import id.go.jabarprov.dbmpr.surveisapulubang.R
@@ -29,6 +31,7 @@ import id.go.jabarprov.dbmpr.surveisapulubang.presentation.adapter.LubangAdapter
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.penanganan.PenangananViewModel
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.penanganan.store.PenangananAction
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.widgets.LoadingDialog
+import id.go.jabarprov.dbmpr.surveisapulubang.presentation.widgets.PercentageLoadingDialog
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.LocationUtils
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.extensions.showToast
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.getSapuLubangImageUrl
@@ -41,9 +44,22 @@ class EntryPenangananListLubangFragment : Fragment() {
 
     private val loadingDialog by lazy { LoadingDialog.create() }
 
+    private val percentageLoadingDialog by lazy { PercentageLoadingDialog.create() }
+
     private lateinit var binding: FragmentEntryPenangananListLubangBinding
 
     private val locationUtils by lazy { LocationUtils(requireActivity()) }
+
+    private val locationCallback by lazy {
+        object : LocationCallback() {
+            override fun onLocationResult(location: LocationResult) {
+                currentLocation = location.lastLocation
+            }
+        }
+    }
+
+    private var isRequestingLocation = false
+    private var currentLocation: Location? = null
 
     private val requestLocationPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
@@ -53,13 +69,17 @@ class EntryPenangananListLubangFragment : Fragment() {
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 false
             ) -> {
-                setUpLocationSetting()
+                if (!isRequestingLocation) {
+                    setUpLocationSetting()
+                }
             }
             permissions.getOrDefault(
                 Manifest.permission.ACCESS_COARSE_LOCATION,
                 false
             ) -> {
-                setUpLocationSetting()
+                if (!isRequestingLocation) {
+                    setUpLocationSetting()
+                }
             }
             else -> {
                 Toast.makeText(requireContext(), "Izin Lokasi Ditolak", Toast.LENGTH_SHORT)
@@ -74,6 +94,8 @@ class EntryPenangananListLubangFragment : Fragment() {
                 locationUtils.enableLocationService()
             }
         }
+        locationUtils.addLocationListener(locationCallback)
+        isRequestingLocation = true
     }
 
     private fun checkLocationPermission() {
@@ -92,7 +114,9 @@ class EntryPenangananListLubangFragment : Fragment() {
                 ),
             )
         } else {
-            setUpLocationSetting()
+            if (!isRequestingLocation) {
+                setUpLocationSetting()
+            }
         }
     }
 
@@ -146,9 +170,13 @@ class EntryPenangananListLubangFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initUI()
-        checkLocationPermission()
         observePenangananState()
         loadLubangPenanganan()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        checkLocationPermission()
     }
 
     private fun initUI() {
@@ -179,9 +207,7 @@ class EntryPenangananListLubangFragment : Fragment() {
         return ConfirmationPenangananDialog.create(
             onPositiveButtonClickListener = { dialog, keteranganPenanganan, gambarPenanganan, _ ->
                 lifecycleScope.launchWhenResumed {
-                    penangananViewModel.processAction(PenangananAction.GetLocation)
-                    val location = locationUtils.getCurrentLocation(CancellationTokenSource().token)
-                    if (location == null) {
+                    if (currentLocation == null) {
                         penangananViewModel.processAction(PenangananAction.GetLocationFailed("Gagal Mengambil Lokasi"))
                     } else {
                         penangananViewModel.processAction(
@@ -189,9 +215,11 @@ class EntryPenangananListLubangFragment : Fragment() {
                                 selectedLubang.id,
                                 keteranganPenanganan,
                                 gambarPenanganan,
-                                location.latitude,
-                                location.longitude
-                            )
+                                currentLocation!!.latitude,
+                                currentLocation!!.longitude
+                            ) {
+                                percentageLoadingDialog.updateProgress(it)
+                            }
                         )
                     }
                 }
@@ -255,15 +283,15 @@ class EntryPenangananListLubangFragment : Fragment() {
     private fun processStoreLubangState(state: Resource<List<Lubang>>) {
         when (state) {
             is Resource.Failed -> {
-                loadingDialog.dismiss()
+                percentageLoadingDialog.dismiss()
                 showToast(state.errorMessage)
             }
             is Resource.Initial -> Unit
             is Resource.Loading -> {
-                loadingDialog.show(childFragmentManager)
+                percentageLoadingDialog.show(childFragmentManager)
             }
             is Resource.Success -> {
-                loadingDialog.dismiss()
+                percentageLoadingDialog.dismiss()
                 lubangAdapter.submitList(state.data)
             }
         }
@@ -282,4 +310,11 @@ class EntryPenangananListLubangFragment : Fragment() {
         }
     }
 
+    override fun onPause() {
+        if (isRequestingLocation) {
+            locationUtils.removeLocationListener(locationCallback)
+            isRequestingLocation = false
+        }
+        super.onPause()
+    }
 }

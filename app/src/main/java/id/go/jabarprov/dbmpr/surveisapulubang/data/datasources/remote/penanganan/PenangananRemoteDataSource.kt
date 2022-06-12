@@ -12,6 +12,7 @@ interface PenangananRemoteDataSource {
         gambarPenanganan: File,
         lat: Double,
         long: Double,
+        onProgressUpdate: ((Double) -> Unit)? = null
     ): List<LubangResponse>
 
     suspend fun getListPenangananLubang(

@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.location.Location
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -36,6 +37,8 @@ import com.esri.arcgisruntime.mapping.view.MapView
 import com.esri.arcgisruntime.ogc.wfs.WfsFeatureTable
 import com.esri.arcgisruntime.symbology.SimpleLineSymbol
 import com.esri.arcgisruntime.symbology.SimpleRenderer
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationResult
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.material.datepicker.MaterialDatePicker
 import dagger.hilt.android.AndroidEntryPoint
@@ -65,31 +68,6 @@ class EntryLubangFragment : Fragment() {
     private val authViewModel: AuthViewModel by activityViewModels()
 
     private val surveiLubangViewModel: SurveiLubangViewModel by viewModels()
-
-    private val requestLocationPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestMultiplePermissions()
-    ) { permissions ->
-        when {
-            permissions.getOrDefault(
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                false
-            ) -> {
-                setUpLocationSetting()
-                initLocation()
-            }
-            permissions.getOrDefault(
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-                false
-            ) -> {
-                setUpLocationSetting()
-                initLocation()
-            }
-            else -> {
-                Toast.makeText(requireContext(), "Izin Lokasi Ditolak", Toast.LENGTH_SHORT)
-                    .show()
-            }
-        }
-    }
 
     private val takePictureLauncher =
         registerForActivityResult(ActivityResultContracts.TakePicture()) { isSuccess ->
@@ -141,12 +119,52 @@ class EntryLubangFragment : Fragment() {
 
     private var photoFile: File? = null
 
+    private val locationCallback by lazy {
+        object : LocationCallback() {
+            override fun onLocationResult(location: LocationResult) {
+                currentLocation = location.lastLocation
+            }
+        }
+    }
+
+    private var isRequestingLocation = false
+    private var currentLocation: Location? = null
+
+    private val requestLocationPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        when {
+            permissions.getOrDefault(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                false
+            ) -> {
+                if (!isRequestingLocation) {
+                    setUpLocationSetting()
+                }
+            }
+            permissions.getOrDefault(
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                false
+            ) -> {
+                if (!isRequestingLocation) {
+                    setUpLocationSetting()
+                }
+            }
+            else -> {
+                Toast.makeText(requireContext(), "Izin Lokasi Ditolak", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
+    }
+
     private fun setUpLocationSetting() {
         if (!locationUtils.isLocationEnabled()) {
             lifecycleScope.launchWhenResumed {
                 locationUtils.enableLocationService()
             }
         }
+        locationUtils.addLocationListener(locationCallback)
+        isRequestingLocation = true
     }
 
     private fun checkLocationPermission() {
@@ -165,8 +183,9 @@ class EntryLubangFragment : Fragment() {
                 ),
             )
         } else {
-            setUpLocationSetting()
-            initLocation()
+            if (!isRequestingLocation) {
+                setUpLocationSetting()
+            }
         }
     }
 
@@ -180,7 +199,7 @@ class EntryLubangFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initUI()
-        checkLocationPermission()
+        initLocation()
     }
 
     @SuppressLint("MissingPermission")
@@ -345,15 +364,13 @@ class EntryLubangFragment : Fragment() {
 
             buttonTambahLubangSingle.setOnClickListener {
                 lifecycleScope.launchWhenResumed {
-                    surveiLubangViewModel.processAction(SurveiLubangAction.GetLocation)
-                    val location = locationUtils.getCurrentLocation(CancellationTokenSource().token)
-                    if (location == null) {
+                    if (currentLocation == null) {
                         surveiLubangViewModel.processAction(SurveiLubangAction.GetLocationFailed("Gagal Mengambil Lokasi"))
                     } else {
                         surveiLubangViewModel.processAction(
                             SurveiLubangAction.TambahLubangAction(
-                                location.latitude,
-                                location.longitude,
+                                currentLocation!!.latitude,
+                                currentLocation!!.longitude,
                             ) {
                                 percentageLoadingDialog.updateProgress(it)
                             }
@@ -381,15 +398,13 @@ class EntryLubangFragment : Fragment() {
 
             buttonTambahLubangGroup.setOnClickListener {
                 lifecycleScope.launchWhenResumed {
-                    surveiLubangViewModel.processAction(SurveiLubangAction.GetLocation)
-                    val location = locationUtils.getCurrentLocation(CancellationTokenSource().token)
-                    if (location == null) {
+                    if (currentLocation == null) {
                         surveiLubangViewModel.processAction(SurveiLubangAction.GetLocationFailed("Gagal Mengambil Lokasi"))
                     } else {
                         surveiLubangViewModel.processAction(
                             SurveiLubangAction.TambahLubangAction(
-                                location.latitude,
-                                location.longitude,
+                                currentLocation!!.latitude,
+                                currentLocation!!.longitude,
                             ) {
                                 percentageLoadingDialog.updateProgress(it)
                             }
@@ -450,12 +465,16 @@ class EntryLubangFragment : Fragment() {
     private fun initLocation() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                if (!locationUtils.isLocationEnabled()) {
-                    locationUtils.enableLocationService()
+                try {
+                    if (!locationUtils.isLocationEnabled()) {
+                        locationUtils.enableLocationService()
+                    }
+                    binding.mapViewArcgis.locationDisplay.autoPanMode =
+                        LocationDisplay.AutoPanMode.RECENTER
+                    binding.mapViewArcgis.locationDisplay.startAsync()
+                } catch (e: Exception) {
+                    Log.e(TAG, "initLocation: ${e.message}", e)
                 }
-                binding.mapViewArcgis.locationDisplay.autoPanMode =
-                    LocationDisplay.AutoPanMode.RECENTER
-                binding.mapViewArcgis.locationDisplay.startAsync()
             }
         }
     }
@@ -468,6 +487,7 @@ class EntryLubangFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        checkLocationPermission()
         if (surveiLubangViewModel.uiState.value.idRuasJalan.isNotBlank()) {
             surveiLubangViewModel.processAction(
                 SurveiLubangAction.StartSurveiAction(
@@ -692,8 +712,6 @@ class EntryLubangFragment : Fragment() {
             is Resource.Success -> {
                 percentageLoadingDialog.dismiss()
                 binding.apply {
-                    Log.d(TAG, "TOTAL LUBANG: ${state.data.jumlahTotal}")
-                    Log.d(TAG, "PANJANG LUBANG: ${state.data.panjangTotal}")
                     textViewJumlahLubangSingle.text = state.data.jumlahTotal.toString()
                     editTextTotalPanjangLubang.setText(state.data.panjangTotal.toString())
                 }
