@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Parcelable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -14,20 +15,27 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.esri.arcgisruntime.data.QueryParameters
 import com.esri.arcgisruntime.data.ServiceFeatureTable
 import com.esri.arcgisruntime.geometry.Envelope
+import com.esri.arcgisruntime.geometry.Point
+import com.esri.arcgisruntime.geometry.SpatialReferences
 import com.esri.arcgisruntime.layers.FeatureLayer
 import com.esri.arcgisruntime.mapping.ArcGISMap
 import com.esri.arcgisruntime.mapping.BasemapStyle
 import com.esri.arcgisruntime.mapping.Viewpoint
+import com.esri.arcgisruntime.mapping.view.Graphic
+import com.esri.arcgisruntime.mapping.view.GraphicsOverlay
 import com.esri.arcgisruntime.mapping.view.LocationDisplay
 import com.esri.arcgisruntime.ogc.wfs.WfsFeatureTable
+import com.esri.arcgisruntime.symbology.PictureMarkerSymbol
 import com.esri.arcgisruntime.symbology.SimpleLineSymbol
 import com.esri.arcgisruntime.symbology.SimpleRenderer
 import id.go.jabarprov.dbmpr.surveisapulubang.databinding.FragmentMapBinding
 import id.go.jabarprov.dbmpr.surveisapulubang.utils.LocationUtils
 import kotlinx.coroutines.launch
+import kotlinx.parcelize.Parcelize
 
 private const val TAG = "MapFragment"
 
@@ -38,6 +46,10 @@ class MapFragment : Fragment() {
     private val locationDisplay by lazy { binding.mapViewArcgis.locationDisplay }
 
     private val locationUtils by lazy { LocationUtils(requireActivity()) }
+
+    private val map by lazy { ArcGISMap(BasemapStyle.ARCGIS_NAVIGATION) }
+
+    private val args: MapFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -68,10 +80,38 @@ class MapFragment : Fragment() {
             }
         }
         setUpArcGISMap()
+        Log.d(TAG, "initUI: ${args.pointLubang}")
+        if (args.pointLubang != null) {
+            setUpLubangLocation()
+        }
+    }
+
+    private fun setUpLubangLocation() {
+        with(binding.mapViewArcgis) {
+            val graphicOvelay = GraphicsOverlay()
+            graphicsOverlays.add(graphicOvelay)
+
+            val point = Point(
+                args.pointLubang?.long!!, // Latitude
+                args.pointLubang?.lat!!, // Longitude
+                SpatialReferences.getWgs84(),
+            )
+
+            val markerSymbol =
+                PictureMarkerSymbol("https://tj.temanjabar.net/assets/images/marker/sapulobang.png").apply {
+                    width = 32f
+                    height = 32f
+                }
+
+            // create a graphic with the point geometry and symbol
+            val pointGraphic = Graphic(point, markerSymbol)
+
+            // add the point graphic to the graphics overlay
+            graphicOvelay.graphics.add(pointGraphic)
+        }
     }
 
     private fun setUpArcGISMap() {
-        val map = ArcGISMap(BasemapStyle.ARCGIS_NAVIGATION)
         binding.mapViewArcgis.map = map
         binding.mapViewArcgis.setViewpoint(
             Viewpoint(-6.921359549350742, 107.61111502699526, 72000.0)
@@ -139,4 +179,10 @@ class MapFragment : Fragment() {
         binding.mapViewArcgis.dispose()
         super.onDestroy()
     }
+
+    @Parcelize
+    data class PointLubang(
+        val lat: Double,
+        val long: Double
+    ) : Parcelable
 }

@@ -23,6 +23,7 @@ class LubangAdapter(private val type: TYPE) :
     private var onDetailClickListener: ((Lubang) -> Unit)? = null
     private var onDeleteClickListener: ((Lubang) -> Unit)? = null
     private var onProsesClickListener: ((Lubang) -> Unit)? = null
+    private var onCheckOnMapClickListener: ((Lubang) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LubangItemViewHolder {
         val binding =
@@ -40,7 +41,8 @@ class LubangAdapter(private val type: TYPE) :
                 type,
                 prosesAction = onProsesClickListener,
                 deleteAction = onDeleteClickListener,
-                detailAction = onDetailClickListener
+                detailAction = onDetailClickListener,
+                onCheckOnMapAction = onCheckOnMapClickListener
             )
         }
     }
@@ -63,6 +65,12 @@ class LubangAdapter(private val type: TYPE) :
         }
     }
 
+    fun setOnCheckOnMapClickListener(action: (Lubang) -> Unit): LubangAdapter {
+        return this.apply {
+            onCheckOnMapClickListener = action
+        }
+    }
+
     class LubangItemViewHolder(private val binding: LayoutItemLubangBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(
@@ -71,6 +79,7 @@ class LubangAdapter(private val type: TYPE) :
             detailAction: ((Lubang) -> Unit)?,
             deleteAction: ((Lubang) -> Unit)?,
             prosesAction: ((Lubang) -> Unit)?,
+            onCheckOnMapAction: ((Lubang) -> Unit)?,
         ) {
             binding.apply {
 
@@ -131,11 +140,16 @@ class LubangAdapter(private val type: TYPE) :
                     prosesAction?.invoke(lubang)
                 }
 
+                buttonCekLokasi.setOnClickListener {
+                    onCheckOnMapAction?.invoke(lubang)
+                }
+
                 when (type) {
                     TYPE.DEFAULT -> {
                         buttonDetail.isVisible = true
                         buttonProses.isVisible = false
                         buttonDelete.isVisible = false
+                        buttonCekLokasi.isVisible = false
 
                         textViewContentTanggal.text =
                             CalendarUtils.formatCalendarToString(lubang.tanggalSurvei)
@@ -145,6 +159,7 @@ class LubangAdapter(private val type: TYPE) :
                         buttonDetail.isVisible = true
                         buttonProses.isVisible = false
                         buttonDelete.isVisible = true
+                        buttonCekLokasi.isVisible = false
 
                         textViewContentTanggal.text =
                             CalendarUtils.formatCalendarToString(lubang.tanggalSurvei)
@@ -154,6 +169,7 @@ class LubangAdapter(private val type: TYPE) :
                     TYPE.RENCANA -> {
                         buttonDetail.isVisible = true
                         buttonProses.isVisible = true
+                        buttonCekLokasi.isVisible = true
 
                         textViewContentMandor.text = lubang.namaMandor
 
@@ -180,6 +196,7 @@ class LubangAdapter(private val type: TYPE) :
                         buttonDetail.isVisible = true
                         buttonProses.isVisible = true
                         buttonDelete.isVisible = false
+                        buttonCekLokasi.isVisible = true
 
                         textViewContentMandor.text = lubang.namaMandor
 

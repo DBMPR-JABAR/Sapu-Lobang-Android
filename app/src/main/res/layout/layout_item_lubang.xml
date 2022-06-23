@@ -259,6 +259,29 @@
             app:layout_constraintStart_toEndOf="@+id/button_delete"
             app:layout_constraintTop_toBottomOf="@id/text_view_content_panjang_lubang" />
 
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="button_proses, button_delete, button_detail" />
+
+        <Button
+            android:id="@+id/button_cek_lokasi"
+            style="@style/Widget.SurveiSapuLubang.Button.Green"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Cek Lokasi"
+            android:textSize="12sp"
+            android:visibility="gone"
+            app:icon="@drawable/ic_location"
+            app:iconGravity="textEnd"
+            app:iconSize="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/barrier_button" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

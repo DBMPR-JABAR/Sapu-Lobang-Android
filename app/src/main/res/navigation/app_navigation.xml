@@ -128,7 +128,13 @@
         android:id="@+id/mapFragment"
         android:name="id.go.jabarprov.dbmpr.surveisapulubang.presentation.map.MapFragment"
         android:label="fragment_map"
-        tools:layout="@layout/fragment_map" />
+        tools:layout="@layout/fragment_map">
+        <argument
+            android:name="pointLubang"
+            android:defaultValue="@null"
+            app:argType="id.go.jabarprov.dbmpr.surveisapulubang.presentation.map.MapFragment$PointLubang"
+            app:nullable="true" />
+    </fragment>
     <fragment
         android:id="@+id/rekapKerusakanFragment"
         android:name="id.go.jabarprov.dbmpr.surveisapulubang.presentation.rekapitulasi.kerusakan.RekapKerusakanFragment"
@@ -162,6 +168,9 @@
             android:name="id.go.jabarprov.dbmpr.surveisapulubang.presentation.entry_rencana.EntryRencanaListLubangFragment"
             android:label="fragment_entry_rencana_list_lubang"
             tools:layout="@layout/fragment_entry_rencana_list_lubang" />
+        <action
+            android:id="@+id/action_global_mapFragment"
+            app:destination="@id/mapFragment" />
     </navigation>
 
     <navigation
@@ -181,6 +190,9 @@
             android:name="id.go.jabarprov.dbmpr.surveisapulubang.presentation.entry_penanganan.EntryPenangananListLubangFragment"
             android:label="fragment_entry_penanganan_list_lubang"
             tools:layout="@layout/fragment_entry_penanganan_list_lubang" />
+        <action
+            android:id="@+id/action_global_mapFragment"
+            app:destination="@id/mapFragment" />
     </navigation>
 
 </navigation>

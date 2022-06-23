@@ -22,12 +22,14 @@ import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationResult
 import dagger.hilt.android.AndroidEntryPoint
 import id.go.jabarprov.dbmpr.surveisapulubang.AppNavigationDirections
+import id.go.jabarprov.dbmpr.surveisapulubang.PenangananNavigationDirections
 import id.go.jabarprov.dbmpr.surveisapulubang.R
 import id.go.jabarprov.dbmpr.surveisapulubang.common.presentation.widget.SpaceItemDecoration
 import id.go.jabarprov.dbmpr.surveisapulubang.core.Resource
 import id.go.jabarprov.dbmpr.surveisapulubang.databinding.FragmentEntryPenangananListLubangBinding
 import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.Lubang
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.adapter.LubangAdapter
+import id.go.jabarprov.dbmpr.surveisapulubang.presentation.map.MapFragment
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.penanganan.PenangananViewModel
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.penanganan.store.PenangananAction
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.widgets.LoadingDialog
@@ -154,6 +156,15 @@ class EntryPenangananListLubangFragment : Fragment() {
                         showToast("Tidak ada gambar")
                     }
                 }
+            }
+            .setOnCheckOnMapClickListener {
+                val action = PenangananNavigationDirections.actionGlobalMapFragment(
+                    MapFragment.PointLubang(
+                        it.latitude,
+                        it.longitude
+                    )
+                )
+                findNavController().navigate(action)
             }
     }
 

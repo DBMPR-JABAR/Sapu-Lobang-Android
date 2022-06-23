@@ -15,11 +15,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import id.go.jabarprov.dbmpr.surveisapulubang.AppNavigationDirections
 import id.go.jabarprov.dbmpr.surveisapulubang.R
+import id.go.jabarprov.dbmpr.surveisapulubang.RencanaNavigationDirections
 import id.go.jabarprov.dbmpr.surveisapulubang.common.presentation.widget.SpaceItemDecoration
 import id.go.jabarprov.dbmpr.surveisapulubang.core.Resource
 import id.go.jabarprov.dbmpr.surveisapulubang.databinding.FragmentEntryRencanaListLubangBinding
 import id.go.jabarprov.dbmpr.surveisapulubang.domain.entities.Lubang
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.adapter.LubangAdapter
+import id.go.jabarprov.dbmpr.surveisapulubang.presentation.map.MapFragment
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.rencana.RencanaViewModel
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.viewmodels.rencana.store.RencanaAction
 import id.go.jabarprov.dbmpr.surveisapulubang.presentation.widgets.KonfirmasiDialog
@@ -55,6 +57,15 @@ class EntryRencanaListLubangFragment : Fragment() {
             .setOnDeleteClickListener {
                 selectedLubang = it
                 konfirmasiDialog.show(childFragmentManager, "Konfirmasi Dialog")
+            }
+            .setOnCheckOnMapClickListener {
+                val action = RencanaNavigationDirections.actionGlobalMapFragment(
+                    MapFragment.PointLubang(
+                        it.latitude,
+                        it.longitude
+                    )
+                )
+                findNavController().navigate(action)
             }
     }
 
